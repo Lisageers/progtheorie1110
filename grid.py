@@ -10,29 +10,45 @@ Creates a grid with gates to be connected.
 import csv
 
 
-gates = {}
-x_cor = []
-y_cor = []
+class Grid():
+	""" This class creates a grid with gates. """
 
-# hoe heet de file? moeten we die niet laten meegeven als input als de user het programma runt? (print_X.csv)
-with open("file.csv") as csv_file:
-	csv_reader = csv.reader(csv_file)
-	next(csv_reader)
+	def __init__(self, filename):
+		self.grid = self.create_grid(filename)
 
-	for gate, x, y in csv_reader:
-		gates[(x,y)] = gate
-		x_cor.append(x)
-		y_cor.append(y)
+	def create_grid(self, filename):
+		gates = {}
+		x_cor = []
+		y_cor = []
 
-m = max(y_cor) + 1
-n = max(x_cor) + 1
+		with open(filename) as csv_file:
+			csv_reader = csv.reader(csv_file)
+			next(csv_reader)
 
-grid = {}
+			for gate, x, y in csv_reader:
+				gates[(int(x.strip()),int(y.strip()))] = gate
+				x_cor.append(x)
+				y_cor.append(y)
 
-for y in range m:
-	for x in range n:
-		grid[(x,y)] = None
+		m = int(max(y_cor)) + 2
+		n = int(max(x_cor)) + 2
 
-for gate in gates:
-	if gate in grid:
-		grid[gate] = gates[gate]
+		grid = {}
+
+		for y in range(m):
+			for x in range(n):
+				grid[(x,y)] = None
+
+		for gate in gates:
+			if gate in grid:
+				grid[gate] = gates[gate]
+
+		return grid
+
+if __name__ == "__main__":
+
+	filename = input("Enter the filename of your print.\n")
+
+	grid = Grid(filename)
+
+	netlist = input("Enter the filename of the netlist to use.\n")
