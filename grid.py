@@ -9,7 +9,7 @@ Creates a grid with gates to be connected.
 
 import csv
 
-
+# moet dit niet gewoon een losse functie zijn, zonder een class te maken?
 class Grid():
 	""" This class creates a grid with gates. """
 
@@ -26,7 +26,7 @@ class Grid():
 			next(csv_reader)
 
 			for gate, x, y in csv_reader:
-				gates[(int(x.strip()),int(y.strip()))] = gate
+				gates[(int(x.strip()), int(y.strip()))] = gate
 				x_cor.append(x)
 				y_cor.append(y)
 
