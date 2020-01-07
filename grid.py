@@ -28,7 +28,7 @@ class Grid():
 			csv_print = csv.reader(csv_print)
 			next(csv_print)
 
-			for gate, x, y in csv_reader:
+			for gate, x, y in csv_print:
 				gates[(int(x.strip()), int(y.strip()))] = gate
 				x_cor.append(x)
 				y_cor.append(y)
@@ -76,10 +76,12 @@ class Wiring():
 
 	def wire(self):
 		""" Determine wire needed to connect the nets. """
+		
 		output_dict = {}
+		
 		# get coordinates of gates to couple from grid
-		for net in netlist:
-			wire = [cor for cor in grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
+		for net in self.netlist:
+			wire = [cor for cor in self.grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
 			current_cor = wire[0]
 			end_cor = wire[1]
 

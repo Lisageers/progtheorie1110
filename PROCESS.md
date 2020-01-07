@@ -38,9 +38,17 @@ Stap 2 - datastructuur voor wiring en cost function
 
     ! we weten dat hij nu dwars door gates heen gaat en niet op gaat letten op kruisen, maar het begin is er.
 
+  dingen geleerd uit debuggen:
+    - tuples zijn immutable. dat is eigenlijk wel handig, want de coordinaten van het grid en de gates mogen niet (per ongeluk) veranderen. De current_cor moet wel kunnen veranderen, dus die zetten we om naar een list.
+
+Visualisatie
+  - matplotlib
+  - assenstelsel met stippen voor gates en dikkere lijnen voor wires
+
 Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
 
 Stap 4 - optimaliseer
+
 
 
 Links:
