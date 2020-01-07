@@ -10,7 +10,7 @@ Creates a grid with gates to be connected.
 import csv
 
 # moet dit niet gewoon een losse functie zijn, zonder een class te maken?
-class Grid():
+class Grid(object):
 	""" This class creates a grid with gates. """
 
 	def __init__(self, filename):
@@ -51,12 +51,12 @@ class Grid():
 
 		return grid
 
+
 class Wiring():
 	""" This class creates wires to connect gates as listed in netlist. """
 
 	def __init__(self, filename, grid):
 		self.grid = grid
-		print(grid)
 		self.netlist = self.netlist(filename)
 		self.output(self.wire())
 
@@ -70,7 +70,7 @@ class Wiring():
 			netlist = []
 
 			for start, end in csv_netlist:
-				netlist.append((start, end))
+				netlist.append((start.strip(), end.strip()))
 
 		return netlist
 
@@ -78,11 +78,18 @@ class Wiring():
 		""" Determine wire needed to connect the nets. """
 		
 		output_dict = {}
-		
+
 		# get coordinates of gates to couple from grid
 		for net in self.netlist:
-			wire = [cor for cor in self.grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
-			current_cor = wire[0]
+			wire = []
+			for cor in self.grid:
+				if self.grid[cor] == net[0]:
+					wire.insert(0, cor)
+				elif self.grid[cor] == net[1]:
+					wire.append(cor)
+
+			print(wire)
+			current_cor = list(wire[0])
 			end_cor = wire[1]
 
 			while True:
@@ -94,6 +101,7 @@ class Wiring():
 				# move towards the end-gate
 				else:
 					if (end_cor[0] - current_cor[0]) > 0:
+						print(current_cor)
 						current_cor[0] += 1
 						wire.append(current_cor)
 					elif (end_cor[0] - current_cor[0]) < 0:
@@ -119,7 +127,7 @@ class Wiring():
 
 			# write dictionary to dictionary?
 			for net, wire in output_dict.items():
-				writer.writerow({'net' : net, 'wire' : wire})
+				writer.writerow({'net' : net, 'wires' : wire})
 
 
 if __name__ == "__main__":
@@ -127,6 +135,7 @@ if __name__ == "__main__":
 	filename = input("Enter the filename of your print.\n")
 
 	grid = Grid(filename)
+	grid = grid.create_grid(filename)
 
 	netlist_name = input("Enter the filename of the netlist to use.\n")
 
