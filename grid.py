@@ -21,11 +21,11 @@ class Grid():
 		x_cor = []
 		y_cor = []
 
-		with open(filename) as csv_file:
-			csv_reader = csv.reader(csv_file)
-			next(csv_reader)
+		with open(filename) as csv_print:
+			csv_print = csv.reader(csv_print)
+			next(csv_print)
 
-			for gate, x, y in csv_reader:
+			for gate, x, y in csv_print:
 				gates[(int(x.strip()),int(y.strip()))] = gate
 				x_cor.append(x)
 				y_cor.append(y)
@@ -45,10 +45,78 @@ class Grid():
 
 		return grid
 
+class Wiring():
+	""" This class creates wires from netlists. """
+
+	def __init__(self, filename, grid):
+		self.grid = grid
+		self.netlist = self.netlist(filename)
+
+	def netlist(self, filename):
+		with open(filename) as csv_netlist:
+			csv_netlist = csv.reader(csv_netlist)
+			next(csv_netlist)
+
+			netlist = []
+
+			for start, end in csv_netlist:
+				netlist.append((start, end))
+
+		return netlist
+
+	def wire(self):
+
+		# coordinaten ophalen uit dict
+		for net in netlist:
+			wire = [cor for cor in grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
+			current_cor = wire[0]
+			end_cor = wire[1]
+
+			while True:
+
+				# check of ze naast elkaar liggen manhattan distance
+				if abs((current_cor[0] + current_cor[1]) - (end_cor[0] + end_cor[1])) == 1:
+					return False
+
+				else:
+					if (end_cor[0] - current_cor[0]) > 0:
+						current_cor[0] += 1
+						wire.append(current_cor)
+					elif (end_cor[0] - current_cor[0]) < 0:
+						current_cor[0] -= 1
+						wire.append(current_cor)
+					elif (end_cor[1] - current_cor[1]) > 0:
+						current_cor[1] += 1
+						wire.append(current_cor)
+					else:
+						current_cor[1] -= 1
+						wire.append(current_cor)
+
+
+
+
+	def output(self):
+		# dict met het antwoord maken
+
+		# antwoord schrijven naar csv
+		with open('output.csv', mode='w') as csv_output:
+			fieldnames = ['net', 'wires']
+			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
+			writer.writeheader()
+
+			for antwoord in antwoord_dict:
+				writer.writerow({'net' : key, 'wire' : value})
+
+
+
+
+
 if __name__ == "__main__":
 
 	filename = input("Enter the filename of your print.\n")
 
 	grid = Grid(filename)
 
-	netlist = input("Enter the filename of the netlist to use.\n")
+	netlist_name = input("Enter the filename of the netlist to use.\n")
+
+	netlist = Wiring(netlist_name, grid)

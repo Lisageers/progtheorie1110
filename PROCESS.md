@@ -31,3 +31,7 @@ Stap 2 - datastructuur voor wiring en cost function
 Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
 
 Stap 4 - optimaliseer
+
+
+Links:
+https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
