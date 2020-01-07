@@ -50,7 +50,9 @@ class Wiring():
 
 	def __init__(self, filename, grid):
 		self.grid = grid
+		print(grid)
 		self.netlist = self.netlist(filename)
+		self.output(self.wire())
 
 	def netlist(self, filename):
 		with open(filename) as csv_netlist:
@@ -65,10 +67,10 @@ class Wiring():
 		return netlist
 
 	def wire(self):
-
+		self.output_dict = {}
 		# coordinaten ophalen uit dict
-		for net in netlist:
-			wire = [cor for cor in grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
+		for net in self.netlist:
+			wire = [cor for cor in self.grid if self.grid[cor] == net[0] or self.grid[cor] == net[1]]
 			current_cor = wire[0]
 			end_cor = wire[1]
 
@@ -76,7 +78,8 @@ class Wiring():
 
 				# check of ze naast elkaar liggen manhattan distance
 				if abs((current_cor[0] + current_cor[1]) - (end_cor[0] + end_cor[1])) == 1:
-					return False
+					output_dict[net] = wire
+					break
 
 				else:
 					if (end_cor[0] - current_cor[0]) > 0:
@@ -92,11 +95,10 @@ class Wiring():
 						current_cor[1] -= 1
 						wire.append(current_cor)
 
+		return output_dict
 
 
-
-	def output(self):
-		# dict met het antwoord maken
+	def output(self, output_dict):
 
 		# antwoord schrijven naar csv
 		with open('output.csv', mode='w') as csv_output:
@@ -104,11 +106,9 @@ class Wiring():
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
-			for antwoord in antwoord_dict:
-				writer.writerow({'net' : key, 'wire' : value})
-
-
-
+			# write dictionary to dictionary?
+			for net, wire in output_dict.items():
+				writer.writerow({'net' : net, 'wire' : wire})
 
 
 if __name__ == "__main__":
