@@ -76,6 +76,7 @@ class Wiring():
 
 	def wire(self):
 		""" Determine wire needed to connect the nets. """
+		
 		output_dict = {}
 
 		# get coordinates of gates to couple from grid
