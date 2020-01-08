@@ -9,53 +9,66 @@ Creates a grid with gates to be connected.
 
 import csv
 
-class Grid(object):
+
+class Print(object):
 	""" This class creates a grid with gates. """
 
 	def __init__(self, filename):
-		self.grid = self.create_grid(filename)
+		self.gates = self.create_gates(filename)
+		self.grid = self.create_grid(self.gates)
 
-	def create_grid(self, filename):
-		""" Gate coordinates from a csv file are used to build a grid and the gates are added. """
+	def create_gates(self, filename):
+		""" Create a dictionary of gates with their coordinates. """
 
 		gates = {}
-		x_cor = []
-		y_cor = []
 
-		# get gate coordinates from csv file, write to dictionary
+		# get gate coordinates from csv file
 		with open(filename) as csv_print:
 			csv_print = csv.reader(csv_print)
 			next(csv_print)
 
+			# write gates and coordinates to dictionary
 			for gate, x, y in csv_print:
 				gates[(int(x.strip()), int(y.strip()))] = gate
-				x_cor.append(x)
-				y_cor.append(y)
+
+		return gates
+
+	def create_grid(self, gates):
+		""" Create grid with gates. """
+
+		y_cor = []
+		x_cor = []
 
 		# determine size of grid
+		for gate in gates:
+			x_cor.append(gate[0])
+			y_cor.append(gate[1])
+
 		m = int(max(y_cor)) + 2
 		n = int(max(x_cor)) + 2
 
-		grid = {}
-
 		# create empty grid
-		for y in range(m):
-			for x in range(n):
-				grid[(x,y)] = None
+		grid = [[False for x in range(n)] for y in range(m)]
 
 		# add gates to grid
 		for gate in gates:
-			if gate in grid:
-				grid[gate] = gates[gate]
+			grid[gate[0]][gate[1]] = gates[gate]
 
 		return grid
+
+	def check_empty(self, cor, grid):
+		if grid[cor[0]][cor[1]] == False:
+			return True
+
+		return False
 
 
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, filename):
+	def __init__(self, filename, gates):
 		self.netlist = self.netlist(filename)
+		self.net_cor = self.net_cor(self.netlist, gates)
 
 	def netlist(self, filename):
 		""" Create list type netlist from csv file. """
@@ -71,58 +84,72 @@ class Netlist():
 
 		return netlist
 
+	def net_cor(self, netlist, gates):
+		""" Create altered netlist with coordinates instead of names. """
+
+		net_cor = []
+
+		for net in netlist:
+			for gate in gates:
+				if gates[gate] == net[0]:
+					cor_start = gate
+				elif gates[gate] == net[1]:
+					cor_end = gate
+
+			net_cor.append((cor_start, cor_end))
+
+		return net_cor
+
+
 class Wiring():
 	""" This class creates wires to connect gates as listed in netlist. """
 
-	def __init__(self, grid, netlist):
-		self.grid = grid.grid
-		self.netlist = netlist
+	def __init__(self, netlist, grid):
+		self.print = grid
+		self.net_cor = netlist.net_cor
 		self.output(self.wire())
-
 
 	def wire(self):
 		""" Determine wire needed to connect the nets. """
 
 		output_dict = {}
 
-		# get coordinates of gates to couple from grid
-		for net in self.netlist:
+		for net in self.net_cor:
 			wire = []
-			for cor in self.grid:
-				if self.grid[cor] == net[0]:
-					wire.insert(0, cor)
-				elif self.grid[cor] == net[1]:
-					wire.append(cor)
+			wire.append(net[0])
 
-			print(wire)
-			current_cor = list(wire[0])
-			end_cor = wire[1]
+			current_cor = list(net[0])
+			end_cor = net[1]
 
 			while True:
 				# check whether current point and end point are adjacent (manhattan distance)
 				if (abs(current_cor[0] - end_cor[0]) == 1 and current_cor[1] - end_cor[1] == 0) or (abs(current_cor[1] - end_cor[1]) == 1 and current_cor[0] - end_cor[0] == 0):
-					print(current_cor)
-					print("hij is klaar")
+					wire.append(net[1])
 					output_dict[net] = wire
 					break
 
 				# move towards the end-gate
 				else:
-					if (end_cor[0] - current_cor[0]) > 0 and not (current_cor[0] + 1) in wire:
-						print(current_cor)
-						print("naar rechts")
+					print("wire: ", wire)
+					if (end_cor[0] - current_cor[0]) > 0 and self.print.check_empty(((current_cor[0] + 1), current_cor[1]), self.print.grid):
 						current_cor[0] += 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					elif ((end_cor[0] - current_cor[0]) < 0) and (current_cor[0] - 1 not in wire):
+					elif ((end_cor[0] - current_cor[0]) < 0) and self.print.check_empty(((current_cor[0] - 1), current_cor[1]), self.print.grid):
 						current_cor[0] -= 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					elif ((end_cor[1] - current_cor[1]) > 0) and (current_cor[1] + 1 not in wire):
+					elif ((end_cor[1] - current_cor[1]) > 0) and self.print.check_empty((current_cor[0], (current_cor[1] + 1)), self.print.grid):
 						current_cor[1] += 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					elif ((end_cor[1] - current_cor[1]) < 0) and (current_cor[1] - 1 not in wire):
+					elif ((end_cor[1] - current_cor[1]) < 0) and self.print.check_empty((current_cor[0], (current_cor[1] - 1)), self.print.grid):
 						current_cor[1] -= 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
 
+
+		print("dict:", output_dict)
 		return output_dict
 
 
@@ -143,10 +170,10 @@ if __name__ == "__main__":
 
 	filename = input("Enter the filename of your print.\n")
 
-	grid = Grid(filename)
+	grid = Print(filename)
 
 	netlist_name = input("Enter the filename of the netlist to use.\n")
 
-	netlist = Netlist(netlist_name)
+	netlist = Netlist(netlist_name, grid.gates)
 
-	wires = Wiring(grid, netlist)
+	wiring = Wiring(netlist, grid)
