@@ -69,14 +69,14 @@ class Netlist():
 			for start, end in csv_netlist:
 				netlist.append((start.strip(), end.strip()))
 
-		return netlist	
+		return netlist
 
 class Wiring():
 	""" This class creates wires to connect gates as listed in netlist. """
 
-	def __init__(self, filename, grid):
+	def __init__(self, grid, netlist):
 		self.grid = grid.grid
-		self.netlist = self.netlist(filename)
+		self.netlist = netlist
 		self.output(self.wire())
 
 
@@ -108,18 +108,18 @@ class Wiring():
 
 				# move towards the end-gate
 				else:
-					if (end_cor[0] - current_cor[0]) > 0:
+					if (end_cor[0] - current_cor[0]) > 0 and not (current_cor[0] + 1) in wire:
 						print(current_cor)
 						print("naar rechts")
 						current_cor[0] += 1
 						wire.append(tuple(current_cor))
-					elif (end_cor[0] - current_cor[0]) < 0:
+					elif ((end_cor[0] - current_cor[0]) < 0) and (current_cor[0] - 1 not in wire):
 						current_cor[0] -= 1
 						wire.append(tuple(current_cor))
-					elif (end_cor[1] - current_cor[1]) > 0:
+					elif ((end_cor[1] - current_cor[1]) > 0) and (current_cor[1] + 1 not in wire):
 						current_cor[1] += 1
 						wire.append(tuple(current_cor))
-					else:
+					elif ((end_cor[1] - current_cor[1]) < 0) and (current_cor[1] - 1 not in wire):
 						current_cor[1] -= 1
 						wire.append(tuple(current_cor))
 
@@ -147,4 +147,6 @@ if __name__ == "__main__":
 
 	netlist_name = input("Enter the filename of the netlist to use.\n")
 
-	netlist = Wiring(netlist_name, grid)
+	netlist = Netlist(netlist_name)
+
+	wires = Wiring(grid, netlist)
