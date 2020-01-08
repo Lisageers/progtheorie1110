@@ -9,7 +9,6 @@ Creates a grid with gates to be connected.
 
 import csv
 
-# moet dit niet gewoon een losse functie zijn, zonder een class te maken?
 class Grid(object):
 	""" This class creates a grid with gates. """
 
@@ -52,13 +51,11 @@ class Grid(object):
 		return grid
 
 
-class Wiring():
-	""" This class creates wires to connect gates as listed in netlist. """
+class Netlist():
+	""" This class creates a usable netlist. """
 
-	def __init__(self, filename, grid):
-		self.grid = grid
+	def __init__(self, filename):
 		self.netlist = self.netlist(filename)
-		self.output(self.wire())
 
 	def netlist(self, filename):
 		""" Create list type netlist from csv file. """
@@ -72,7 +69,16 @@ class Wiring():
 			for start, end in csv_netlist:
 				netlist.append((start.strip(), end.strip()))
 
-		return netlist
+		return netlist	
+
+class Wiring():
+	""" This class creates wires to connect gates as listed in netlist. """
+
+	def __init__(self, filename, grid):
+		self.grid = grid.grid
+		self.netlist = self.netlist(filename)
+		self.output(self.wire())
+
 
 	def wire(self):
 		""" Determine wire needed to connect the nets. """
@@ -135,7 +141,6 @@ if __name__ == "__main__":
 	filename = input("Enter the filename of your print.\n")
 
 	grid = Grid(filename)
-	grid = grid.create_grid(filename)
 
 	netlist_name = input("Enter the filename of the netlist to use.\n")
 

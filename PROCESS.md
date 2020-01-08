@@ -49,6 +49,7 @@ Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
 
 Stap 4 - optimaliseer
 
+TODO: mmaak alles anders, matrix ipv dict!!!!!!!!!!!!!!!!!
 
 
 Links:
