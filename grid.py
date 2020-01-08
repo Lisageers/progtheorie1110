@@ -9,44 +9,49 @@ Creates a grid with gates to be connected.
 
 import csv
 
-class Grid(object):
+class Print(object):
 	""" This class creates a grid with gates. """
 
 	def __init__(self, filename):
-		self.grid = self.create_grid(filename)
+		self.gates = self.create_gates(filename)
+		self.grid = self.create_grid(self.gates)
 
-	def create_grid(self, filename):
-		""" Gate coordinates from a csv file are used to build a grid and the gates are added. """
-
+	def create_gates(self, filename):
+		""" Create a dictionary of gates with their coordinates. """
+		
 		gates = {}
-		x_cor = []
-		y_cor = []
 
-		# get gate coordinates from csv file, write to dictionary
+		# get gate coordinates from csv file
 		with open(filename) as csv_print:
 			csv_print = csv.reader(csv_print)
 			next(csv_print)
 
+			# write gates and coordinates to dictionary
 			for gate, x, y in csv_print:
 				gates[(int(x.strip()), int(y.strip()))] = gate
-				x_cor.append(x)
-				y_cor.append(y)
+
+		return gates
+
+	def create_grid(self, gates):
+		""" Create grid with gates. """
+		
+		y_cor = []
+		x_cor = []
 
 		# determine size of grid
+		for gate in gates:
+			x_cor.append(gate[0])
+			y_cor.append(gate[1])
+
 		m = int(max(y_cor)) + 2
 		n = int(max(x_cor)) + 2
 
-		grid = {}
-
 		# create empty grid
-		for y in range(m):
-			for x in range(n):
-				grid[(x,y)] = None
+		grid = [[None for x in range(n)] for y in range(m)]
 
 		# add gates to grid
 		for gate in gates:
-			if gate in grid:
-				grid[gate] = gates[gate]
+
 
 		return grid
 
@@ -85,6 +90,7 @@ class Wiring():
 		
 		output_dict = {}
 
+		# dit moet ergens anders: grid of netlist
 		# get coordinates of gates to couple from grid
 		for net in self.netlist:
 			wire = []
