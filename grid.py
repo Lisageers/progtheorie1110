@@ -9,6 +9,7 @@ Creates a grid with gates to be connected.
 
 import csv
 
+
 class Print(object):
 	""" This class creates a grid with gates. """
 
@@ -51,7 +52,7 @@ class Print(object):
 
 		# add gates to grid
 		for gate in gates:
-
+			grid[gate[0]][gate[1]] = gates[gate]
 
 		return grid
 
@@ -59,8 +60,9 @@ class Print(object):
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, filename):
+	def __init__(self, filename, gates):
 		self.netlist = self.netlist(filename)
+		self.net_cor = self.net_cor(self.netlist, gates)
 
 	def netlist(self, filename):
 		""" Create list type netlist from csv file. """
@@ -76,33 +78,44 @@ class Netlist():
 
 		return netlist	
 
+	def net_cor(self, netlist, gates):
+		""" Create altered netlist with coordinates instead of names. """
+
+		net_cor = []
+
+		for net in netlist:
+			for gate in gates:
+				if gates[gate] == net[0]:
+					cor_start = gate
+				elif gates[gate] == net[1]:
+					cor_end = gate
+
+			net_cor.append((cor_start, cor_end))
+
+		return net_cor
+
+
 class Wiring():
 	""" This class creates wires to connect gates as listed in netlist. """
 
-	def __init__(self, filename, grid):
+	def __init__(self, netlist, grid):
 		self.grid = grid.grid
-		self.netlist = self.netlist(filename)
-		self.output(self.wire())
+		self.net_cor = netlist.net_cor
+		self.wire = self.wire(self.net_cor)
+		#self.output(self.wire())
 
-
-	def wire(self):
+	def wire(self, net_cor):
 		""" Determine wire needed to connect the nets. """
 
 		output_dict = {}
 
-		# dit moet ergens anders: grid of netlist
-		# get coordinates of gates to couple from grid
-		for net in self.netlist:
+		for net in net_cor:
 			wire = []
-			for cor in self.grid:
-				if self.grid[cor] == net[0]:
-					wire.insert(0, cor)
-				elif self.grid[cor] == net[1]:
-					wire.append(cor)
+			wire.append(net[0])
+			wire.append(net[1]) # dit moet helemaal aan het eind als de draad klaar is
 
-			print(wire)
-			current_cor = list(wire[0])
-			end_cor = wire[1]
+			current_cor = list(net[0])
+			end_cor = net[1]
 
 			while True:
 				# check whether current point and end point are adjacent (manhattan distance)
@@ -149,8 +162,10 @@ if __name__ == "__main__":
 
 	filename = input("Enter the filename of your print.\n")
 
-	grid = Grid(filename)
+	grid = Print(filename)
 
 	netlist_name = input("Enter the filename of the netlist to use.\n")
 
-	netlist = Wiring(netlist_name, grid)
+	netlist = Netlist(netlist_name, grid.gates)
+
+	wiring = Wiring(netlist, grid)
