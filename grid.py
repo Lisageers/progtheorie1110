@@ -94,6 +94,8 @@ class Wiring():
 			while True:
 				# check whether current point and end point are adjacent (manhattan distance)
 				if abs((current_cor[0] + current_cor[1]) - (end_cor[0] + end_cor[1])) == 1:
+					print(current_cor)
+					print("hij is klaar")
 					output_dict[net] = wire
 					break
 
@@ -101,17 +103,18 @@ class Wiring():
 				else:
 					if (end_cor[0] - current_cor[0]) > 0:
 						print(current_cor)
+						print("naar rechts")
 						current_cor[0] += 1
-						wire.append(current_cor)
+						wire.append(tuple(current_cor))
 					elif (end_cor[0] - current_cor[0]) < 0:
 						current_cor[0] -= 1
-						wire.append(current_cor)
+						wire.append(tuple(current_cor))
 					elif (end_cor[1] - current_cor[1]) > 0:
 						current_cor[1] += 1
-						wire.append(current_cor)
+						wire.append(tuple(current_cor))
 					else:
 						current_cor[1] -= 1
-						wire.append(current_cor)
+						wire.append(tuple(current_cor))
 
 		return output_dict
 
