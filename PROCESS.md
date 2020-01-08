@@ -41,16 +41,30 @@ Stap 2 - datastructuur voor wiring en cost function
   dingen geleerd uit debuggen:
     - tuples zijn immutable. dat is eigenlijk wel handig, want de coordinaten van het grid en de gates mogen niet (per ongeluk) veranderen. De current_cor moet wel kunnen veranderen, dus die zetten we om naar een list.
 
+  TODO: mmaak alles anders, matrix ipv dict!!!!!!!!!!!!!!!!!
+
+### Woensdag
+
 Visualisatie
   - matplotlib
   - assenstelsel met stippen voor gates en dikkere lijnen voor wires
+
+Stap 2 verder
+  - we hebben de classes aangepast en het grid is nu wel gewoon een matrix, want we hadden een denkfout maandag.
+  - een eerste versie met constraints is gemaakt. Niet alle opgaven hebben daarmee een oplossing, want hij zal soms vast komen te zitten door de constraints en niet meer kunnen uitkomen bij het eindpunt. 
+
+  todo:
+    - presentatie maken
+    - visualisatie maken 
+    - proberen door randomisen betere oplossingen te bedenken. (dus de bekende error voorkomen)
+
+### Later
 
 Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
 
 Stap 4 - optimaliseer
 
-TODO: mmaak alles anders, matrix ipv dict!!!!!!!!!!!!!!!!!
 
+### Links
 
-Links:
 https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
