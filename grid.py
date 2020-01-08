@@ -19,7 +19,7 @@ class Print(object):
 
 	def create_gates(self, filename):
 		""" Create a dictionary of gates with their coordinates. """
-		
+
 		gates = {}
 
 		# get gate coordinates from csv file
@@ -35,7 +35,7 @@ class Print(object):
 
 	def create_grid(self, gates):
 		""" Create grid with gates. """
-		
+
 		y_cor = []
 		x_cor = []
 
@@ -48,13 +48,19 @@ class Print(object):
 		n = int(max(x_cor)) + 2
 
 		# create empty grid
-		grid = [[None for x in range(n)] for y in range(m)]
+		grid = [[False for x in range(n)] for y in range(m)]
 
 		# add gates to grid
 		for gate in gates:
 			grid[gate[0]][gate[1]] = gates[gate]
 
 		return grid
+
+	def check_empty(self, cor, grid):
+		if grid[cor[0]][cor[1]] == False:
+			return True
+
+		return False
 
 
 class Netlist():
@@ -76,7 +82,7 @@ class Netlist():
 			for start, end in csv_netlist:
 				netlist.append((start.strip(), end.strip()))
 
-		return netlist	
+		return netlist
 
 	def net_cor(self, netlist, gates):
 		""" Create altered netlist with coordinates instead of names. """
@@ -99,20 +105,18 @@ class Wiring():
 	""" This class creates wires to connect gates as listed in netlist. """
 
 	def __init__(self, netlist, grid):
-		self.grid = grid.grid
+		self.print = grid
 		self.net_cor = netlist.net_cor
-		self.wire = self.wire(self.net_cor)
-		#self.output(self.wire())
+		self.output(self.wire())
 
-	def wire(self, net_cor):
+	def wire(self):
 		""" Determine wire needed to connect the nets. """
 
 		output_dict = {}
 
-		for net in net_cor:
+		for net in self.net_cor:
 			wire = []
 			wire.append(net[0])
-			wire.append(net[1]) # dit moet helemaal aan het eind als de draad klaar is
 
 			current_cor = list(net[0])
 			end_cor = net[1]
@@ -120,26 +124,32 @@ class Wiring():
 			while True:
 				# check whether current point and end point are adjacent (manhattan distance)
 				if (abs(current_cor[0] - end_cor[0]) == 1 and current_cor[1] - end_cor[1] == 0) or (abs(current_cor[1] - end_cor[1]) == 1 and current_cor[0] - end_cor[0] == 0):
+					wire.append(net[1])
 					output_dict[net] = wire
 					break
 
 				# move towards the end-gate
 				else:
-					if (end_cor[0] - current_cor[0]) > 0:
-						print(current_cor)
-						print("naar rechts")
+					print("wire: ", wire)
+					if (end_cor[0] - current_cor[0]) > 0 and self.print.check_empty(((current_cor[0] + 1), current_cor[1]), self.print.grid):
 						current_cor[0] += 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					elif (end_cor[0] - current_cor[0]) < 0:
+					elif ((end_cor[0] - current_cor[0]) < 0) and self.print.check_empty(((current_cor[0] - 1), current_cor[1]), self.print.grid):
 						current_cor[0] -= 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					elif (end_cor[1] - current_cor[1]) > 0:
+					elif ((end_cor[1] - current_cor[1]) > 0) and self.print.check_empty((current_cor[0], (current_cor[1] + 1)), self.print.grid):
 						current_cor[1] += 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
-					else:
+					elif ((end_cor[1] - current_cor[1]) < 0) and self.print.check_empty((current_cor[0], (current_cor[1] - 1)), self.print.grid):
 						current_cor[1] -= 1
+						self.print.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
 
+
+		print("dict:", output_dict)
 		return output_dict
 
 
