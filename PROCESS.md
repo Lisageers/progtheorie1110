@@ -75,3 +75,17 @@ Stap 4 - optimaliseer
 ### Links
 
 https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
+
+### dingen waar we vragen over hebben
+
+#### waarom werkt dit niet?
+
+		gates = {}
+
+		# get gate coordinates from csv file
+		with open(filename, 'r') as in_file:
+			gate_reader = csv.DictReader(in_file)
+
+			# write gates and coordinates to dictionary
+			for row in gate_reader:
+				gates[(int(row['x']), int(row['y']))] = row['chip']

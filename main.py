@@ -8,7 +8,7 @@ Marte van der Wijk, Lisa Geers, Emma Caarls
 Connect gates on a grid.
 """
 
-from code.classes import chip, netlist, wiring
+from code.classes import , netlist, wiring
 
 
 if __name__ = '__main__':
