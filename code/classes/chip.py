@@ -49,6 +49,7 @@ class Chip(object):
 		return grid
 
 	def check_empty(self, cor, grid):
+		""" Check whether a specified point in the grid is empty. """
 		
 		if grid[cor[0]][cor[1]] == False:
 			return True
@@ -56,6 +57,7 @@ class Chip(object):
 		return False
 
 	def get_x_dimension(self, gates):
+		""" Determine the max value for x for the grid. """
 
 		x_cor = []
 
@@ -68,6 +70,7 @@ class Chip(object):
 		return n
 
 	def get_y_dimension(self, gates):
+		""" Determine the max value for y for the grid. """
 		
 		y_cor = []
 

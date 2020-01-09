@@ -5,14 +5,14 @@ Minor programmeren, programmeertheorie
 January 2020
 Marte van der Wijk, Lisa Geers, Emma Caarls
 
-Creates the wiring to connect gates on a grid.
+Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
 from code.algoritmes import random_netlist as algorithm
 
 class Wiring():
-	""" This class creates wires to connect gates as listed in netlist. """
+	""" This class outputs wires to connect gates as listed in netlist. """
 
 	def __init__(self, netlist, chip):
 		self.chip = chip
@@ -22,13 +22,12 @@ class Wiring():
 
 
 	def output(self, output_dict):
-
-		# antwoord schrijven naar csv
+		""" Write the output dictionary to a csv file. """
+		
 		with open('data/test/output.csv', mode='w') as csv_output:
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
-			# write dictionary to dictionary?
 			for net, wire in output_dict.items():
 				writer.writerow({'net' : net, 'wires' : wire})

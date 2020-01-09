@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def visualise(gates, output_dict, x, y):
+    """ Create a visual representation of the solved chip. """
 
     # clear previous plot
     plt.clf()
