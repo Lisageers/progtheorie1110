@@ -40,7 +40,6 @@ class Wiring():
 
 				# move towards the end-gate
 				else:
-					print("wire: ", wire)
 					if (end_cor[0] - current_cor[0]) > 0 and self.chip.check_empty(((current_cor[0] + 1), current_cor[1]), self.chip.grid):
 						current_cor[0] += 1
 						self.chip.grid[current_cor[0]][current_cor[1]] = True
@@ -58,8 +57,6 @@ class Wiring():
 						self.chip.grid[current_cor[0]][current_cor[1]] = True
 						wire.append(tuple(current_cor))
 
-
-		print("dict:", output_dict)
 		return output_dict
 
 

@@ -22,15 +22,10 @@ def visualise(gates, output_dict, x, y):
     line_y = []
 
     for wires in output_dict.values():
-        print("wires:", wires)
         for cor in wires:
             line_x.append(cor[0])
             line_y.append(cor[1])
             plt.plot(line_x, line_y)
-
-    print(line_x)
-    print(line_y)
-
 
 
     plt.savefig("test1.png")
