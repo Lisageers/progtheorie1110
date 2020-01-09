@@ -65,9 +65,12 @@ Vandaag
   - bugs gefixt in grid
   - hele nieuwe mappenstructuur, want dat hebben we gister in college geleerd. Het is nu overzichtelijker en losse onderdelen zijn beter herbruikbaar.
   - begonnen aan een nieuw algoritme. ipv van boven naar beneden de netlist af gaan we eerst dingen die op dezelfde as liggen verbinden.
+  - begonnen aan random algoritme
+  - begonnen aan inschatten probleemgrootte
 
 todo:
-  - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte
+  - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte -> gedaan met nieuw menu
+  - cost-function in Wire() zetten
 
 
 
