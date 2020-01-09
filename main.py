@@ -9,16 +9,24 @@ Connect gates on a grid.
 """
 
 from code.classes import chip, netlist, wiring
+from code.visualisation import matplot
 
 
-if __name__ = '__main__':
-    
-	filename = input("Enter the filename of your print.\n")
+if __name__ == '__main__':
 
-	chip = chip.Chip(filename)
+    filename = input("Enter the filename of your print.\n")
 
-	netlist_name = input("Enter the filename of the netlist to use.\n")
+    chip = chip.Chip(filename)
 
-	netlist = netlist.Netlist(netlist_name, chip.gates)
+    netlist_name = input("Enter the filename of the netlist to use.\n")
 
-	wiring = wiring.Wiring(netlist, chip)
+    netlist = netlist.Netlist(netlist_name, chip.gates)
+
+    wiring = wiring.Wiring(netlist, chip)
+
+    x_dim = chip.get_x_dimension(chip.gates)
+    y_dim = chip.get_y_dimension(chip.gates)
+
+    print("gates: ", chip.gates)
+
+    visualise = matplot.visualise(chip.gates, wiring.wire, x_dim, y_dim)

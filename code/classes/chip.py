@@ -24,28 +24,21 @@ class Chip(object):
 		gates = {}
 
 		# get gate coordinates from csv file
-		with open(filename, 'r') as in_file:
-			gate_reader = csv.DictReader(in_file)
+		with open(f'data/chip_1/{filename}') as in_file:
+			chip_reader = csv.reader(in_file)
+			next(chip_reader)
 
 			# write gates and coordinates to dictionary
-			for row in gate_reader:
-				gates[(int(row['x']), int(row['y']))] = row['chip']
+			for gate, x, y in chip_reader:
+				gates[(int(x.strip()), int(y.strip()))] = gate
 
 		return gates
 
 	def create_grid(self, gates):
 		""" Create grid with gates. """
 
-		y_cor = []
-		x_cor = []
-
-		# determine size of grid
-		for gate in gates:
-			x_cor.append(gate[0])
-			y_cor.append(gate[1])
-
-		m = int(max(y_cor)) + 2
-		n = int(max(x_cor)) + 2
+		n = self.get_x_dimension(gates)
+		m = self.get_y_dimension(gates)
 
 		# create empty grid
 		grid = [[False for x in range(n)] for y in range(m)]
@@ -62,3 +55,24 @@ class Chip(object):
 
 		return False
 
+	def get_x_dimension(self, gates):
+
+		x_cor = []
+
+		# determine size of grid
+		for gate in gates:
+			x_cor.append(gate[0])
+
+		n = int(max(x_cor)) + 2
+
+		return n
+
+	def get_y_dimension(self, gates):
+		y_cor = []
+
+		for gate in gates:
+			y_cor.append(gate[1])
+
+		m = int(max(y_cor)) + 2
+
+		return m

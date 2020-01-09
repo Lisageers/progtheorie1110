@@ -1,8 +1,7 @@
 """
 grid.py
 
-Minor programmeren, programmeertheorie
-January 2020
+Minor programmeren - January 2020
 Marte van der Wijk, Lisa Geers, Emma Caarls
 
 Creates a grid with gates to be connected.
@@ -24,28 +23,21 @@ class Print(object):
 		gates = {}
 
 		# get gate coordinates from csv file
-		with open(filename, 'r') as in_file:
-			print_reader = csv.DictReader(in_file)
+		with open(filename) as csv_print:
+			csv_print = csv.reader(csv_print)
+			next(csv_print)
 
 			# write gates and coordinates to dictionary
-			for row in print_reader:
-				gates[(int(row['x']), int(row['y']))] = row['chip']
+			for gate, x, y in csv_print:
+				gates[(int(x.strip()), int(y.strip()))] = gate
 
 		return gates
 
 	def create_grid(self, gates):
 		""" Create grid with gates. """
 
-		y_cor = []
-		x_cor = []
-
-		# determine size of grid
-		for gate in gates:
-			x_cor.append(gate[0])
-			y_cor.append(gate[1])
-
-		m = int(max(y_cor)) + 2
-		n = int(max(x_cor)) + 2
+		n = get_x_dimension(gates)
+		m = get_y_dimension(gates)
 
 		# create empty grid
 		grid = [[False for x in range(n)] for y in range(m)]
@@ -61,6 +53,28 @@ class Print(object):
 			return True
 
 		return False
+
+	def get_x_dimension(self, gates):
+
+		x_cor = []
+
+		# determine size of grid
+		for gate in gates:
+			x_cor.append(gate[0])
+
+		n = int(max(x_cor)) + 2
+
+		return n
+
+	def get_y_dimension(self, gates):
+		y_cor = []
+
+		for gate in gates:
+			y_cor.append(gate[1])
+
+		m = int(max(y_cor)) + 2
+
+		return m
 
 
 class Netlist():
@@ -177,3 +191,5 @@ if __name__ == "__main__":
 	netlist = Netlist(netlist_name, grid.gates)
 
 	wiring = Wiring(netlist, grid)
+
+	visualise = visualise(grid.gates, wiring.output_dict)

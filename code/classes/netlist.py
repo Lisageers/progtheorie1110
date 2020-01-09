@@ -20,7 +20,7 @@ class Netlist():
 	def netlist(self, filename):
 		""" Create list type netlist from csv file. """
 
-		with open(filename) as in_file:
+		with open(f'data/chip_1/{filename}') as in_file:
 			netlist_reader = csv.reader(in_file)
 			next(netlist_reader)
 

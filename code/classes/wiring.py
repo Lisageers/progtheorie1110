@@ -16,7 +16,8 @@ class Wiring():
 	def __init__(self, netlist, chip):
 		self.chip = chip
 		self.net_cor = netlist.net_cor
-		self.output(self.wire())
+		self.wire = self.wire()
+		self.output(self.wire)
 
 	def wire(self):
 		""" Determine wire needed to connect the nets. """
@@ -65,7 +66,7 @@ class Wiring():
 	def output(self, output_dict):
 
 		# antwoord schrijven naar csv
-		with open('output.csv', mode='w') as csv_output:
+		with open('data/test/output.csv', mode='w') as csv_output:
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
