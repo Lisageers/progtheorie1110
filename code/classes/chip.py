@@ -24,7 +24,7 @@ class Chip(object):
 		gates = {}
 
 		# get gate coordinates from csv file
-		with open(f'data/chip_1/{filename}') as in_file:
+		with open(f'data/test/{filename}') as in_file:
 			chip_reader = csv.reader(in_file)
 			next(chip_reader)
 

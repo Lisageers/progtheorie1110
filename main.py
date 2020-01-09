@@ -14,13 +14,13 @@ from code.visualisation import matplot
 
 if __name__ == '__main__':
 
-    filename = input("Enter the filename of your print.\n")
+    # filename = input("Enter the filename of your print.\n")
 
-    chip = chip.Chip(filename)
+    chip = chip.Chip('print.csv')
 
-    netlist_name = input("Enter the filename of the netlist to use.\n")
+    # netlist_name = input("Enter the filename of the netlist to use.\n")
 
-    netlist = netlist.Netlist(netlist_name, chip.gates)
+    netlist = netlist.Netlist('netlist.csv', chip.gates)
 
     wiring = wiring.Wiring(netlist, chip)
 
