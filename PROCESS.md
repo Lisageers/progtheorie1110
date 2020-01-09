@@ -58,6 +58,13 @@ Stap 2 verder
     - visualisatie maken 
     - proberen door randomisen betere oplossingen te bedenken. (dus de bekende error voorkomen)
 
+### Donderdag
+
+todo:
+  - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte
+
+
+
 ### Later
 
 Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
