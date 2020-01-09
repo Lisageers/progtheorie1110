@@ -60,6 +60,12 @@ Stap 2 verder
 
 ### Donderdag
 
+Vandaag
+  - visualisatie gedaan en daarin ook bugs gefixt. Eerst werden teveel lijntjes getrokken (want alles één lijn) en nu niet meer. Ze krijgen allemaal los een kleurtje.
+  - bugs gefixt in grid
+  - hele nieuwe mappenstructuur, want dat hebben we gister in college geleerd. Het is nu overzichtelijker en losse onderdelen zijn beter herbruikbaar.
+  - begonnen aan een nieuw algoritme. ipv van boven naar beneden de netlist af gaan we eerst dingen die op dezelfde as liggen verbinden.
+
 todo:
   - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte
 
@@ -76,16 +82,3 @@ Stap 4 - optimaliseer
 
 https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
 
-### dingen waar we vragen over hebben
-
-#### waarom werkt dit niet?
-
-		gates = {}
-
-		# get gate coordinates from csv file
-		with open(filename, 'r') as in_file:
-			gate_reader = csv.DictReader(in_file)
-
-			# write gates and coordinates to dictionary
-			for row in gate_reader:
-				gates[(int(row['x']), int(row['y']))] = row['chip']

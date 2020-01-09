@@ -14,23 +14,22 @@ import csv
 class Chip(object):
 	""" This class creates a grid with gates. """
 
-	def __init__(self, filename):
-		self.gates = self.create_gates(filename)
+	def __init__(self, chip_file):
+		self.gates = self.create_gates(chip_file)
 		self.grid = self.create_grid(self.gates)
 
-	def create_gates(self, filename):
+	def create_gates(self, chip_file):
 		""" Create a dictionary of gates with their coordinates. """
 
 		gates = {}
 
 		# get gate coordinates from csv file
-		with open(f'data/test/{filename}') as in_file:
-			chip_reader = csv.reader(in_file)
-			next(chip_reader)
+		with open(chip_file, 'r') as in_file:
+			gate_reader = csv.DictReader(in_file)
 
 			# write gates and coordinates to dictionary
-			for gate, x, y in chip_reader:
-				gates[(int(x.strip()), int(y.strip()))] = gate
+			for row in gate_reader:
+				gates[(int(row['x']), int(row['y']))] = row['chip']
 
 		return gates
 
@@ -41,7 +40,7 @@ class Chip(object):
 		m = self.get_y_dimension(gates)
 
 		# create empty grid
-		grid = [[False for x in range(n)] for y in range(m)]
+		grid = [[False for y in range(m)] for x in range(n)]
 
 		# add gates to grid
 		for gate in gates:
@@ -50,6 +49,7 @@ class Chip(object):
 		return grid
 
 	def check_empty(self, cor, grid):
+		
 		if grid[cor[0]][cor[1]] == False:
 			return True
 
@@ -59,7 +59,7 @@ class Chip(object):
 
 		x_cor = []
 
-		# determine size of grid
+		# determine size of x-axis of grid
 		for gate in gates:
 			x_cor.append(gate[0])
 
@@ -68,8 +68,10 @@ class Chip(object):
 		return n
 
 	def get_y_dimension(self, gates):
+		
 		y_cor = []
 
+		# determine size of y-axis of grid
 		for gate in gates:
 			y_cor.append(gate[1])
 

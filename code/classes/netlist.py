@@ -13,14 +13,14 @@ import csv
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, filename, gates):
-		self.netlist = self.netlist(filename)
+	def __init__(self, list_file, gates):
+		self.netlist = self.netlist(list_file)
 		self.net_cor = self.net_cor(self.netlist, gates)
 
-	def netlist(self, filename):
+	def netlist(self, list_file):
 		""" Create list type netlist from csv file. """
 
-		with open(f'data/test/{filename}') as in_file:
+		with open(list_file) as in_file:
 			netlist_reader = csv.reader(in_file)
 			next(netlist_reader)
 
