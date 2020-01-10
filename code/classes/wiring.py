@@ -5,14 +5,14 @@ Minor programmeren, programmeertheorie
 January 2020
 Marte van der Wijk, Lisa Geers, Emma Caarls
 
-Creates the wiring to connect gates on a grid.
+Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
 from code.algoritmes import random_netlist as algorithm
 
 class Wiring():
-	""" This class creates wires to connect gates as listed in netlist. """
+	""" This class outputs wires to connect gates as listed in netlist. """
 
 	def __init__(self, netlist, chip):
 		self.chip = chip

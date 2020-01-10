@@ -14,6 +14,7 @@ from code.visualisation import matplot
 
 if __name__ == '__main__':
 
+	# let user choose a chip
 	while True:
 		req_chip = input("Which chip do you want to use? (1, 2, test)\n")
 		if req_chip == '1':
@@ -31,8 +32,10 @@ if __name__ == '__main__':
 		else:
 			print("That chip does not exist.")
 
+	# create a Chip object for the chosen chip
 	chip = chip.Chip(chip_path)
 
+	# let user choose a netlist
 	while True:
 		req_netlist = input("Which netlist do you want to use? (1, 2, 3)\n")
 		if req_netlist == '1':
@@ -47,11 +50,15 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.")
 
+	# create a Netlist object for the chosen chip and netlist combination
 	netlist = netlist.Netlist(netlist_path, chip.gates)
 
+	# generate a solution
 	wiring = wiring.Wiring(netlist, chip)
 
+	# get the dimensions for the visual representation
 	x_dim = chip.get_x_dimension(chip.gates)
 	y_dim = chip.get_y_dimension(chip.gates)
 
+	# create visual representation of the solved chip
 	visualise = matplot.visualise(chip.gates, wiring.wire, x_dim, y_dim)
