@@ -1,28 +1,36 @@
 from code.classes import chip
 import matplotlib
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 
 def visualise(gates, output_dict, x, y):
-""" Create a visual representation of the solved chip. """
+	""" Create a visual representation of the solved chip. """
 
 	# clear previous plot
-	plt.clf()
+	# plt.clf()
 
+	# make 3D-figure
+	fig = plt.figure()
+	plot = fig.gca(projection='3d')
+	
 	# create grid
-	plt.xlim(0.0, x, 1.0)
-	plt.ylim(0.0, y, 1.0)
-	plt.zlim(0.0, 8.0, 1.0)
-	plt.grid(True)
-	plt = plt.axes(projection='3d')
+	plot.set_xlabel("X")
+	plot.set_xlim(0.0, x, 1.0)
+	plot.set_ylabel("Y")
+	plot.set_ylim(0.0, y, 1.0)
+	plot.set_zlabel("Z")
+	plot.set_zlim(0.0, 7.0, 1.0)
 
 	# create lines
 	for wires in output_dict.values():
 		line_x = []
 		line_y = []
+		# line_z = []
 		for cor in wires:
 			line_x.append(cor[0])
 			line_y.append(cor[1])
+			# line_z.append(cor[2])
 			plt.plot(line_x, line_y)
 
 	# create scatterplot
