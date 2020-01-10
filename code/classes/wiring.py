@@ -22,13 +22,15 @@ class Wiring():
 
 
 	def output(self, output_dict):
+		""" Writes the nets and wires to a csv-file. """
 
-		# antwoord schrijven naar csv
+		# write to csv
 		with open('data/test/output.csv', mode='w') as csv_output:
+			# write header
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
-			# write dictionary to dictionary?
+			# write wires and nets
 			for net, wire in output_dict.items():
 				writer.writerow({'net' : net, 'wires' : wire})

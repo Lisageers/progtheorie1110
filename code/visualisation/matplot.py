@@ -22,7 +22,6 @@ def visualise(gates, output_dict, x, y):
             line_y.append(cor[1])
         plt.plot(line_x, line_y)
 
-
     # create scatterplot
     cor_x = []
     cor_y = []
