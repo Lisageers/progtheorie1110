@@ -10,7 +10,7 @@ Uses an algorithm to generate an output file with the solution for wiring.
 
 import csv
 
-from code.algorithms.x_move_y_move import x_y_wire
+from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
 
@@ -30,8 +30,8 @@ class Wiring():
 	def choose_alg(self, alg_req):
 		""" Get the algorithm the user chose. """
 
-		if alg_req == 'x_move_y_move':
-			algorithm = x_y_wire
+		if alg_req == 'xyz_move':
+			algorithm = xyz_wire
 		elif alg_req == 'straight_first':
 			algorithm = straight_wire
 		elif alg_req == 'random_netlist':

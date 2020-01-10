@@ -56,8 +56,8 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (x_move_y_move, straight_first, random_netlist)\n").lower()
-		if alg_req == 'x_move_y_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
 			break
 		else:
 			print("This algorithm does not exist.")

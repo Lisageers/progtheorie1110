@@ -1,5 +1,5 @@
 
-def x_y_wire(net_cor, chip):
+def xyz_wire(net_cor, chip):
 	""" Determine wire needed to connect the nets. """
 
 	output_dict = {}
