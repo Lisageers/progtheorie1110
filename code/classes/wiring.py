@@ -9,7 +9,7 @@ Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
-from code.algoritmes import straight_first as algorithm
+from code.algoritmes import x_move_y_move as algorithm
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """

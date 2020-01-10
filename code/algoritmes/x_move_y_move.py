@@ -16,8 +16,10 @@ def wire(net_cor, chip):
 
         # move while not at end
         while True:
+
             # check whether current point and end point are adjacent
             if (abs(current_cor[0] - end_cor[0]) == 1 and current_cor[1] - end_cor[1] == 0) or (abs(current_cor[1] - end_cor[1]) == 1 and current_cor[0] - end_cor[0] == 0):
+                print("wire", wire)
                 wire.append(net[1])
                 output_dict[net] = wire
                 break
