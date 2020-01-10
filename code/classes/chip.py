@@ -18,6 +18,7 @@ class Chip(object):
 		self.gates = self.create_gates(chip_file)
 		self.grid = self.create_grid(self.gates)
 
+
 	def create_gates(self, chip_file):
 		""" Create a dictionary of gates with their coordinates. """
 
@@ -36,6 +37,7 @@ class Chip(object):
 
 		return gates
 
+
 	def create_grid(self, gates):
 		""" Create grid with gates. """
 
@@ -53,6 +55,7 @@ class Chip(object):
 
 		return grid
 
+
 	def check_empty(self, cor, grid):
 		""" Check whether a specified point in the grid is empty. """
 
@@ -60,6 +63,7 @@ class Chip(object):
 			return True
 
 		return False
+
 
 	def get_x_dimension(self, gates):
 		""" Determine the max value for x for the grid. """
@@ -73,6 +77,7 @@ class Chip(object):
 		n = int(max(x_cor)) + 2
 
 		return n
+
 
 	def get_y_dimension(self, gates):
 		""" Determine the max value for y for the grid. """

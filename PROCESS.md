@@ -51,11 +51,11 @@ Visualisatie
 
 Stap 2 verder
   - we hebben de classes aangepast en het grid is nu wel gewoon een matrix, want we hadden een denkfout maandag.
-  - een eerste versie met constraints is gemaakt. Niet alle opgaven hebben daarmee een oplossing, want hij zal soms vast komen te zitten door de constraints en niet meer kunnen uitkomen bij het eindpunt. 
+  - een eerste versie met constraints is gemaakt. Niet alle opgaven hebben daarmee een oplossing, want hij zal soms vast komen te zitten door de constraints en niet meer kunnen uitkomen bij het eindpunt.
 
   todo:
     - presentatie maken
-    - visualisatie maken 
+    - visualisatie maken
     - proberen door randomisen betere oplossingen te bedenken. (dus de bekende error voorkomen)
 
 ### Donderdag
@@ -71,6 +71,19 @@ Vandaag
 todo:
   - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte -> gedaan met nieuw menu
   - cost-function in Wire() zetten
+  - 3D gaan
+
+### Vrijdag
+
+Vandaag
+  - menu voor algoritme kiezen
+  - Marte heeft weer werkende laptops :D
+  - comments gemaakt
+  - marte's zoektocht naar BFS bespreken
+  - 3D matrix bespreken
+    - de hele basis aanpassen naar 3D
+    - alle algoritmes aanpassen naar 3D
+  - nieuw algoritme (A*)
 
 
 ### Vrijdag
@@ -86,5 +99,6 @@ Stap 4 - optimaliseer
 
 ### Links
 
-https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
+https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/
 
+[A* algorithm](https://gist.github.com/jamiees2/5531924)

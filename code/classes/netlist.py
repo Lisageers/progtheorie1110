@@ -17,6 +17,7 @@ class Netlist():
 		self.netlist = self.netlist(list_file)
 		self.net_cor = self.net_cor(self.netlist, gates)
 
+
 	def netlist(self, list_file):
 		""" Create list type netlist from csv file. """
 
@@ -32,6 +33,7 @@ class Netlist():
 				netlist.append((start.strip(), end.strip()))
 
 		return netlist
+
 
 	def net_cor(self, netlist, gates):
 		""" Create altered netlist with coordinates instead of names. """

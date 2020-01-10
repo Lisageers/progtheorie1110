@@ -54,13 +54,24 @@ if __name__ == '__main__':
 	# create a Netlist object for the chosen chip and netlist combination
 	netlist = netlist.Netlist(netlist_path, chip.gates)
 
+	# let user choose an algorithm
+	while True:
+		alg_req = input("Which algorithm would you like to use? (x_move_y_move, straight_first, random_netlist)\n").lower()
+		if alg_req == 'x_move_y_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
+			break
+		else:
+			print("This algorithm does not exist.")
+
 	# generate a solution
-	wiring = wiring.Wiring(netlist, chip)
-    
+	wiring = wiring.Wiring(netlist, chip, alg_req)
+	
 	if wiring.wire == None:
 		print("This algorithm can not find a solution for this problem.")
 		sys.exit(1)
 
+	# calculate cost of the solution
+	cost = wiring.cost(wiring.wire)
+	print(f"The cost of this solution is {cost}")
 
 	# get the dimensions for the visual representation
 	x_dim = chip.get_x_dimension(chip.gates)
