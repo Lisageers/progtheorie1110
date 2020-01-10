@@ -84,8 +84,13 @@ Vandaag
   - marte's zoektocht naar BFS bespreken
   - 3D matrix bespreken
     - de hele basis aanpassen naar 3D
-    - alle algoritmes aanpassen naar 3D
-  - nieuw algoritme (A*)
+    - xyz_move algoritme aanpassen naar 3D
+  - plot ziet er nu 3d uit
+
+todo:
+  - andere algoritmes aanpassen naar 3D
+  - hele figuur 3D?? werkt dat nu al?
+
 
 
 ### Vrijdag van Marte

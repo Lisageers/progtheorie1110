@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def visualise(gates, output_dict, x, y):
-""" Create a visual representation of the solved chip. """
+	""" Create a visual representation of the solved chip. """
 
 	# clear previous plot
 	plt.clf()
@@ -14,7 +14,7 @@ def visualise(gates, output_dict, x, y):
 	plt.ylim(0.0, y, 1.0)
 	plt.zlim(0.0, 8.0, 1.0)
 	plt.grid(True)
-	plt = plt.axes(projection='3d')
+	plot = plt.axes(projection='3d')
 
 	# create lines
 	for wires in output_dict.values():
