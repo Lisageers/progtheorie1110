@@ -73,6 +73,9 @@ todo:
   - cost-function in Wire() zetten
 
 
+### Vrijdag
+- Marte heeft weer Python
+
 
 ### Later
 
