@@ -9,7 +9,7 @@ Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
-from code.algoritmes import random_netlist as algorithm
+from code.algoritmes import x_move_y_move as algorithm
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -17,8 +17,10 @@ class Wiring():
 	def __init__(self, netlist, chip):
 		self.chip = chip
 		self.net_cor = netlist.net_cor
+		
 		self.wire = algorithm.wire(self.net_cor, self.chip)
-		self.output(self.wire)
+		if not self.wire == None:
+			self.output(self.wire)
 
 
 	def output(self, output_dict):

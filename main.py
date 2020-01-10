@@ -8,6 +8,7 @@ Marte van der Wijk, Lisa Geers, Emma Caarls
 Connect gates on a grid.
 """
 
+import sys
 from code.classes import chip, netlist, wiring
 from code.visualisation import matplot
 
@@ -55,6 +56,11 @@ if __name__ == '__main__':
 
 	# generate a solution
 	wiring = wiring.Wiring(netlist, chip)
+    
+	if wiring.wire == None:
+		print("This algorithm can not find a solution for this problem.")
+		sys.exit(1)
+
 
 	# get the dimensions for the visual representation
 	x_dim = chip.get_x_dimension(chip.gates)

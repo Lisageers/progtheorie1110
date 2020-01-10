@@ -37,6 +37,9 @@ class Netlist():
 		""" Create altered netlist with coordinates instead of names. """
 
 		net_cor = []
+		
+		# gates are at the lowest layer
+		z = 0
 
 		for net in netlist:
 			for gate in gates:
@@ -49,6 +52,6 @@ class Netlist():
 					cor_end = gate
 
 			# put cors in list
-			net_cor.append((cor_start, cor_end))
+			net_cor.append((cor_start, cor_end, z))
 
 		return net_cor
