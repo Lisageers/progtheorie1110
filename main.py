@@ -8,6 +8,7 @@ Marte van der Wijk, Lisa Geers, Emma Caarls
 Connect gates on a grid.
 """
 
+import sys
 from code.classes import chip, netlist, wiring
 from code.visualisation import matplot
 
@@ -55,15 +56,20 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (x_move_y_move, straight_first, random_netlist)\n").lower()
-		if alg_req == 'x_move_y_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
 			break
 		else:
 			print("This algorithm does not exist.")
 
 	# generate a solution
 	wiring = wiring.Wiring(netlist, chip, alg_req)
+	
+	if wiring.wire == None:
+		print("This algorithm can not find a solution for this problem.")
+		sys.exit(1)
 
+	# calculate cost of the solution
 	cost = wiring.cost(wiring.wire)
 	print(f"The cost of this solution is {cost}")
 

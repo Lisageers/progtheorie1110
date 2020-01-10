@@ -10,7 +10,7 @@ Uses an algorithm to generate an output file with the solution for wiring.
 
 import csv
 
-from code.algorithms.x_move_y_move import x_y_wire
+from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
 
@@ -22,19 +22,23 @@ class Wiring():
 		self.net_cor = netlist.net_cor
 		algorithm = self.choose_alg(alg_req)
 		self.wire = algorithm(self.net_cor, self.chip)
-		self.output(self.wire)
+		
+		if not self.wire == None:
+			self.output(self.wire)
+		
 
 	def choose_alg(self, alg_req):
 		""" Get the algorithm the user chose. """
 
-		if alg_req == 'x_move_y_move':
-			algorithm = x_y_wire
+		if alg_req == 'xyz_move':
+			algorithm = xyz_wire
 		elif alg_req == 'straight_first':
 			algorithm = straight_wire
 		elif alg_req == 'random_netlist':
 			algorithm = random_wire
 
 		return algorithm
+
 
 	def cost(self, output_dict):
 		""" Calculate the cost of wire used in the solution. """
@@ -45,6 +49,7 @@ class Wiring():
 			cost += (len(output_dict[net]) - 1)
 
 		return cost
+
 
 	def output(self, output_dict):
 		""" Writes the nets and wires to a csv-file. """
