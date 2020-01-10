@@ -51,11 +51,11 @@ Visualisatie
 
 Stap 2 verder
   - we hebben de classes aangepast en het grid is nu wel gewoon een matrix, want we hadden een denkfout maandag.
-  - een eerste versie met constraints is gemaakt. Niet alle opgaven hebben daarmee een oplossing, want hij zal soms vast komen te zitten door de constraints en niet meer kunnen uitkomen bij het eindpunt. 
+  - een eerste versie met constraints is gemaakt. Niet alle opgaven hebben daarmee een oplossing, want hij zal soms vast komen te zitten door de constraints en niet meer kunnen uitkomen bij het eindpunt.
 
   todo:
     - presentatie maken
-    - visualisatie maken 
+    - visualisatie maken
     - proberen door randomisen betere oplossingen te bedenken. (dus de bekende error voorkomen)
 
 ### Donderdag
@@ -86,6 +86,9 @@ Vandaag
   - nieuw algoritme (A*)
 
 
+### Vrijdag
+- Marte heeft weer Python
+
 
 ### Later
 
@@ -96,5 +99,6 @@ Stap 4 - optimaliseer
 
 ### Links
 
-https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/ 
+https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/
 
+[A* algorithm](https://gist.github.com/jamiees2/5531924)

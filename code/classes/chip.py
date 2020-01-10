@@ -14,7 +14,7 @@ import csv
 class Chip(object):
 	""" This class creates a grid with gates. """
 
-	def __init__(self, chip_file):
+	def __init__(self, chip_file):		
 		self.gates = self.create_gates(chip_file)
 		self.grid = self.create_grid(self.gates)
 
@@ -36,6 +36,7 @@ class Chip(object):
 	def create_grid(self, gates):
 		""" Create grid with gates. """
 
+		# get x and y dimensions
 		n = self.get_x_dimension(gates)
 		m = self.get_y_dimension(gates)
 
@@ -50,7 +51,7 @@ class Chip(object):
 
 	def check_empty(self, cor, grid):
 		""" Check whether a specified point in the grid is empty. """
-		
+
 		if grid[cor[0]][cor[1]] == False:
 			return True
 
@@ -71,7 +72,7 @@ class Chip(object):
 
 	def get_y_dimension(self, gates):
 		""" Determine the max value for y for the grid. """
-		
+
 		y_cor = []
 
 		# determine size of y-axis of grid

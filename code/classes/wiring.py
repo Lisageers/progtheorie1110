@@ -47,12 +47,15 @@ class Wiring():
 		return cost
 
 	def output(self, output_dict):
-		""" Write the output dictionary to a csv file. """
-		
+		""" Writes the nets and wires to a csv-file. """
+
+		# write to csv
 		with open('data/test/output.csv', mode='w') as csv_output:
+			# write header
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
+			# write wires and nets
 			for net, wire in output_dict.items():
 				writer.writerow({'net' : net, 'wires' : wire})

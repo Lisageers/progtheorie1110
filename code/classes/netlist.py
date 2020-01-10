@@ -20,12 +20,14 @@ class Netlist():
 	def netlist(self, list_file):
 		""" Create list type netlist from csv file. """
 
+		# get netlist from csv-file
 		with open(list_file) as in_file:
 			netlist_reader = csv.reader(in_file)
 			next(netlist_reader)
 
 			netlist = []
 
+			# remove spaces
 			for start, end in netlist_reader:
 				netlist.append((start.strip(), end.strip()))
 
@@ -38,11 +40,15 @@ class Netlist():
 
 		for net in netlist:
 			for gate in gates:
+				# get start cor of net
 				if gates[gate] == net[0]:
 					cor_start = gate
+
+				# get end cor of net
 				elif gates[gate] == net[1]:
 					cor_end = gate
 
+			# put cors in list
 			net_cor.append((cor_start, cor_end))
 
 		return net_cor
