@@ -75,6 +75,8 @@ todo:
 
 ### Vrijdag
 
+Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
+
 Vandaag
   - menu voor algoritme kiezen
   - Marte heeft weer werkende laptops :D
@@ -86,13 +88,11 @@ Vandaag
   - nieuw algoritme (A*)
 
 
-### Vrijdag
+### Vrijdag van Marte
 - Marte heeft weer Python
 
 
 ### Later
-
-Stap 3 - breid het uit met 7 lagen om het efficiënter te maken
 
 Stap 4 - optimaliseer
 
