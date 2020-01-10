@@ -1,10 +1,19 @@
-
-def wire(net_cor, chip):
+def straight_wire(net_cor, chip):
     """ Determine wire needed to connect the nets. """
 
     output_dict = {}
+    cor_list = []
 
     for net in net_cor:
+        start_cor = list(net[0])
+        end_cor = net[1]
+
+        if (end_cor[0] == start_cor[0]) or (end_cor[1] == start_cor[1]):
+            cor_list.insert(0, net)
+        else:
+            cor_list.insert(len(cor_list), net)
+
+    for net in cor_list:
         wire = []
         wire.append(net[0])
 
@@ -36,5 +45,6 @@ def wire(net_cor, chip):
                     current_cor[1] -= 1
                     chip.grid[current_cor[0]][current_cor[1]] = True
                     wire.append(tuple(current_cor))
+
 
     return output_dict

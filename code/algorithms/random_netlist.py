@@ -1,6 +1,6 @@
 from random import shuffle
 
-def wire(net_cor, chip):
+def random_wire(net_cor, chip):
     """ Determine wire needed to connect the nets. """
 
     output_dict = {}

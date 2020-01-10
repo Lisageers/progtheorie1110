@@ -71,6 +71,19 @@ Vandaag
 todo:
   - namen van bestanden die ingelezen worden niet hardcoden maar wat dan wel? optie: variabele namen vergelijkbaar met de website van marte -> gedaan met nieuw menu
   - cost-function in Wire() zetten
+  - 3D gaan
+
+### Vrijdag
+
+Vandaag
+  - menu voor algoritme kiezen
+  - Marte heeft weer werkende laptops :D
+  - comments gemaakt
+  - marte's zoektocht naar BFS bespreken
+  - 3D matrix bespreken
+    - de hele basis aanpassen naar 3D
+    - alle algoritmes aanpassen naar 3D
+  - nieuw algoritme (A*)
 
 
 
