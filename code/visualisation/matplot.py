@@ -26,12 +26,12 @@ def visualise(gates, output_dict, x, y):
 	for wires in output_dict.values():
 		line_x = []
 		line_y = []
-		# line_z = []
+		line_z = []
 		for cor in wires:
 			line_x.append(cor[0])
 			line_y.append(cor[1])
-			# line_z.append(cor[2])
-			plt.plot(line_x, line_y)
+			line_z.append(cor[2])
+			plt.plot(line_x, line_y, line_z)
 
 	# create scatterplot
 	cor_x = []

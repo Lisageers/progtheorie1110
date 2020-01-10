@@ -90,8 +90,9 @@ Vandaag
 todo:
   - andere algoritmes aanpassen naar 3D
   - hele figuur 3D?? werkt dat nu al?
-
-
+  - opslaan output waar? hoe? nu steeds dezelfde file
+  - opslaan afbeelding die gemaakt wordt? 
+  - lezen over DFS
 
 ### Vrijdag van Marte
 - Marte heeft weer Python
@@ -107,3 +108,5 @@ Stap 4 - optimaliseer
 https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/
 
 [A* algorithm](https://gist.github.com/jamiees2/5531924)
+
+https://matplotlib.org/
