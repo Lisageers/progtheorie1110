@@ -93,7 +93,7 @@ todo:
   - andere algoritmes aanpassen naar 3D
   - hele figuur 3D?? werkt dat nu al?
   - opslaan output waar? hoe? nu steeds dezelfde file
-  - opslaan afbeelding die gemaakt wordt? 
+  - opslaan afbeelding die gemaakt wordt?
   - lezen over DFS
 
 ### Vrijdag van Marte
@@ -107,6 +107,7 @@ Vandaag
   - 3D gemaakt
   - Marte leest over BFS
   - error uit straight_first halen -> verkeerd geindente return
+  - algorithms van straight first en random netlist samengevoegd
 
 
 ### Later
