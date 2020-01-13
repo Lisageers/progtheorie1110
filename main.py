@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			req_chip = 'chip_2'
 			break
 		elif req_chip.lower() == 'test':
-			chip_path = 'data/test/print_1.csv'
+			chip_path = 'data/test/print.csv'
 			req_chip = 'test'
 			break
 		else:
@@ -39,14 +39,8 @@ if __name__ == '__main__':
 	# let user choose a netlist
 	while True:
 		req_netlist = input("Which netlist do you want to use? (1, 2, 3)\n")
-		if req_netlist == '1':
-			netlist_path = 'data/' + req_chip + '/netlist_1.csv'
-			break
-		elif req_netlist == '2':
-			netlist_path = 'data/' + req_chip + '/netlist_2.csv'
-			break
-		elif req_netlist == '3':
-			netlist_path = 'data/' + req_chip + '/netlist_3.csv'
+		if req_netlist == '1' or req_netlist == '2' or req_netlist == '3':
+			netlist_path = 'data/' + req_chip + f'/netlist_{req_netlist}.csv'
 			break
 		else:
 			print("That is not an option.")
