@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			req_chip = 'chip_2'
 			break
 		elif req_chip.lower() == 'test':
-			chip_path = 'data/test/print_1.csv'
+			chip_path = 'data/test/print.csv'
 			req_chip = 'test'
 			break
 		else:
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
 	# generate a solution
 	wiring = wiring.Wiring(netlist, chip, alg_req)
-	
+
 	if wiring.wire == None:
 		print("This algorithm can not find a solution for this problem.")
 		sys.exit(1)
