@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
 	# generate a solution
 	wiring = wiring.Wiring(netlist, chip, alg_req)
-	
+
 	if wiring.wire == None:
 		print("This algorithm can not find a solution for this problem.")
 		sys.exit(1)
