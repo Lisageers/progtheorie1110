@@ -87,6 +87,8 @@ Vandaag
     - xyz_move algoritme aanpassen naar 3D
   - plot ziet er nu 3d uit
 
+Probleem met xyz_move: als een gate vanaf boven benaderd is en een volgende kabel wil dat ook doen dan loopt het vast. De tweede kabel hoeft niet meer in x en y te verschuiven en kan niet naar beneden dus gaat maar de hele tijd naar boven en het probleem heeft dan geen oplossing.
+
 todo:
   - andere algoritmes aanpassen naar 3D
   - hele figuur 3D?? werkt dat nu al?
@@ -96,6 +98,15 @@ todo:
 
 ### Vrijdag van Marte
 - Marte heeft weer Python
+
+## Week 2
+
+### Maandag
+
+Vandaag
+  - 3D gemaakt
+  - Marte leest over BFS
+  - error uit straight_first halen -> verkeerd geindente return
 
 
 ### Later
