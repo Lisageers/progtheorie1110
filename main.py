@@ -50,26 +50,34 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist, straight_random)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'straight_random':
 			break
 		else:
 			print("This algorithm does not exist.")
 
-	# generate a solution
-	wiring = wiring.Wiring(netlist, chip, alg_req)
+	loopcount = 0
+	while True:
+		if loopcount > 100000:
+			break
+		loopcount += 1
 
-	if wiring.wire == None:
-		print("This algorithm can not find a solution for this problem.")
-		sys.exit(1)
+		# generate a solution
+		wires = wiring.Wiring(netlist, chip, alg_req)
 
-	# calculate cost of the solution
-	cost = wiring.cost(wiring.wire)
-	print(f"The cost of this solution is {cost}")
+		if wires.wire == None:
+			print("This algorithm can not find a solution for this problem.")
+			# sys.exit(1)
+		else:
+			# calculate cost of the solution
+			cost = wires.cost(wires.wire)
+			print(f"The cost of this solution is {cost}")
+			# get the dimensions for the visual representation
+			x_dim = chip.get_x_dimension(chip.gates)
+			y_dim = chip.get_y_dimension(chip.gates)
 
-	# get the dimensions for the visual representation
-	x_dim = chip.get_x_dimension(chip.gates)
-	y_dim = chip.get_y_dimension(chip.gates)
+			# create visual representation of the solved chip
+			visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)
+			break
 
-	# create visual representation of the solved chip
-	visualise = matplot.visualise(chip.gates, wiring.wire, x_dim, y_dim)
+		print()
