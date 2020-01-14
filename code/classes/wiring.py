@@ -13,6 +13,7 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
+from code.algorithms.astar import execute_astar
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -36,6 +37,8 @@ class Wiring():
 			algorithm = straight_wire
 		elif alg_req == 'random_netlist':
 			algorithm = random_wire
+		elif alg_req == 'astar':
+			algorithm = execute_astar
 
 		return algorithm
 

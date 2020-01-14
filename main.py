@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			req_chip = 'chip_2'
 			break
 		elif req_chip.lower() == 'test':
-			chip_path = 'data/test/print_1.csv'
+			chip_path = 'data/test/print.csv'
 			req_chip = 'test'
 			break
 		else:
@@ -56,8 +56,8 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'astar':
 			break
 		else:
 			print("This algorithm does not exist.")
