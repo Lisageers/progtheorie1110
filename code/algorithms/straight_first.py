@@ -4,7 +4,6 @@ def straight_wire(net_cor, chip):
 	output_dict = {}
 	cor_list = []
 
-	print("eerste cor ",net_cor)
 	# loop through cor and get end and start cors
 	for net in net_cor:
 		start_cor = list(net[0])
@@ -17,7 +16,6 @@ def straight_wire(net_cor, chip):
 		# set cor at end of list
 		else:
 			cor_list.append(net)
-	print("list", cor_list)
 
 	# loop through netlist
 	for net in cor_list:
@@ -71,12 +69,10 @@ def straight_wire(net_cor, chip):
 
 				# move +z if z of end is larger and +z is open
 				else:
-					print("hij wil naar boven")
 					if current_cor[2] + 1 == 8:
 						return None
 					current_cor[2] += 1
 					chip.grid[current_cor[0]][current_cor[1]][current_cor[2]] = True
 					wire.append(tuple(current_cor))
-					print(wire)
 
 	return output_dict
