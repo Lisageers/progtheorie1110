@@ -39,14 +39,8 @@ if __name__ == '__main__':
 	# let user choose a netlist
 	while True:
 		req_netlist = input("Which netlist do you want to use? (1, 2, 3)\n")
-		if req_netlist == '1':
-			netlist_path = 'data/' + req_chip + '/netlist_1.csv'
-			break
-		elif req_netlist == '2':
-			netlist_path = 'data/' + req_chip + '/netlist_2.csv'
-			break
-		elif req_netlist == '3':
-			netlist_path = 'data/' + req_chip + '/netlist_3.csv'
+		if req_netlist == '1' or req_netlist == '2' or req_netlist == '3':
+			netlist_path = 'data/' + req_chip + f'/netlist_{req_netlist}.csv'
 			break
 		else:
 			print("That is not an option.")
@@ -56,26 +50,34 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist, astar)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'astar':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist, straight_random, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'straight_random' or alg_req == 'astar':
 			break
 		else:
 			print("This algorithm does not exist.")
 
-	# generate a solution
-	wiring = wiring.Wiring(netlist, chip, alg_req)
-	
-	if wiring.wire == None:
-		print("This algorithm can not find a solution for this problem.")
-		sys.exit(1)
+	loopcount = 0
+	while True:
+		if loopcount > 100000:
+			break
+		loopcount += 1
 
-	# calculate cost of the solution
-	cost = wiring.cost(wiring.wire)
-	print(f"The cost of this solution is {cost}")
+		# generate a solution
+		wires = wiring.Wiring(netlist, chip, alg_req)
 
-	# get the dimensions for the visual representation
-	x_dim = chip.get_x_dimension(chip.gates)
-	y_dim = chip.get_y_dimension(chip.gates)
+		if wires.wire == None:
+			print("This algorithm can not find a solution for this problem.")
+			# sys.exit(1)
+		else:
+			# calculate cost of the solution
+			cost = wires.cost(wires.wire)
+			print(f"The cost of this solution is {cost}")
+			# get the dimensions for the visual representation
+			x_dim = chip.get_x_dimension(chip.gates)
+			y_dim = chip.get_y_dimension(chip.gates)
 
-	# create visual representation of the solved chip
-	visualise = matplot.visualise(chip.gates, wiring.wire, x_dim, y_dim)
+			# create visual representation of the solved chip
+			visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)
+			break
+
+		print()

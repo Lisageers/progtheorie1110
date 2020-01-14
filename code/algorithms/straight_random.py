@@ -1,8 +1,11 @@
-def straight_wire(net_cor, chip):
+from random import shuffle
+
+def straight_random_wire(net_cor, chip):
 	""" Determine wire needed to connect the nets. """
 
 	output_dict = {}
 	cor_list = []
+	random_list = []
 
 	# loop through cor and get end and start cors
 	for net in net_cor:
@@ -15,7 +18,14 @@ def straight_wire(net_cor, chip):
 
 		# set cor at end of list
 		else:
-			cor_list.append(net)
+			random_list.append(net)
+
+	# randomise netlist
+	shuffle(random_list)
+
+	# put randomised nets at the end of list
+	for net in random_list:
+		cor_list.append(net)
 
 	# loop through netlist
 	for net in cor_list:

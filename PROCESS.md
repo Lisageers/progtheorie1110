@@ -87,16 +87,43 @@ Vandaag
     - xyz_move algoritme aanpassen naar 3D
   - plot ziet er nu 3d uit
 
+Probleem met xyz_move: als een gate vanaf boven benaderd is en een volgende kabel wil dat ook doen dan loopt het vast. De tweede kabel hoeft niet meer in x en y te verschuiven en kan niet naar beneden dus gaat maar de hele tijd naar boven en het probleem heeft dan geen oplossing.
+
 todo:
   - andere algoritmes aanpassen naar 3D
   - hele figuur 3D?? werkt dat nu al?
   - opslaan output waar? hoe? nu steeds dezelfde file
-  - opslaan afbeelding die gemaakt wordt? 
+  - opslaan afbeelding die gemaakt wordt?
   - lezen over DFS
 
 ### Vrijdag van Marte
 - Marte heeft weer Python
 
+## Week 2
+
+### Maandag
+
+Vandaag
+  - 3D gemaakt
+  - Marte leest over DFS
+  - error uit straight_first halen -> verkeerd geindente return
+  - random laten loopen totdat hij een oplossing vindt
+  - lezen over A*
+  - algorithms van straight first en random netlist samengevoegd
+
+### Dinsdag
+
+Vandaag
+  - A* implementeren -> [bron](https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2)
+  - we hebben de continue statement in python geleerd
+
+
+todo:
+  - bronvermelding A* algoritme in eigen code
+  - verbeteren algoritme/uitvoer: gates met meeste connecties eerst, rechte lijnen eerst
+
+vragen
+  - waarom zou je def __eq__ (self, other) gebruiken om twee instances van een class te vergelijken op een bepaalde eigenschap, ipv gewoon die eigenschappen vergelijken met class_1.eigenschap == class_2.eigenschap?
 
 ### Later
 

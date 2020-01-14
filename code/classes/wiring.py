@@ -14,6 +14,7 @@ from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
 from code.algorithms.astar import execute_astar
+from code.algorithms.straight_random import straight_random_wire
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -23,10 +24,10 @@ class Wiring():
 		self.net_cor = netlist.net_cor
 		algorithm = self.choose_alg(alg_req)
 		self.wire = algorithm(self.net_cor, self.chip)
-		
+
 		if not self.wire == None:
 			self.output(self.wire)
-		
+
 
 	def choose_alg(self, alg_req):
 		""" Get the algorithm the user chose. """
@@ -37,6 +38,8 @@ class Wiring():
 			algorithm = straight_wire
 		elif alg_req == 'random_netlist':
 			algorithm = random_wire
+		elif alg_req == 'straight_random':
+			algorithm = straight_random_wire
 		elif alg_req == 'astar':
 			algorithm = execute_astar
 
