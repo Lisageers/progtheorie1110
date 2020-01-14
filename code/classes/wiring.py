@@ -11,8 +11,9 @@ Uses an algorithm to generate an output file with the solution for wiring.
 import csv
 
 from code.algorithms.xyz_move import xyz_wire
-from code.algorithms.straight_first import straight_wire
-from code.algorithms.random_netlist import random_wire
+from code.algorithms.straight_first import straight_wire 
+from code.algorithms.random_netlist import random_wire 
+from code.algorithms.astar import execute_astar
 from code.algorithms.straight_random import straight_random_wire
 
 class Wiring():
@@ -39,6 +40,8 @@ class Wiring():
 			algorithm = random_wire
 		elif alg_req == 'straight_random':
 			algorithm = straight_random_wire
+		elif alg_req == 'astar':
+			algorithm = execute_astar
 
 		return algorithm
 
