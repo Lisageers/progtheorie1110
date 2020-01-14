@@ -93,7 +93,7 @@ todo:
   - andere algoritmes aanpassen naar 3D
   - hele figuur 3D?? werkt dat nu al?
   - opslaan output waar? hoe? nu steeds dezelfde file
-  - opslaan afbeelding die gemaakt wordt? 
+  - opslaan afbeelding die gemaakt wordt?
   - lezen over DFS
 
 ### Vrijdag van Marte
@@ -109,6 +109,7 @@ Vandaag
   - error uit straight_first halen -> verkeerd geindente return
   - random laten loopen totdat hij een oplossing vindt
   - lezen over A*
+  - algorithms van straight first en random netlist samengevoegd
 
 ### Dinsdag
 
