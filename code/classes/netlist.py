@@ -35,6 +35,11 @@ class Netlist():
 		return netlist
 
 
+	def sort_list(self, netlist):
+		""" Sort the netlist as required."""
+		pass 
+
+
 	def net_cor(self, netlist, gates):
 		""" Create altered netlist with coordinates instead of names. """
 

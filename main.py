@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
 	loopcount = 0
 	while True:
-		if loopcount > 100000:
+		if loopcount > 0:
 			break
 		loopcount += 1
 
@@ -72,6 +72,7 @@ if __name__ == '__main__':
 			# calculate cost of the solution
 			cost = wires.cost(wires.wire)
 			print(f"The cost of this solution is {cost}")
+
 			# get the dimensions for the visual representation
 			x_dim = chip.get_x_dimension(chip.gates)
 			y_dim = chip.get_y_dimension(chip.gates)
