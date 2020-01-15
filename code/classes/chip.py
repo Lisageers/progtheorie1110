@@ -14,7 +14,7 @@ import csv
 class Chip(object):
 	""" This class creates a grid with gates. """
 
-	def __init__(self, chip_file):		
+	def __init__(self, chip_file):
 		self.gates = self.create_gates(chip_file)
 		self.grid = self.create_grid(self.gates)
 

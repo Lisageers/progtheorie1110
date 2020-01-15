@@ -85,4 +85,5 @@ def straight_random_wire(net_cor, chip):
 					chip.grid[current_cor[0]][current_cor[1]][current_cor[2]] = True
 					wire.append(tuple(current_cor))
 
+
 	return output_dict
