@@ -9,11 +9,11 @@ class Cor():
 		self.position = position
 
 		# cost 
-		self.c = 0
+		self.cost = 0
 		# heuristiek
-		self.h = 0
+		self.heur = 0
 		# sum
-		self.f = 0
+		self.sum = 0
 
 
 def astar(grid, start, end):
@@ -21,10 +21,10 @@ def astar(grid, start, end):
 
 	# create start and end gate
 	start_gate = Cor(None, start)
-	start_gate.c = 0
-	start_gate.h = start_gate.f = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+	start_gate.cost = 0
+	start_gate.heur = start_gate.sum = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
 	end_gate = Cor(None, end)
-	end_gate.c = end_gate.h = end_gate.f = 0 
+	end_gate.cost = end_gate.heur = end_gate.sum = 0 
 	
 	# initialize lists and add start cor
 	queue = []
@@ -34,11 +34,11 @@ def astar(grid, start, end):
 
 	# loop while end_gate not found
 	while len(queue) > 0:
-		# sort by f and get cor with smallest f
+		# sort by sum and get cor with smallest sum
 		current_cor = queue[0]
 		current_index = 0
 		for index, item in enumerate(queue):
-			if item.f < current_cor.f:
+			if item.sum < current_cor.sum:
 				current_cor = item
 				current_index = index
 						
@@ -81,11 +81,11 @@ def astar(grid, start, end):
 				if not child in closed_list:
 				
 					# set c, h, and f values
-					child.c = current_cor.c + 1
+					child.cost = current_cor.cost + 1
 					
 					# use Pythagoras twice to calculate the heuristic (as the crow flies)
-					child.h = sqrt(sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2) ** 2 + (end[2] - child.position[2]) ** 2)
-					child.f = child.c + child.h
+					child.heur = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
+					child.sum = child.cost + child.heur
 
 					# check if child already in queue and 
 					if not child in queue:
@@ -93,7 +93,7 @@ def astar(grid, start, end):
 					
 					else:
 						for cor in queue:
-							if child == cor and child.f < cor.f:
+							if child == cor and child.sum < cor.sum:
 								queue.append(child)
 						
 
