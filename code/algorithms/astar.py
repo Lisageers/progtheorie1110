@@ -8,39 +8,38 @@ class Node():
 		self.parent = parent
 		self.position = position
 
-		# cost 
-		self.c = 0
+		# cost
+		self.cost = 0
 		# heuristiek
-		self.h = 0
+		self.heur = 0
 		# sum
-		self.f = 0
+		self.sum = 0
 
 	def __lt__(self, other):
-		return self.f < other.f
+		return self.sum < other.sum
 
 	def __eq__(self, other):
-		return self.f == other.f
+		return self.sum == other.sum
 
 def astar(grid, start, end):
-	"""Returns a list of tuples as a path from the start gate and end gate""" 
+	"""Returns a list of tuples as a path from the start gate and end gate"""
 
 	# create start and end gate
 	start_gate = Node(None, start)
-	start_gate.c = 0
-	start_gate.h = start_gate.f = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+	start_gate.cost = 0
+	start_gate.heur = start_gate.sum = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
 	end_gate = Node(None, end)
-	end_gate.c = end_gate.h = end_gate.f = 0 
-	
+	end_gate.cost = end_gate.heur = end_gate.sum = 0
+
 	# make priority queue of nodes to expand
 	queue = []
 	expanded = set()
 
-	heappush(queue, (start_gate.f, start_gate))
+	heappush(queue, (start_gate.sum, start_gate))
 
 	# loop while end_gate not found
 	while len(queue) > 0:
 		current_node = heappop(queue)[1]
-		# print(current_node.f)
 		expanded.add(current_node.position)
 
 		# check if end gate has been reached
@@ -50,12 +49,12 @@ def astar(grid, start, end):
 			while current is not None:
 				path.append(current.position)
 				current = current.parent
-			
+
 			for node in path:
 				grid[node[0]][node[1]][node[2]] = True
 
 			return path[::-1]
-		
+
 		# generate children, adjacent nodes
 		children = []
 		for new_position in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
@@ -63,33 +62,36 @@ def astar(grid, start, end):
 			next_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1], current_node.position[2] + new_position[2] )
 
 			# make sure the next position is within the grid
-			if next_position[0] > (len(grid) -1) or next_position[0] < 0 or next_position[1] > (len(grid[len(grid)-1]) -1) or next_position[1] < 0 or next_position[2] > (len(grid[len(grid[len(grid)-1])-1]) -1) or next_position[2] < 0:
+			if next_position[0] > (len(grid) -1) or next_position[0] < 0 or next_position[1] > (len(grid[0]) -1) or next_position[1] < 0 or next_position[2] > (len(grid[0][0]) -1) or next_position[2] < 0:
 				continue
-			
+
 			# make sure the next position is not already occupied
 			if grid[next_position[0]][next_position[1]][next_position[2]] != False and next_position != end_gate.position:
 				continue
-			
+
 			next_node = Node(current_node, next_position)
 
 			children.append(next_node)
 
+		if len(children) == 0:
+			return None
+
 		for child in children:
 			# check if child-position had already been expanded
 			if not child.position in expanded:
-			
-				child.c = current_node.c + 1
-				
-				# use Pythagoras to calculate the heuristic (as the crow flies)
-				child.h = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
-				child.f = child.c + child.h
 
-				heappush(queue, (child.f, child))
-						
+				child.cost = current_node.cost + 1
+
+				# use Pythagoras to calculate the heuristic (as the crow flies)
+				child.heur = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
+				child.sum = child.cost + child.heur
+
+				heappush(queue, (child.sum, child))
+
 
 def execute_astar(net_cor, chip):
-	"""Executes astar function for all nets""" 
-	
+	"""Executes astar function for all nets"""
+
 	grid = chip.grid
 	output_dict = {}
 
