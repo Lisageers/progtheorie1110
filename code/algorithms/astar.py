@@ -73,6 +73,9 @@ def astar(grid, start, end):
 
 			children.append(next_node)
 
+		if len(children) == 0:
+			return None
+
 		for child in children:
 			# check if child-position had already been expanded
 			if not child.position in expanded:

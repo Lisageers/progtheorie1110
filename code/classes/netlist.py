@@ -28,41 +28,40 @@ class Netlist():
 			next(netlist_reader)
 
 			netlist = []
-			netlist_connections = []
+			netlist_gates = []
 
 			# remove spaces
 			for start, end in netlist_reader:
 				netlist.append((start.strip(), end.strip()))
-				netlist_connections.append(start)
-				netlist_connections.append(end)
+				netlist_gates.append(start.strip())
+				netlist_gates.append(end.strip())
 
-		netlist = self.sort_list_connections(netlist, netlist_connections)
+		netlist = self.sort_gates(netlist, netlist_gates)
 
 		return netlist
 
 
 	def sort_list_straight(self, netlist):
 		""" Sort the netlist by straight lines."""
+		pass
 
 
-	def sort_list_connections(self, netlist, netlist_connections):
+	def sort_gates(self, netlist, netlist_gates):
 		""" Sort the netlist by connections."""
-
-		print("netlist", netlist)
-
-		print("netlistsort ", netlist_connections)
-		print("netlist", netlist)
-		count_dict = Counter(netlist_connections)
-		print("count_dict", count_dict)
+		print(netlist)
+		count_dict = Counter(netlist_gates)
 
 		sorted_netlist = []
-		print("mostcommon", next(iter(count_dict)))
-		for net in netlist:
-			if '4' in net:
-				sorted_netlist.insert(0, net)
-				print("hij gaat hierin")
-			else:
-				sorted_netlist.append(net)
+
+		for gate in count_dict.most_common():
+			for net in netlist:
+				if gate[0] in net and not net in sorted_netlist:
+					if gate[0] != net[0]:
+						switch = (net[1], net[0])
+						sorted_netlist.append(switch)
+					else:
+						sorted_netlist.append(net)
+
 
 		print("newnetlist", sorted_netlist)
 		return sorted_netlist
