@@ -9,6 +9,7 @@ Reads a netlist from csv input and write a coordinate list from it.
 """
 
 import csv
+from collections import Counter
 
 class Netlist():
 	""" This class creates a usable netlist. """
@@ -27,17 +28,43 @@ class Netlist():
 			next(netlist_reader)
 
 			netlist = []
+			netlist_gates = []
 
 			# remove spaces
 			for start, end in netlist_reader:
 				netlist.append((start.strip(), end.strip()))
+				netlist_gates.append(start.strip())
+				netlist_gates.append(end.strip())
+
+		netlist = self.sort_gates(netlist, netlist_gates)
 
 		return netlist
 
 
-	def sort_list(self, netlist):
-		""" Sort the netlist as required."""
-		pass 
+	def sort_list_straight(self, netlist):
+		""" Sort the netlist by straight lines."""
+		pass
+
+
+	def sort_gates(self, netlist, netlist_gates):
+		""" Sort the netlist by connections."""
+		print(netlist)
+		count_dict = Counter(netlist_gates)
+
+		sorted_netlist = []
+
+		for gate in count_dict.most_common():
+			for net in netlist:
+				if gate[0] in net and not net in sorted_netlist:
+					if gate[0] != net[0]:
+						switch = (net[1], net[0])
+						sorted_netlist.append(switch)
+					else:
+						sorted_netlist.append(net)
+
+
+		print("newnetlist", sorted_netlist)
+		return sorted_netlist
 
 
 	def net_cor(self, netlist, gates):
