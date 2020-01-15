@@ -105,10 +105,25 @@ todo:
 
 Vandaag
   - 3D gemaakt
-  - Marte leest over BFS
+  - Marte leest over DFS
   - error uit straight_first halen -> verkeerd geindente return
+  - random laten loopen totdat hij een oplossing vindt
+  - lezen over A*
   - algorithms van straight first en random netlist samengevoegd
 
+### Dinsdag
+
+Vandaag
+  - A* implementeren -> [bron](https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2)
+  - we hebben de continue statement in python geleerd
+
+
+todo:
+  - bronvermelding A* algoritme in eigen code
+  - verbeteren algoritme/uitvoer: gates met meeste connecties eerst, rechte lijnen eerst
+
+vragen
+  - waarom zou je def __eq__ (self, other) gebruiken om twee instances van een class te vergelijken op een bepaalde eigenschap, ipv gewoon die eigenschappen vergelijken met class_1.eigenschap == class_2.eigenschap?
 
 ### Later
 
