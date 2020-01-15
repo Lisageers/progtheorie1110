@@ -35,7 +35,7 @@ class Netlist():
 		return netlist
 
 
-	def sort_list(self, netlist)
+	def sort_list(self, netlist):
 		""" Sort the netlist as required."""
 		pass 
 
