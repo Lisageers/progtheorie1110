@@ -40,7 +40,7 @@ def astar(grid, start, end):
 	# loop while end_gate not found
 	while len(queue) > 0:
 		current_node = heappop(queue)[1]
-		print(current_node.f)
+		# print(current_node.f)
 		expanded.add(current_node.position)
 
 		# check if end gate has been reached

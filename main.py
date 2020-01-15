@@ -31,7 +31,7 @@ if __name__ == '__main__':
 			req_chip = 'test'
 			break
 		else:
-			print("That chip does not exist.")
+			print("That chip does not exist.\n")
 
 	# create a Chip object for the chosen chip
 	chip = chip.Chip(chip_path)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 			netlist_path = 'data/' + req_chip + f'/netlist_{req_netlist}.csv'
 			break
 		else:
-			print("That is not an option.")
+			print("That is not an option.\n")
 
 	# create a Netlist object for the chosen chip and netlist combination
 	netlist = netlist.Netlist(netlist_path, chip.gates)
@@ -54,7 +54,7 @@ if __name__ == '__main__':
 		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'straight_random' or alg_req == 'astar':
 			break
 		else:
-			print("This algorithm does not exist.")
+			print("This algorithm does not exist.\n")
 
 	loopcount = 0
 	while True:
@@ -66,12 +66,12 @@ if __name__ == '__main__':
 		wires = wiring.Wiring(netlist, chip, alg_req)
 
 		if wires.wire == None:
-			print("This algorithm can not find a solution for this problem.")
+			print("This algorithm can not find a solution for this problem.\n")
 			# sys.exit(1)
 		else:
 			# calculate cost of the solution
 			cost = wires.cost(wires.wire)
-			print(f"The cost of this solution is {cost}")
+			print(f"The cost of this solution is {cost}\n")
 
 			# get the dimensions for the visual representation
 			x_dim = chip.get_x_dimension(chip.gates)
@@ -80,5 +80,3 @@ if __name__ == '__main__':
 			# create visual representation of the solved chip
 			visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)
 			break
-
-		print()
