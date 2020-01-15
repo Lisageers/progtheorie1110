@@ -137,3 +137,6 @@ https://www.geeksforgeeks.org/shortest-distance-two-cells-matrix-grid/
 [A* algorithm](https://gist.github.com/jamiees2/5531924)
 
 https://matplotlib.org/
+
+
+https://stackoverflow.com/questions/43430309/depth-first-search-dfs-code-in-python/51865899
