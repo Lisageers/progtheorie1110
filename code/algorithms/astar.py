@@ -9,33 +9,33 @@ class Node():
 		self.position = position
 
 		# cost
-		self.c = 0
+		self.cost = 0
 		# heuristiek
-		self.h = 0
+		self.heur = 0
 		# sum
-		self.f = 0
+		self.sum = 0
 
 	def __lt__(self, other):
-		return self.f < other.f
+		return self.sum < other.sum
 
 	def __eq__(self, other):
-		return self.f == other.f
+		return self.sum == other.sum
 
 def astar(grid, start, end):
 	"""Returns a list of tuples as a path from the start gate and end gate"""
 
 	# create start and end gate
 	start_gate = Node(None, start)
-	start_gate.c = 0
-	start_gate.h = start_gate.f = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+	start_gate.cost = 0
+	start_gate.heur = start_gate.sum = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
 	end_gate = Node(None, end)
-	end_gate.c = end_gate.h = end_gate.f = 0
+	end_gate.cost = end_gate.heur = end_gate.sum = 0
 
 	# make priority queue of nodes to expand
 	queue = []
 	expanded = set()
 
-	heappush(queue, (start_gate.f, start_gate))
+	heappush(queue, (start_gate.sum, start_gate))
 
 	# loop while end_gate not found
 	while len(queue) > 0:
@@ -77,13 +77,13 @@ def astar(grid, start, end):
 			# check if child-position had already been expanded
 			if not child.position in expanded:
 
-				child.c = current_node.c + 1
+				child.cost = current_node.cost + 1
 
 				# use Pythagoras to calculate the heuristic (as the crow flies)
-				child.h = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
-				child.f = child.c + child.h
+				child.heur = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
+				child.sum = child.cost + child.heur
 
-				heappush(queue, (child.f, child))
+				heappush(queue, (child.sum, child))
 
 
 def execute_astar(net_cor, chip):
