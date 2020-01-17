@@ -45,13 +45,21 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
+	# let user choose a method for sorting the netlist
+	while True:
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common':
+			break
+		else:
+			print("That is not an option.\n")
+
 	# create a Netlist object for the chosen chip and netlist combination
-	netlist = netlist.Netlist(netlist_path, chipinit.gates)
+	netlist = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, straight_first, random_netlist, straight_random, astar, dfs)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'straight_first' or alg_req == 'random_netlist' or alg_req == 'straight_random' or alg_req == 'astar' or alg_req == 'dfs':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'astar' or alg_req == 'dfs':
 			break
 		else:
 			print("This algorithm does not exist.\n")
@@ -65,10 +73,10 @@ if __name__ == '__main__':
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist, chiploop, alg_req)
+		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req)
 
 		if wires.wire == None:
-			print("This algorithm can not find a solution for this problem.\n")
+			print("This algorithm cannot find a solution for this problem.\n")
 			# sys.exit(1)
 		else:
 			# calculate cost of the solution

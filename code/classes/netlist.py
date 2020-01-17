@@ -9,17 +9,19 @@ Reads a netlist from csv input and write a coordinate list from it.
 """
 
 import csv
+from random import shuffle
 from collections import Counter
+
 
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, list_file, gates):
-		self.netlist = self.netlist(list_file)
+	def __init__(self, list_file, gates, req_sort):
+		self.netlist = self.netlist(list_file, req_sort)
 		self.net_cor = self.net_cor(self.netlist, gates)
 
 
-	def netlist(self, list_file):
+	def netlist(self, list_file, req_sort):
 		""" Create list type netlist from csv file. """
 
 		# get netlist from csv-file
@@ -36,18 +38,70 @@ class Netlist():
 				netlist_gates.append(start.strip())
 				netlist_gates.append(end.strip())
 
-		netlist = self.sort_gates(netlist, netlist_gates)
+		if req_sort == 'random':
+			sorted_netlist = self.sort_random(netlist)
+		elif req_sort == 'straight_first':
+			sorted_netlist = self.sort_straight_first(netlist)
+		elif req_sort == 'straight_random':
+			sorted_netlist = self.sort_straight_random(netlist)
+		elif req_sort == 'most_common':
+			sorted_netlist = self.sort_most_common(netlist, netlist_gates)
+
+		return sorted_netlist
+
+	def sort_random(self, netlist):
+		""" Sort the netlist randomly. """
+		
+		shuffle(netlist)
 
 		return netlist
 
+	def sort_straight_first(self, netlist):
+		""" Sort the netlist by straight lines first, the rest as in csv. """
+		
+		sorted_list = []
 
-	def sort_list_straight(self, netlist):
-		""" Sort the netlist by straight lines."""
-		pass
+		for net in netlist:
+			start = list(net[0])
+			end = net[1]
+
+			# set net at front of list when x's or y's of start and end are the same
+			if (end[0] == start[0]) or (end[1] == start[1]):
+				sorted_list.insert(0, net)
+
+			else:
+				sorted_list.append(net)
+
+		return sorted_list
 
 
-	def sort_gates(self, netlist, netlist_gates):
-		""" Sort the netlist by connections."""
+	def sort_straight_random(self, netlist):
+		""" Sort the netlist by straight lines first, the rest random. """
+			
+		straight_list = []
+		random_list = []
+
+		for net in netlist:
+			start = list(net[0])
+			end = net[1]
+
+			# set net at front of list when x's or y's of start and end are the same
+			if (end[0] == start[0]) or (end[1] == start[1]):
+				straight_list.insert(0, net)
+
+			# otherwise add to list to be randomised
+			else:
+				random_list.append(net)
+
+		shuffle(random_list)
+
+		sorted_list = straight_list + random_list
+
+		return sorted_list
+
+
+	def sort_most_common(self, netlist, netlist_gates):
+		""" Sort the netlist by amount of connections a gate has. """
 		
 		count_dict = Counter(netlist_gates)
 
@@ -63,8 +117,6 @@ class Netlist():
 					else:
 						sorted_netlist.append(net)
 
-
-		print("newnetlist", sorted_netlist)
 		return sorted_netlist
 
 
