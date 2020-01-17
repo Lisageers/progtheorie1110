@@ -133,6 +133,17 @@ Vandaag
   - DFS algoritme geschreven -> geeft snelle, niet-optimale output
 
 
+### Donderdag
+
+Vandaag
+  - andere heuristiekfunctie voor A* -> opzet gemaakt
+  - verschillende combinaties van algoritmen en sorteren van netlist getest om efficientie te kunnen vergelijken
+
+A* heuristiek: a heuristic function is said to be admissible if it never overestimates the cost of reaching the goal, i.e. the cost it estimates to reach the goal is not higher than the lowest possible cost from the current point in the path.
+
+todo:
+  - Hillclimber algoritme schrijven
+
 ### Later
 
 Stap 4 - optimaliseer

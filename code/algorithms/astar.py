@@ -2,17 +2,15 @@ from math import sqrt
 from heapq import heappush, heappop
 
 class Node():
-	"""A coordination class for A* Pathfinding"""
+	""" A class that collects information for nodes needed for A* pathfinding. """
 
 	def __init__(self, parent=None, position=None):
 		self.parent = parent
 		self.position = position
 
-		# cost
+		# cost, heuristic, sum of cost and heuristic
 		self.cost = 0
-		# heuristiek
 		self.heur = 0
-		# sum
 		self.sum = 0
 
 	def __lt__(self, other):
@@ -21,13 +19,40 @@ class Node():
 	def __eq__(self, other):
 		return self.sum == other.sum
 
+
+def pythagoras_heur(current, end):
+	""" Determine the distance as the bird flies between two coordinates. """
+
+	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+
+	return distance
+
+def loose_heur(current, end):
+	""" Make looser cables cheaper, to generate suboptimal solutions that can be optimised itteratively. """
+	
+	# how happy does going in positive z-direction make the heuristic
+	looseness = 7
+
+	if current[2] > 0:
+		heuristic = pythagoras_heur(current, end) - looseness
+
+		# if gates are so close that h <= 0, do not go up
+		if heuristic <= 0:
+			heuristic = pythagoras_heur(current, end)
+	else:
+		heuristic = pythagoras_heur(current, end)
+
+	heuristic = heuristic * 2
+	return heuristic
+
+
 def astar(grid, start, end):
-	"""Returns a list of tuples as a path from the start gate and end gate"""
+	""" Returns a list of tuples as a path from the start gate and end gate. """
 
 	# create start and end gate
 	start_gate = Node(None, start)
 	start_gate.cost = 0
-	start_gate.heur = start_gate.sum = sqrt((end[0] - start[0]) ** 2 + (end[1] - start[1]) ** 2)
+	start_gate.heur = start_gate.sum = pythagoras_heur(start, end)
 	end_gate = Node(None, end)
 	end_gate.cost = end_gate.heur = end_gate.sum = 0
 
@@ -39,6 +64,7 @@ def astar(grid, start, end):
 
 	# loop while end_gate not found
 	while len(queue) > 0:
+		print(len(queue))
 		current_node = heappop(queue)[1]
 		expanded.add(current_node.position)
 
@@ -74,7 +100,7 @@ def astar(grid, start, end):
 			children.append(next_node)
 
 		if len(children) == 0:
-			return None
+			return [(0, 0, 0)]
 
 		for child in children:
 			# check if child-position had already been expanded
@@ -83,23 +109,26 @@ def astar(grid, start, end):
 				child.cost = current_node.cost + 1
 
 				# use Pythagoras to calculate the heuristic (as the crow flies)
-				child.heur = sqrt((end[0] - child.position[0]) ** 2 + (end[1] - child.position[1]) ** 2 + (end[2] - child.position[2]) ** 2)
+				child.heur = loose_heur(child.position, end)
 				child.sum = child.cost + child.heur
 
 				heappush(queue, (child.sum, child))
 
 
 def execute_astar(net_cor, chip):
-	"""Executes astar function for all nets"""
+	""" Execute astar function for all nets. """
 
 	grid = chip.grid
 	output_dict = {}
+	count = 0
 
 	for net in net_cor:
 		start = net[0]
 		end = net[1]
 		path = astar(grid, start, end)
+		count += 1
 		print(path)
+		print(count)
 		output_dict[net] = path
 
 	return output_dict
