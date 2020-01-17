@@ -11,10 +11,7 @@ Uses an algorithm to generate an output file with the solution for wiring.
 import csv
 
 from code.algorithms.xyz_move import xyz_wire
-from code.algorithms.straight_first import straight_wire 
-from code.algorithms.random_netlist import random_wire 
-from code.algorithms.new_astar import execute_astar
-from code.algorithms.straight_random import straight_random_wire
+from code.algorithms.astar import execute_astar
 from code.algorithms.iddfs import execute_dfs
 
 class Wiring():
@@ -22,9 +19,9 @@ class Wiring():
 
 	def __init__(self, netlist, chip, alg_req):
 		self.chip = chip
-		self.net_cor = netlist.net_cor
+		self.netlist = netlist
 		algorithm = self.choose_alg(alg_req)
-		self.wire = algorithm(self.net_cor, self.chip)
+		self.wire = algorithm(self.netlist, self.chip)
 
 		if not self.wire == None:
 			self.output(self.wire)
@@ -35,12 +32,6 @@ class Wiring():
 
 		if alg_req == 'xyz_move':
 			algorithm = xyz_wire
-		elif alg_req == 'straight_first':
-			algorithm = straight_wire
-		elif alg_req == 'random_netlist':
-			algorithm = random_wire
-		elif alg_req == 'straight_random':
-			algorithm = straight_random_wire
 		elif alg_req == 'astar':
 			algorithm = execute_astar
 		elif alg_req == 'dfs':
@@ -55,8 +46,7 @@ class Wiring():
 		cost = 0
 
 		for net in output_dict:
-			if not output_dict[net] == ["emma", "marte"]:
-				cost += (len(output_dict[net]) - 1)
+			cost += (len(output_dict[net]) - 1)
 
 		return cost
 
@@ -64,13 +54,11 @@ class Wiring():
 	def output(self, output_dict):
 		""" Writes the nets and wires to a csv-file. """
 
-		# write to csv
 		with open('data/test/output.csv', mode='w') as csv_output:
-			# write header
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
-			# write wires and nets
+			# write wires and nets from dictionary
 			for net, wire in output_dict.items():
 				writer.writerow({'net' : net, 'wires' : wire})
