@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
 		else:
 			# calculate cost of the solution
-			cost = wires.cost(wires.wire[0])
+			cost = wires.cost(wires.wire)
 			print(f"The cost of this solution is {cost}\n")
 
 			# get the dimensions for the visual representation

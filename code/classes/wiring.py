@@ -13,7 +13,7 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
-from code.algorithms.new_astar import execute_astar
+from code.algorithms.PQ_astar_with_error import execute_astar
 from code.algorithms.straight_random import straight_random_wire
 from code.algorithms.iddfs import execute_dfs
 
