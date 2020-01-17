@@ -125,6 +125,14 @@ todo:
 vragen
   - waarom zou je def __eq__ (self, other) gebruiken om twee instances van een class te vergelijken op een bepaalde eigenschap, ipv gewoon die eigenschappen vergelijken met class_1.eigenschap == class_2.eigenschap?
 
+### Woensdag
+
+Vandaag
+  - netlist sorteren op gates met meeste connecties eerst doen
+  - Nog een verbetering voor netlist: zorg dat gate met meeste connecties altijd start-gate is (dus wissel zonodig start en eind van net om)
+  - DFS algoritme geschreven -> geeft snelle, niet-optimale output
+
+
 ### Later
 
 Stap 4 - optimaliseer
