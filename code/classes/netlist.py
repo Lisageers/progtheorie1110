@@ -62,7 +62,7 @@ class Netlist():
 		sorted_list = []
 
 		for net in netlist:
-			start = list(net[0])
+			start = net[0]
 			end = net[1]
 
 			# set net at front of list when x's or y's of start and end are the same
