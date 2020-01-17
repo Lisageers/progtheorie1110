@@ -47,6 +47,34 @@ class Netlist():
 
 		return sorted_netlist
 
+
+	def net_cor(self, netlist, gates, req_sort):
+		""" Create altered netlist with coordinates instead of names. """
+
+		net_cor = []
+
+		for net in netlist:
+			for gate in gates:
+				# get start cor of net
+				if gates[gate] == net[0]:
+					cor_start = gate
+
+				# get end cor of net
+				elif gates[gate] == net[1]:
+					cor_end = gate
+
+			# put cors in list
+			net_cor.append((cor_start, cor_end))
+
+			if req_sort == 'straight_first':
+				sorted_net_cor = self.sort_straight_first(net_cor)
+			elif req_sort == 'straight_random':
+				sorted_net_cor = self.sort_straight_random(net_cor)
+			else:
+				sorted_net_cor = net_cor
+
+		return sorted_net_cor
+
 	def sort_random(self, netlist):
 		""" Sort the netlist randomly. """
 
@@ -116,31 +144,3 @@ class Netlist():
 						sorted_netlist.append(net)
 
 		return sorted_netlist
-
-
-	def net_cor(self, netlist, gates, req_sort):
-		""" Create altered netlist with coordinates instead of names. """
-
-		net_cor = []
-
-		for net in netlist:
-			for gate in gates:
-				# get start cor of net
-				if gates[gate] == net[0]:
-					cor_start = gate
-
-				# get end cor of net
-				elif gates[gate] == net[1]:
-					cor_end = gate
-
-			# put cors in list
-			net_cor.append((cor_start, cor_end))
-
-			if req_sort == 'straight_first':
-				sorted_net_cor = self.sort_straight_first(net_cor)
-			elif req_sort == 'straight_random':
-				sorted_net_cor = self.sort_straight_random(net_cor)
-			else:
-				sorted_net_cor = net_cor
-
-		return sorted_net_cor
