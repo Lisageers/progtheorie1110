@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
 	loopcount = 0
 	while True:
-		if loopcount > 9:
+		if loopcount > 999:
 			break
 		loopcount += 1
 
@@ -83,7 +83,11 @@ if __name__ == '__main__':
 		print(f"The cost of this solution is {cost}\n")
 		total_cost += cost
 
-		count = len(wires.wire)
+		count = 0
+		for wire in wires.wire.values():
+			if len(wire) != 1:
+				count +=1
+		
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
 
