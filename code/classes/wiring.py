@@ -13,7 +13,7 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.straight_first import straight_wire 
 from code.algorithms.random_netlist import random_wire 
-from code.algorithms.astar import execute_astar
+from code.algorithms.new_astar import execute_astar
 from code.algorithms.straight_random import straight_random_wire
 from code.algorithms.iddfs import execute_dfs
 
@@ -55,7 +55,8 @@ class Wiring():
 		cost = 0
 
 		for net in output_dict:
-			cost += (len(output_dict[net]) - 1)
+			if not output_dict[net] == ["emma", "marte"]:
+				cost += (len(output_dict[net]) - 1)
 
 		return cost
 
