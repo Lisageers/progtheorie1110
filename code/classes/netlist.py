@@ -46,7 +46,7 @@ class Netlist():
 
 	def sort_gates(self, netlist, netlist_gates):
 		""" Sort the netlist by connections."""
-		print(netlist)
+		
 		count_dict = Counter(netlist_gates)
 
 		sorted_netlist = []
@@ -57,6 +57,7 @@ class Netlist():
 					if gate[0] != net[0]:
 						switch = (net[1], net[0])
 						sorted_netlist.append(switch)
+						netlist.remove(net)
 					else:
 						sorted_netlist.append(net)
 
