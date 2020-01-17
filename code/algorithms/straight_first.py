@@ -17,6 +17,8 @@ def straight_wire(net_cor, chip):
 		else:
 			cor_list.append(net)
 
+
+	count = 0
 	# loop through netlist
 	for net in cor_list:
 		# initialise wire
@@ -32,6 +34,8 @@ def straight_wire(net_cor, chip):
 			# check whether current point and end point are adjacent
 			if abs(current_cor[0] - end_cor[0]) + abs(current_cor[1] - end_cor[1]) + abs(current_cor[2] - end_cor[2]) == 1:
 				wire.append(net[1])
+				count += 1
+				print(count)
 				output_dict[net] = wire
 				break
 

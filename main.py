@@ -63,6 +63,7 @@ if __name__ == '__main__':
 			break
 		else:
 			print("This algorithm does not exist.\n")
+	total_count = 0
 
 	loopcount = 0
 	while True:
@@ -78,6 +79,8 @@ if __name__ == '__main__':
 		if wires.wire == None:
 			print("This algorithm cannot find a solution for this problem.\n")
 			# sys.exit(1)
+			
+
 		else:
 			# calculate cost of the solution
 			cost = wires.cost(wires.wire)

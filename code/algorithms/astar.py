@@ -6,6 +6,16 @@ def heuristic(current, end):
 
 	return heuristic
 
+def distance_to_gate(gates, current, start, end):
+	print(gates)
+	for gate in gates:
+		if heuristic(current, gate) == 1 and current != start and current != end:
+			h = heuristic(current, end) + 10
+		else:
+			h = heuristic(current, end)
+
+	return h
+
 def make_neighbours(grid, current, end):
 	""" Fill list with available neighbouring points. """
 	
@@ -28,7 +38,7 @@ def make_neighbours(grid, current, end):
 	return neighbours
 
 
-def astar(grid, start, end):
+def astar(gates, grid, start, end):
 	""" A* """
 	
 	Q = []
@@ -44,7 +54,7 @@ def astar(grid, start, end):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = heuristic(neighbour, end)
+			h = distance_to_gate(gates, neighbour, start, end)
 
 			new_path = current_path + [neighbour]
 
@@ -61,13 +71,14 @@ def execute_astar(netlist, chip):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
+	gates = chip.gates
 	output_dict = {}
 	count = 0
 
 	for net in netlist:
 		start = net[0]
 		end = net[1]
-		path = astar(grid, start, end)
+		path = astar(gates, grid, start, end)
 		count += 1
 		print(path)
 		print(count)

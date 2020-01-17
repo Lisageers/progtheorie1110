@@ -2,7 +2,7 @@ from random import shuffle
 
 def random_wire(net_cor, chip):
     """ Determine wire needed to connect the nets. """
-
+    
     output_dict = {}
 
     # randomise netlist
@@ -65,5 +65,5 @@ def random_wire(net_cor, chip):
                     current_cor[2] += 1
                     chip.grid[current_cor[0]][current_cor[1]][current_cor[2]] = True
                     wire.append(tuple(current_cor))
-
+    
     return output_dict
