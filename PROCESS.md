@@ -144,6 +144,15 @@ A* heuristiek: a heuristic function is said to be admissible if it never overest
 todo:
   - Hillclimber algoritme schrijven
 
+### Vrijdag
+
+Vandaag
+- heuristieken bedenken waardoor de wires liever omhoog willen lopen
+- astar aangepast omdat priority queue functie van python niet werkte
+- functie gemaakt waarbij de hogere lagen een lagere cost krijgen
+- functie gemaakt waarbij lijnen niet langs een gate kunnen lopen, tenzij het de eindgate is
+
+
 ### Later
 
 Stap 4 - optimaliseer
