@@ -18,7 +18,7 @@ class Netlist():
 
 	def __init__(self, list_file, gates, req_sort):
 		self.netlist = self.netlist(list_file, req_sort)
-		self.net_cor = self.net_cor(self.netlist, gates)
+		self.net_cor = self.net_cor(self.netlist, gates, req_sort)
 
 
 	def netlist(self, list_file, req_sort):
@@ -40,29 +40,27 @@ class Netlist():
 
 		if req_sort == 'random':
 			sorted_netlist = self.sort_random(netlist)
-		elif req_sort == 'straight_first':
-			sorted_netlist = self.sort_straight_first(netlist)
-		elif req_sort == 'straight_random':
-			sorted_netlist = self.sort_straight_random(netlist)
 		elif req_sort == 'most_common':
 			sorted_netlist = self.sort_most_common(netlist, netlist_gates)
+		else:
+			sorted_netlist = netlist
 
 		return sorted_netlist
 
 	def sort_random(self, netlist):
 		""" Sort the netlist randomly. """
-		
+
 		shuffle(netlist)
 
 		return netlist
 
-	def sort_straight_first(self, netlist):
+	def sort_straight_first(self, net_cor):
 		""" Sort the netlist by straight lines first, the rest as in csv. """
-		
+
 		sorted_list = []
 
-		for net in netlist:
-			start = list(net[0])
+		for net in net_cor:
+			start = net[0]
 			end = net[1]
 
 			# set net at front of list when x's or y's of start and end are the same
@@ -75,14 +73,14 @@ class Netlist():
 		return sorted_list
 
 
-	def sort_straight_random(self, netlist):
+	def sort_straight_random(self, net_cor):
 		""" Sort the netlist by straight lines first, the rest random. """
-			
+
 		straight_list = []
 		random_list = []
 
-		for net in netlist:
-			start = list(net[0])
+		for net in net_cor:
+			start = net[0]
 			end = net[1]
 
 			# set net at front of list when x's or y's of start and end are the same
@@ -102,7 +100,7 @@ class Netlist():
 
 	def sort_most_common(self, netlist, netlist_gates):
 		""" Sort the netlist by amount of connections a gate has. """
-		
+
 		count_dict = Counter(netlist_gates)
 
 		sorted_netlist = []
@@ -120,7 +118,7 @@ class Netlist():
 		return sorted_netlist
 
 
-	def net_cor(self, netlist, gates):
+	def net_cor(self, netlist, gates, req_sort):
 		""" Create altered netlist with coordinates instead of names. """
 
 		net_cor = []
@@ -138,4 +136,11 @@ class Netlist():
 			# put cors in list
 			net_cor.append((cor_start, cor_end))
 
-		return net_cor
+			if req_sort == 'straight_first':
+				sorted_net_cor = self.sort_straight_first(net_cor)
+			elif req_sort == 'straight_random':
+				sorted_net_cor = self.sort_straight_random(net_cor)
+			else:
+				sorted_net_cor = net_cor
+
+		return sorted_net_cor

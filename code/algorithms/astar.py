@@ -7,7 +7,6 @@ def heuristic(current, end):
 	return heuristic
 
 def distance_to_gate(gates, current, start, end):
-	print(gates)
 	for gate in gates:
 		if heuristic(current, gate) == 1 and current != start and current != end:
 			h = heuristic(current, end) + 10
@@ -18,9 +17,9 @@ def distance_to_gate(gates, current, start, end):
 
 def make_neighbours(grid, current, end):
 	""" Fill list with available neighbouring points. """
-	
+
 	neighbours = []
-	
+
 	for new_position in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
 
 		next_position = (current[0] + new_position[0], current[1] + new_position[1], current[2] + new_position[2] )
@@ -40,7 +39,7 @@ def make_neighbours(grid, current, end):
 
 def astar(gates, grid, start, end):
 	""" A* """
-	
+
 	Q = []
 
 	heappush(Q, (None, [start]))
