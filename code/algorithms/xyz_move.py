@@ -53,7 +53,8 @@ def xyz_wire(netlist, chip):
 				# move +z if z of end is larger and +z is open
 				else:
 					if current[2] + 1 == 8:
-						return None
+						output_dict[net] = [(0, 0, 0)]
+						break
 					current[2] += 1
 					chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
