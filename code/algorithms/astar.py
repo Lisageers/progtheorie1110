@@ -44,7 +44,7 @@ def loose_cables(parent, current, end):
 
 def make_neighbours(grid, parent, current, end):
 	""" Fill list with available neighbouring points. """
-	
+
 	neighbours = []
 	
 	for change_position in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
@@ -69,7 +69,7 @@ def make_neighbours(grid, parent, current, end):
 
 def astar(gates, grid, start, end):
 	""" A* """
-	
+
 	Q = []
 
 	heappush(Q, (None, [start]))
