@@ -78,8 +78,7 @@ if __name__ == '__main__':
 
 		if wires.wire == None:
 			print("This algorithm cannot find a solution for this problem.\n")
-			# sys.exit(1)
-			
+			# sys.exit(1)			
 
 		else:
 			# calculate cost of the solution
