@@ -36,8 +36,6 @@ class Netlist():
 				netlist_gates.append(start.strip())
 				netlist_gates.append(end.strip())
 
-		netlist = self.sort_gates(netlist, netlist_gates)
-
 		return netlist
 
 

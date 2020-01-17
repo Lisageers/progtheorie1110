@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			req_chip = 'chip_2'
 			break
 		elif req_chip.lower() == 'test':
-			chip_path = 'data/test/print_1.csv'
+			chip_path = 'data/test/print.csv'
 			req_chip = 'test'
 			break
 		else:
@@ -55,6 +55,7 @@ if __name__ == '__main__':
 			break
 		else:
 			print("This algorithm does not exist.\n")
+	total_count = 0
 
 	loopcount = 0
 	while True:
@@ -68,11 +69,13 @@ if __name__ == '__main__':
 		wires = wiring.Wiring(netlist, chiploop, alg_req)
 
 		if wires.wire == None:
-			print("This algorithm can not find a solution for this problem.\n")
+			print("This algorithm can not find a solution for this problem.")
 			# sys.exit(1)
+			
+
 		else:
 			# calculate cost of the solution
-			cost = wires.cost(wires.wire)
+			cost = wires.cost(wires.wire[0])
 			print(f"The cost of this solution is {cost}\n")
 
 			# get the dimensions for the visual representation
