@@ -53,8 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-	# create a Netlist object for the chosen chip and netlist combination
-	netlist = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 
 	# let user choose an algorithm
 	while True:
@@ -73,17 +71,23 @@ if __name__ == '__main__':
 			break
 		loopcount += 1
 
+		# create a Netlist object for the chosen chip and netlist combination
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
 		print(f"The cost of this solution is {cost}\n")
 		total_cost += cost
 
-		count = len(wires.wire)
+		count = 0
+		for wire in wires.wire.values():
+			if len(wire) != 1:
+				count +=1
+
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
 
