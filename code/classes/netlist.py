@@ -9,6 +9,7 @@ Reads a netlist from csv input and write a coordinate list from it.
 """
 
 import csv
+import copy
 from random import shuffle
 from collections import Counter
 
@@ -19,6 +20,8 @@ class Netlist():
 	def __init__(self, list_file, gates, req_sort):
 		self.netlist = self.netlist(list_file, req_sort)
 		self.net_cor = self.net_cor(self.netlist, gates, req_sort)
+		if req_sort == 'loose_layering':
+			self.net_cor = self.loose_layering(self.net_cor)
 
 
 	def netlist(self, list_file, req_sort):
@@ -40,7 +43,7 @@ class Netlist():
 
 		if req_sort == 'random':
 			sorted_netlist = self.sort_random(netlist)
-		elif req_sort == 'most_common':
+		elif req_sort == 'most_common' or 'loose_layering':
 			sorted_netlist = self.sort_most_common(netlist, netlist_gates)
 		else:
 			sorted_netlist = netlist
@@ -52,7 +55,7 @@ class Netlist():
 		""" Create altered netlist with coordinates instead of names. """
 
 		net_cor = []
-
+		
 		for net in netlist:
 			for gate in gates:
 				# get start cor of net
@@ -144,3 +147,22 @@ class Netlist():
 						sorted_netlist.append(net)
 
 		return sorted_netlist
+
+
+	def loose_layering(self, netlist):
+		rest_nets = len(netlist) % 7
+		normal_divisible = len(netlist) - rest_nets
+		cables_per_layer = int(normal_divisible / 7)
+
+		layer_list = []
+		for x in range(7):
+			if len(netlist) == cables_per_layer + rest_nets:
+				netlist_copy = copy.deepcopy(netlist)
+				layer_list.append(netlist_copy)
+				del netlist[:(cables_per_layer + rest_nets)]
+			elif len(netlist) != 0:
+				layer = netlist[:cables_per_layer]
+				layer_list.append(layer)
+				del netlist[:cables_per_layer]
+		print(layer_list)
+		return layer_list

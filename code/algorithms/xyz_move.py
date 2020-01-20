@@ -1,5 +1,5 @@
 
-def xyz_wire(netlist, chip):
+def xyz_wire(netlist, chip, req_sort):
 	""" Determine wire needed to connect the nets. """
 
 	output_dict = {}

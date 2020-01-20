@@ -18,7 +18,7 @@ from code.algorithms.hillclimb import *
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
 
-	def __init__(self, netlist, chip, alg_req):
+	def __init__(self, netlist, chip, alg_req, req_sort):
 		self.chip = chip
 		self.netlist = netlist
 		algorithm = self.choose_alg(alg_req)

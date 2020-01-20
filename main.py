@@ -47,13 +47,16 @@ if __name__ == '__main__':
 
 	# let user choose a method for sorting the netlist
 	while True:
-		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common)\n")
-		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common':
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, loose_layering)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'loose_layering':
 			break
 		else:
 			print("That is not an option.\n")
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 81df95a77d416de59e562d0a2cec971bad0380c8
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -76,7 +79,7 @@ if __name__ == '__main__':
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
