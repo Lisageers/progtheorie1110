@@ -38,15 +38,6 @@ class Chip(object):
 		return gates
 
 
-	# def get_gates(self):
-	# 	gates = []
-		
-	# 	for gate in gates:
-	# 		gates.append(gate)
-		
-	# 	return gates
-
-
 	def create_grid(self, gates):
 		""" Create grid with gates. """
 

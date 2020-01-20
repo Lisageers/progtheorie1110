@@ -29,7 +29,7 @@ def distance_to_gate(gates, current, start, end):
 
 def loose_cables(parent, current, end):
 	""" Make looser cables cheaper, to generate suboptimal solutions that can be optimised itteratively. """
-	
+
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
@@ -47,7 +47,7 @@ def make_neighbours(grid, parent, current, end):
 	""" Fill list with available neighbouring points. """
 
 	neighbours = []
-	
+
 	for change_position in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
 
 		next_position = (current[0] + change_position[0], current[1] + change_position[1], current[2] + change_position[2] )
@@ -59,7 +59,7 @@ def make_neighbours(grid, parent, current, end):
 		# make sure the next position is not already occupied
 		if grid[next_position[0]][next_position[1]][next_position[2]] != False and next_position != end:
 			continue
-		
+
 		if next_position == parent:
 			continue
 
@@ -84,8 +84,8 @@ def astar(gates, grid, start, end, index=None):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = manhattan_distance(neighbour, end)
-			
+			h = manhattan_distance(neighbour, end) 
+
 			new_path = current_path + [neighbour]
 
 			if neighbour == end:

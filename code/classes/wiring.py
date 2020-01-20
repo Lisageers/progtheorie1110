@@ -22,9 +22,7 @@ class Wiring():
 		self.netlist = netlist
 		algorithm = self.choose_alg(alg_req)
 		self.wire = algorithm(self.netlist, self.chip, req_sort)
-
-		if not self.wire == None:
-			self.output(self.wire)
+		self.output(self.wire)
 
 
 	def choose_alg(self, alg_req):

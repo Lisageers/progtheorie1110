@@ -53,8 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-	# create a Netlist object for the chosen chip and netlist combination
-	netlist = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 
 	# let user choose an algorithm
 	while True:
@@ -63,6 +61,8 @@ if __name__ == '__main__':
 			break
 		else:
 			print("This algorithm does not exist.\n")
+
+	total_cost = 0
 	total_count = 0
 
 	loopcount = 0
@@ -71,25 +71,33 @@ if __name__ == '__main__':
 			break
 		loopcount += 1
 
+		# create a Netlist object for the chosen chip and netlist combination
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req, req_sort)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
 
-		if wires.wire == None:
-			print("This algorithm cannot find a solution for this problem.\n")
-			# sys.exit(1)
-			
+		# calculate cost of the solution
+		cost = wires.cost(wires.wire)
+		print(f"The cost of this solution is {cost}\n")
+		total_cost += cost
 
-		else:
-			# calculate cost of the solution
-			cost = wires.cost(wires.wire)
-			print(f"The cost of this solution is {cost}\n")
+		count = 0
+		for wire in wires.wire.values():
+			if len(wire) != 1:
+				count +=1
 
-			# get the dimensions for the visual representation
-			x_dim = chiploop.get_x_dimension(chiploop.gates)
-			y_dim = chiploop.get_y_dimension(chiploop.gates)
+		print(f"The algorithm laid {count} wires.\n")
+		total_count += count
 
-			# create visual representation of the solved chip
-			visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-			break
+		# get the dimensions for the visual representation
+		x_dim = chiploop.get_x_dimension(chiploop.gates)
+		y_dim = chiploop.get_y_dimension(chiploop.gates)
+
+		# # create visual representation of the solved chip
+		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		# break
+
+	print(f"The total_cost is {total_cost}.\n")
+	print(f"The total_count is {total_count}.\n")
