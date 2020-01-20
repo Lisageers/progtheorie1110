@@ -22,7 +22,7 @@ def get_neighbours(grid, node, end):
 	return neighbours
 
 
-def dfs(neighbours, start, end, visited, grid):
+def dfs(neighbours, start, end, visited, grid, req_sort):
 	""" Perform depth first search recursively until end node is reached """
 
 	if start not in visited:

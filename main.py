@@ -47,8 +47,8 @@ if __name__ == '__main__':
 
 	# let user choose a method for sorting the netlist
 	while True:
-		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common)\n")
-		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common':
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, loose_layering)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'loose_layering':
 			break
 		else:
 			print("That is not an option.\n")
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req)
+		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req, req_sort)
 
 		if wires.wire == None:
 			print("This algorithm cannot find a solution for this problem.\n")

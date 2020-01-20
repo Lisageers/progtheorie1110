@@ -18,12 +18,13 @@ def distance_to_gate(gates, current, start, end):
 	return heuristic
 
 
-def pythagoras(current, end):
-	""" Determine the distance as the bird flies between two coordinates. """
+# def pythagoras(current, end):
+# 	""" Determine the distance as the bird flies between two coordinates. """
 
-	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+# 	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
 
-	return distance
+# 	return distance
+
 
 
 def loose_cables(parent, current, end):
@@ -32,12 +33,12 @@ def loose_cables(parent, current, end):
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	# elif current[2] > 0:
-	# 	looseness = 2
+	elif current[2] > 0:
+		looseness = 2
 	else:
 		looseness = 1
 
-	heuristic = pythagoras(current, end) / looseness - (2 * current[2] + looseness)
+	heuristic = manhattan_distance(current, end) / looseness - (2 * current[2] + looseness)
 
 	return heuristic
 
@@ -67,7 +68,7 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end):
+def astar(gates, grid, start, end, index=None):
 	""" A* """
 
 	Q = []
@@ -83,7 +84,7 @@ def astar(gates, grid, start, end):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = loose_cables(current_path[-1], neighbour, end) 
+			h = manhattan_distance(neighbour, end)
 			
 			new_path = current_path + [neighbour]
 
@@ -97,21 +98,32 @@ def astar(gates, grid, start, end):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip):
+def execute_astar(netlist, chip, req_sort):
 	""" Execute astar function for all nets. """
-
+	
 	grid = chip.grid
 	gates = chip.gates
 	output_dict = {}
 	count = 0
 
-	for net in netlist:
-		start = net[0]
-		end = net[1]
-		path = astar(gates, grid, start, end)
-		count += 1
-		print(path)
-		print(count)
-		output_dict[net] = path
+	if req_sort == 'loose_layering':
+		for index, layer in enumerate(netlist):
+			for net in layer:
+				start = net[0]
+				end = net[1]
+				between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
+				path_1 = astar(gates, grid, start, between, index)
+				path_2 = astar(gates, grid, start, end, index)
+				output_dict[net] = path_1 + path_2
+
+	else:
+		for net in netlist:
+			start = net[0]
+			end = net[1]
+			path = astar(gates, grid, start, end)
+			count += 1
+			print(path)
+			print(count)
+			output_dict[net] = path
 
 	return output_dict
