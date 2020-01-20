@@ -47,12 +47,16 @@ if __name__ == '__main__':
 
 	# let user choose a method for sorting the netlist
 	while True:
-		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common)\n")
-		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common':
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, loose_layering)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'loose_layering':
 			break
 		else:
 			print("That is not an option.\n")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 81df95a77d416de59e562d0a2cec971bad0380c8
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -60,7 +64,7 @@ if __name__ == '__main__':
 			break
 		else:
 			print("This algorithm does not exist.\n")
-	
+
 	total_cost = 0
 	total_count = 0
 
@@ -71,12 +75,11 @@ if __name__ == '__main__':
 		loopcount += 1
 
 		# create a Netlist object for the chosen chip and netlist combination
-		netlist_loop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
-
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist_loop.net_cor, chiploop, alg_req)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
@@ -87,7 +90,7 @@ if __name__ == '__main__':
 		for wire in wires.wire.values():
 			if len(wire) != 1:
 				count +=1
-		
+
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
 
@@ -97,8 +100,7 @@ if __name__ == '__main__':
 
 		# # create visual representation of the solved chip
 		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		break
+		# break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")
-	

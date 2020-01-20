@@ -17,11 +17,11 @@ from code.algorithms.iddfs import execute_dfs
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
 
-	def __init__(self, netlist, chip, alg_req):
+	def __init__(self, netlist, chip, alg_req, req_sort):
 		self.chip = chip
 		self.netlist = netlist
 		algorithm = self.choose_alg(alg_req)
-		self.wire = algorithm(self.netlist, self.chip)
+		self.wire = algorithm(self.netlist, self.chip, req_sort)
 		self.output(self.wire)
 
 
