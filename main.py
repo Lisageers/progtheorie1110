@@ -88,6 +88,8 @@ if __name__ == '__main__':
 			if len(wire) != 1:
 				count +=1
 
+		print(wires.new_wire)
+
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
 
