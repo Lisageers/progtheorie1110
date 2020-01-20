@@ -153,7 +153,13 @@ Vandaag
 - functie gemaakt waarbij lijnen niet langs een gate kunnen lopen, tenzij het de eindgate is
 
 
-### Later
+### Maandag
+
+Vandaag
+  - hillclimber om oplossingen waarbij sommige kabels vastlopen te verbeteren
+  - heuristiek loose_cables oplossen, o.a. met tussenpunt, delen van de netlist aan specifieke lagen toewijzen
+  - vergelijken in normale-mensentaal
+  - hillclimber opzet voor als we eindelijk een loose_cables oplossing hebben
 
 Stap 4 - optimaliseer
 

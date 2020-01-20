@@ -53,9 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-	# create a Netlist object for the chosen chip and netlist combination
-	netlist = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
-
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -69,14 +66,17 @@ if __name__ == '__main__':
 
 	loopcount = 0
 	while True:
-		if loopcount > 999:
+		if loopcount > 0:
 			break
 		loopcount += 1
+
+		# create a Netlist object for the chosen chip and netlist combination
+		netlist_loop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlist.net_cor, chiploop, alg_req)
+		wires = wiring.Wiring(netlist_loop.net_cor, chiploop, alg_req)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
@@ -92,12 +92,12 @@ if __name__ == '__main__':
 		total_count += count
 
 		# get the dimensions for the visual representation
-		# x_dim = chiploop.get_x_dimension(chiploop.gates)
-		# y_dim = chiploop.get_y_dimension(chiploop.gates)
+		x_dim = chiploop.get_x_dimension(chiploop.gates)
+		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
 		# # create visual representation of the solved chip
-		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		# break
+		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")

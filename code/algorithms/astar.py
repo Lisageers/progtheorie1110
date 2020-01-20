@@ -32,12 +32,12 @@ def loose_cables(parent, current, end):
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	# elif current[2] > 0:
-	# 	looseness = 2
+	elif current[2] > 0:
+		looseness = 2
 	else:
 		looseness = 1
 
-	heuristic = pythagoras(current, end) / looseness - (2 * current[2] + looseness)
+	heuristic = manhattan_distance(current, end) / looseness - (2 * current[2] + looseness)
 
 	return heuristic
 
@@ -83,7 +83,7 @@ def astar(gates, grid, start, end):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = loose_cables(current_path[-1], neighbour, end) 
+			h = manhattan_distance(neighbour, end) # loose_cables(current_path[-1], neighbour, end)
 			
 			new_path = current_path + [neighbour]
 
