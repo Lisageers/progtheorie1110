@@ -8,23 +8,22 @@ def manhattan_distance(current, end):
 	return heuristic
 
 
-def distance_to_gate(gates, current, start, end):
+def distance_to_gate(gates, current, start, end, occurance_gate):
 
 	heuristic = manhattan_distance(current, end)
-
 	for gate in gates:
-		if manhattan_distance(current, gate) == 1 and gate != start and gate != end:
+		if manhattan_distance(current, gate) == 1 and gate != start and gate != end and occurance_gate[gate] > 1:
 			heuristic = manhattan_distance(current, end) + 50
 
 	return heuristic
 
 
-def pythagoras(current, end):
-	""" Determine the distance as the bird flies between two coordinates. """
+# def pythagoras(current, end):
+# 	""" Determine the distance as the bird flies between two coordinates. """
 
-	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+# 	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
 
-	return distance
+# 	return distance
 
 
 def loose_cables(parent, current, end):
@@ -68,7 +67,7 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end):
+def astar(gates, grid, start, end, occurance_gate):
 	""" A* """
 
 	Q = []
@@ -85,7 +84,7 @@ def astar(gates, grid, start, end):
 
 		for neighbour in neighbours:
 			# h = manhattan_distance(neighbour, end) 
-			h = distance_to_gate(gates, neighbour, start, end)
+			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
 			# h = loose_cables(current_path[-1], neighbour, end)
 
 			new_path = current_path + [neighbour]
@@ -108,7 +107,19 @@ def execute_astar(netlist, chip, req_sort):
 	output_dict = {}
 	count = 0
 
+	occurance_gate = {}
+	for gate in gates:
+		occurance_gate[gate] = 0
+
 	if req_sort == 'loose_layering':
+		
+		for layer in netlist:
+			for net in layer:
+				occurance_gate[net[0]] += 1
+				occurance_gate[net[1]] += 1
+			
+		print(occurance_gate)
+
 		for index, layer in enumerate(netlist):
 			for net in layer:
 				start = net[0]
@@ -116,16 +127,20 @@ def execute_astar(netlist, chip, req_sort):
 				
 				if manhattan_distance(start, end) > 1:
 					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
-					path_1 = astar(gates, grid, start, between)
-					path_2 = astar(gates, grid, between, end)
+					path_1 = astar(gates, grid, start, between, occurance_gate)
+					path_2 = astar(gates, grid, between, end, occurance_gate)
 					print("if", path_1 + path_2)
 					output_dict[net] = path_1 + path_2
 				else:
-					path = astar(gates, grid, start, end)
+					path = astar(gates, grid, start, end, occurance_gate)
 					print("else", path)
 					output_dict[net] = path
 
 	else:
+		for net in netlist:
+			occurance_gate[net[0]] += 1
+			occurance_gate[net[1]] += 1
+			
 		for net in netlist:
 			start = net[0]
 			end = net[1]

@@ -165,9 +165,11 @@ Vandaag
 ### Dinsdag
 
 Vandaag
-  - loose_layering geeft een uitkomst, nog wel een aantal die niet opgelost kunnen worden.
-  - Gespeeld met between, blijkt niet veel te veranderen.
-  - Ipv eerst laag 7 vullen, eerst laag 1 vullen. 
+  - loose_layering geeft een uitkomst, nog wel een aantal die niet opgelost kunnen worden. De wires worden nu evenredig verdeeld over de 7 lagen, waarbij eerst de bovenste laag wordt ingevuld en vanuit daar steeds een laag lager gaat.
+  - Gespeeld met between, between zit nu precies in het midden van start en end. Het blijkt niet veel uit te maken als we dit veranderen naar bijvoorbeeld het eindpunt (dat die daar boven zit). We dachten dat het misschien uit zou maken "hoelang" een wire boven zou blijven.
+  - We hebben de wires nu evenredig verdeeld over de 7 lagen, waarbij eerst de 1e laag boven de gates ingevuld wordt en vanuit daar steeds een laag hoger gaat. Zodat de overige wires in het bovenste laag geplaatst kunnen worden, omdat daar nog niks ligt. 
+  - In distance to gate blokkeren we niet meer elke gate, alleen maar de gates die vaker voorkomen. Deze hebben meer ruimte nodig, omdat deze meerderen wires heeft.
+  - longest_first: Hierbij sorteren we de netlist op manhattan_distance. Deze blijkt niet beter te werken dan de most_common sortering.
 
 
 Stap 4 - optimaliseer
