@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
 		# # create visual representation of the solved chip
 		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		# break
+		break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")
