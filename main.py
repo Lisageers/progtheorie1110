@@ -53,10 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 81df95a77d416de59e562d0a2cec971bad0380c8
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -100,7 +96,7 @@ if __name__ == '__main__':
 
 		# # create visual representation of the solved chip
 		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		# break
+		break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")

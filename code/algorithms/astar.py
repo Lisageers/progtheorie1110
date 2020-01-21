@@ -7,6 +7,7 @@ def manhattan_distance(current, end):
 
 	return heuristic
 
+
 def distance_to_gate(gates, current, start, end):
 
 	heuristic = manhattan_distance(current, end)
@@ -18,13 +19,12 @@ def distance_to_gate(gates, current, start, end):
 	return heuristic
 
 
-# def pythagoras(current, end):
-# 	""" Determine the distance as the bird flies between two coordinates. """
+def pythagoras(current, end):
+	""" Determine the distance as the bird flies between two coordinates. """
 
-# 	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
 
-# 	return distance
-
+	return distance
 
 
 def loose_cables(parent, current, end):
@@ -84,7 +84,9 @@ def astar(gates, grid, start, end, index=None):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = manhattan_distance(neighbour, end) # loose_cables(current_path[-1], neighbour, end)
+			h = manhattan_distance(neighbour, end)
+			# h = loose_cables(current_path[-1], neighbour, end)
+			# h = distance_to_gate(gates)
 			
 			new_path = current_path + [neighbour]
 
@@ -114,6 +116,7 @@ def execute_astar(netlist, chip, req_sort):
 				between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
 				path_1 = astar(gates, grid, start, between, index)
 				path_2 = astar(gates, grid, start, end, index)
+				# print(path_1 + path_2)
 				output_dict[net] = path_1 + path_2
 
 	else:
@@ -122,8 +125,8 @@ def execute_astar(netlist, chip, req_sort):
 			end = net[1]
 			path = astar(gates, grid, start, end)
 			count += 1
-			print(path)
-			print(count)
+			# print(path)
+			# print(count)
 			output_dict[net] = path
 
 	return output_dict
