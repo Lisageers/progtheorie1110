@@ -53,10 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 81df95a77d416de59e562d0a2cec971bad0380c8
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -82,16 +78,15 @@ if __name__ == '__main__':
 		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
 
 		# calculate cost of the solution
-		cost = wires.cost(wires.wire)
+		cost = wires.cost(wires.new_wires)
 		print(f"The cost of this solution is {cost}\n")
 		total_cost += cost
 
 		count = 0
-		for wire in wires.wire.values():
+		for wire in wires.new_wires.values():
 			if len(wire) != 1:
 				count +=1
 
-		print(wires.new_wire)
 
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
@@ -101,7 +96,7 @@ if __name__ == '__main__':
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
 		# # create visual representation of the solved chip
-		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		visualise = matplot.visualise(chiploop.gates, wires.new_wires, x_dim, y_dim)
 		# break
 
 	print(f"The total_cost is {total_cost}.\n")

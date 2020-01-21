@@ -50,8 +50,7 @@ def change_wires(stuck_dict, block_dict, chip, output_dict):
 		for z in range(int(point[2]) + 1):
 			chip.grid[point[0]][point[1]][point[2] - z] = True
 
-
-	block_wires = xyz_wire(block_netlist, chip)
+	block_wires, block_unsolved = xyz_wire(block_netlist, chip)
 
 	# make sure stuck wires can be laid
 	for net, point in stuck_dict.items():
@@ -59,11 +58,11 @@ def change_wires(stuck_dict, block_dict, chip, output_dict):
 		for z in range(int(point[2]) + 1):
 			chip.grid[point[0]][point[1]][point[2] - z] = False
 
-	stuck_wires = xyz_wire(stuck_netlist, chip)
+	stuck_wires, stuck_unsolved = xyz_wire(stuck_netlist, chip)
 
-	print("output_dict", output_dict)
-	print("stuck_wires", dict(stuck_wires))
-	print("block_wires", dict(block_wires))
+	print("stuck unsolved", stuck_wires)
+	print("block_unsolved", block_wires)
+
 	output_dict.update(block_wires)
 	output_dict.update(stuck_wires)
 
