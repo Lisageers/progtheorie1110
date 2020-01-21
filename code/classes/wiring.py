@@ -18,21 +18,19 @@ from code.algorithms.hillclimb import *
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
 
-	def __init__(self, netlist, chip, alg_req, req_sort):
+	def __init__(self, netlist, chip, alg_req, loose_layering):
 		self.chip = chip
 		self.netlist = netlist
+		
 		algorithm = self.choose_alg(alg_req)
+		
 		if alg_req == 'xyz_move':
 			self.wire, self.unsolved = algorithm(self.netlist, self.chip)
 			self.stuck = find_point_stuck(self.wire, self.unsolved)
 			self.block = find_blocking_wire(self.wire, self.stuck)
 			self.new_wires = change_wires(self.stuck, self.block, self.chip, self.wire)
 		else:
-			self.wire = algorithm(self.netlist, self.chip, req_sort)
-		
-		# self.stuck = find_point_stuck(self.wire, self.unsolved)
-		# self.block = find_blocking_wire(self.wire, self.stuck)
-		# self.new_wires = change_wires(self.stuck, self.block, self.chip, self.wire)
+			self.wire = algorithm(self.netlist, self.chip, loose_layering)
 
 		self.output(self.wire)
 
