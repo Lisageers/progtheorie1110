@@ -34,7 +34,7 @@ def change_wires(stuck_points, stuck_wires, chip, output_dict):
 		new_netlist = [(point, net[1])]
 
 		# execute astar
-		new_wires = execute_astar(new_netlist, chip)
+		new_wires = execute_astar(new_netlist, chip, 'nosort')
 
 		# merge wires if new found
 		if len(next(iter(new_wires.values()))) > 1:

@@ -7,6 +7,7 @@ def manhattan_distance(current, end):
 
 	return heuristic
 
+
 def distance_to_gate(gates, current, start, end):
 
 	heuristic = manhattan_distance(current, end)
@@ -18,13 +19,12 @@ def distance_to_gate(gates, current, start, end):
 	return heuristic
 
 
-# def pythagoras(current, end):
-# 	""" Determine the distance as the bird flies between two coordinates. """
+def pythagoras(current, end):
+	""" Determine the distance as the bird flies between two coordinates. """
 
-# 	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
 
-# 	return distance
-
+	return distance
 
 
 def loose_cables(parent, current, end):
@@ -68,7 +68,7 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end, index=None):
+def astar(gates, grid, start, end):
 	""" A* """
 
 	Q = []
@@ -98,7 +98,7 @@ def astar(gates, grid, start, end, index=None):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip):
+def execute_astar(netlist, chip, req_sort):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
@@ -106,25 +106,31 @@ def execute_astar(netlist, chip):
 	output_dict = {}
 	count = 0
 
-	# if req_sort == 'loose_layering':
-	# 	for index, layer in enumerate(netlist):
-	# 		for net in layer:
-	# 			start = net[0]
-	# 			end = net[1]
-	# 			between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
-	# 			path_1 = astar(gates, grid, start, between, index)
-	# 			path_2 = astar(gates, grid, start, end, index)
-	# 			output_dict[net] = path_1 + path_2
-	#
-	# else:
+	if req_sort == 'loose_layering':
+		for index, layer in enumerate(netlist):
+			for net in layer:
+				start = net[0]
+				end = net[1]
 
-	for net in netlist:
-		start = net[0]
-		end = net[1]
-		path = astar(gates, grid, start, end)
-		count += 1
-		print(path)
-		print(count)
-		output_dict[net] = path
+				if manhattan_distance(start, end) > 1:
+					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
+					path_1 = astar(gates, grid, start, between)
+					path_2 = astar(gates, grid, between, end)
+					print("if", path_1 + path_2)
+					output_dict[net] = path_1 + path_2
+				else:
+					path = astar(gates, grid, start, end)
+					print("else", path)
+					output_dict[net] = path
+
+	else:
+		for net in netlist:
+			start = net[0]
+			end = net[1]
+			path = astar(gates, grid, start, end)
+			count += 1
+			print(path)
+			print(count)
+			output_dict[net] = path
 
 	return output_dict
