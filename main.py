@@ -78,12 +78,12 @@ if __name__ == '__main__':
 		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
 
 		# calculate cost of the solution
-		cost = wires.cost(wires.new_wires)
+		cost = wires.cost(wires.wire)
 		print(f"The cost of this solution is {cost}\n")
 		total_cost += cost
 
 		count = 0
-		for wire in wires.new_wires.values():
+		for wire in wires.wire.values():
 			if len(wire) != 1:
 				count +=1
 
@@ -96,7 +96,7 @@ if __name__ == '__main__':
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
 		# # create visual representation of the solved chip
-		visualise = matplot.visualise(chiploop.gates, wires.new_wires, x_dim, y_dim)
+		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
 		# break
 
 	print(f"The total_cost is {total_cost}.\n")

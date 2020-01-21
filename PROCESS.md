@@ -161,6 +161,15 @@ Vandaag
   - vergelijken in normale-mensentaal
   - hillclimber opzet voor als we eindelijk een loose_cables oplossing hebben
 
+
+### Dinsdag
+
+Vandaag
+  - loose_layering geeft een uitkomst, nog wel een aantal die niet opgelost kunnen worden.
+  - Gespeeld met between, blijkt niet veel te veranderen.
+  - Ipv eerst laag 7 vullen, eerst laag 1 vullen. 
+
+
 Stap 4 - optimaliseer
 
 
