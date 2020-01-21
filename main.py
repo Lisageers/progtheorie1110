@@ -47,11 +47,18 @@ if __name__ == '__main__':
 
 	# let user choose a method for sorting the netlist
 	while True:
-		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, loose_layering)\n")
-		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'loose_layering':
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, longest_first)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'longest_first':
 			break
 		else:
 			print("That is not an option.\n")
+
+	# does user want loose_layering
+	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+	if layering_input == 'y' or layering_input == 'yes':
+		loose_layering = True
+	else:
+		loose_layering = False
 
 	# let user choose an algorithm
 	while True:
@@ -71,11 +78,13 @@ if __name__ == '__main__':
 		loopcount += 1
 
 		# create a Netlist object for the chosen chip and netlist combination
-		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort, loose_layering)
+		
+		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, req_sort)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, loose_layering)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
@@ -86,7 +95,6 @@ if __name__ == '__main__':
 		for wire in wires.wire.values():
 			if len(wire) != 1:
 				count +=1
-
 
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count

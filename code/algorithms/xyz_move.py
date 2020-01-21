@@ -4,6 +4,7 @@ def xyz_wire(netlist, chip):
 
 	output_dict = {}
 	unsolved_wire = {}
+	unsolved_count = 0
 
 	for net in netlist:
 		wire = []
@@ -54,13 +55,13 @@ def xyz_wire(netlist, chip):
 				# move +z if z of end is larger and +z is open
 				else:
 					if current[2] + 1 == 8:
-						print("tot hier komt ie: ", wire)
-						print(f"dit is het eind: {end}" )
+						unsolved_count += 1
 						output_dict[net] = [(0, 0, 0)]
 						unsolved_wire[net] = wire
 						break
 					current[2] += 1
 					chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
+	print("unsolved: ", unsolved_count)
 
 	return output_dict, unsolved_wire

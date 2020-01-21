@@ -99,9 +99,9 @@ def astar(gates, grid, start, end, occurance_gate):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip, req_sort):
+def execute_astar(netlist, chip, loose_layering):
 	""" Execute astar function for all nets. """
-	
+
 	grid = chip.grid
 	gates = chip.gates
 	output_dict = {}
@@ -111,20 +111,18 @@ def execute_astar(netlist, chip, req_sort):
 	for gate in gates:
 		occurance_gate[gate] = 0
 
-	if req_sort == 'loose_layering':
+	if loose_layering == True:
 		
 		for layer in netlist:
 			for net in layer:
 				occurance_gate[net[0]] += 1
 				occurance_gate[net[1]] += 1
-			
-		print(occurance_gate)
 
 		for index, layer in enumerate(netlist):
 			for net in layer:
 				start = net[0]
 				end = net[1]
-				
+
 				if manhattan_distance(start, end) > 1:
 					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
 					path_1 = astar(gates, grid, start, between, occurance_gate)
@@ -146,8 +144,8 @@ def execute_astar(netlist, chip, req_sort):
 			end = net[1]
 			path = astar(gates, grid, start, end)
 			count += 1
-			# print(path)
-			# print(count)
+			print(path)
+			print(count)
 			output_dict[net] = path
 
 	return output_dict

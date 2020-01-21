@@ -22,7 +22,7 @@ def get_neighbours(grid, node, end):
 	return neighbours
 
 
-def dfs(neighbours, start, end, visited, grid, req_sort):
+def dfs(neighbours, start, end, visited, grid):
 	""" Perform depth first search recursively until end node is reached """
 
 	if start not in visited:
@@ -35,7 +35,7 @@ def dfs(neighbours, start, end, visited, grid, req_sort):
 	return visited
 
 
-def execute_dfs(net_cor, chip):
+def execute_dfs(net_cor, chip, loose_layering):
 	""" Execute dfs function for all nets """
 
 	grid = chip.grid

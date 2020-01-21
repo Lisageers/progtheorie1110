@@ -17,10 +17,11 @@ from collections import Counter
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, list_file, gates, req_sort):
+	def __init__(self, list_file, gates, req_sort, loose_layering):
 		self.netlist = self.netlist(list_file, req_sort)
 		self.net_cor = self.net_cor(self.netlist, gates, req_sort)
-		if req_sort == 'loose_layering':
+		
+		if loose_layering == True:
 			self.net_cor = self.loose_layering(self.net_cor)
 
 
@@ -41,9 +42,10 @@ class Netlist():
 				netlist_gates.append(start.strip())
 				netlist_gates.append(end.strip())
 
+		# sort netlist as per request user
 		if req_sort == 'random':
 			sorted_netlist = self.sort_random(netlist)
-		elif req_sort == 'most_common' or 'loose_layering':
+		elif req_sort == 'most_common':
 			sorted_netlist = self.sort_most_common(netlist, netlist_gates)
 		else:
 			sorted_netlist = netlist
@@ -69,14 +71,18 @@ class Netlist():
 			# put cors in list
 			net_cor.append((cor_start, cor_end))
 
-			if req_sort == 'straight_first':
-				sorted_net_cor = self.sort_straight_first(net_cor)
-			elif req_sort == 'straight_random':
-				sorted_net_cor = self.sort_straight_random(net_cor)
-			else:
-				sorted_net_cor = net_cor
+		# sort netlist as per request user
+		if req_sort == 'straight_first':
+			sorted_net_cor = self.sort_straight_first(net_cor)
+		elif req_sort == 'straight_random':
+			sorted_net_cor = self.sort_straight_random(net_cor)
+		elif req_sort == 'longest_first':
+			sorted_net_cor = self.sort_longest_first(net_cor)
+		else:
+			sorted_net_cor = net_cor
 
 		return sorted_net_cor
+
 
 	def sort_random(self, netlist):
 		""" Sort the netlist randomly. """
@@ -84,6 +90,7 @@ class Netlist():
 		shuffle(netlist)
 
 		return netlist
+
 
 	def sort_straight_first(self, net_cor):
 		""" Sort the netlist by straight lines first, the rest as in csv. """
@@ -149,7 +156,30 @@ class Netlist():
 		return sorted_netlist
 
 
+	def sort_longest_first(self, netlist):
+		""" Sort the netlist by manhatten distance between start and end. """
+
+		distance_list = []
+
+		for net in netlist:
+			start = net[0]
+			end = net[1]
+			distance = abs(start[0] - end[0]) + abs(start[1] - end[1]) + abs(start[2] - end[2])
+			distance_list.append((distance, net))
+
+		sorted_distance = sorted(distance_list, reverse=True)
+
+		sorted_netlist = []
+
+		for distance_net in sorted_distance:
+			sorted_netlist.append(distance_net[1])
+
+		return sorted_netlist
+
+
 	def loose_layering(self, netlist):
+		""" Equal distribution of wires per layer. """
+
 		rest_nets = len(netlist) % 7
 		normal_divisible = len(netlist) - rest_nets
 		cables_per_layer = int(normal_divisible / 7)
