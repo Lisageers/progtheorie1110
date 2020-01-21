@@ -68,7 +68,7 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end, index=None):
+def astar(gates, grid, start, end):
 	""" A* """
 
 	Q = []
@@ -84,10 +84,10 @@ def astar(gates, grid, start, end, index=None):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = manhattan_distance(neighbour, end)
-			# h = loose_cables(current_path[-1], neighbour, end)
-			# h = distance_to_gate(gates)
-			
+			# h = manhattan_distance(neighbour, end) 
+			h = distance_to_gate(gates, neighbour, start, end)
+			# loose_cables(current_path[-1], neighbour, end)
+
 			new_path = current_path + [neighbour]
 
 			if neighbour == end:
@@ -113,11 +113,17 @@ def execute_astar(netlist, chip, req_sort):
 			for net in layer:
 				start = net[0]
 				end = net[1]
-				between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
-				path_1 = astar(gates, grid, start, between, index)
-				path_2 = astar(gates, grid, start, end, index)
-				# print(path_1 + path_2)
-				output_dict[net] = path_1 + path_2
+				
+				if manhattan_distance(start, end) > 1:
+					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
+					path_1 = astar(gates, grid, start, between)
+					path_2 = astar(gates, grid, between, end)
+					print("if", path_1 + path_2)
+					output_dict[net] = path_1 + path_2
+				else:
+					path = astar(gates, grid, start, end)
+					print("else", path)
+					output_dict[net] = path
 
 	else:
 		for net in netlist:
