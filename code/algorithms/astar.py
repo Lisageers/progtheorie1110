@@ -84,8 +84,8 @@ def astar(gates, grid, start, end, index=None):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			h = manhattan_distance(neighbour, end) 
-
+			h = manhattan_distance(neighbour, end) # loose_cables(current_path[-1], neighbour, end)
+			
 			new_path = current_path + [neighbour]
 
 			if neighbour == end:

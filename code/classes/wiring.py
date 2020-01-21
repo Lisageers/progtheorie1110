@@ -13,6 +13,7 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 from code.algorithms.iddfs import execute_dfs
+from code.algorithms.hillclimb import *
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -21,7 +22,14 @@ class Wiring():
 		self.chip = chip
 		self.netlist = netlist
 		algorithm = self.choose_alg(alg_req)
-		self.wire = algorithm(self.netlist, self.chip, req_sort)
+		if alg_req == 'xyz_move':
+			self.wire, self.unsolved = algorithm(self.netlist, self.chip)
+		else:
+			self.wire = algorithm(self.netlist, self.chip)
+		self.stuck = find_point_stuck(self.wire, self.unsolved)
+		self.block = find_blocking_wire(self.wire, self.stuck)
+		self.new_wires = change_wires(self.stuck, self.block, self.chip, self.wire)
+
 		self.output(self.wire)
 
 
