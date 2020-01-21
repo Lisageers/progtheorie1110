@@ -85,7 +85,7 @@ def astar(gates, grid, start, end, index=None):
 
 		for neighbour in neighbours:
 			h = manhattan_distance(neighbour, end) # loose_cables(current_path[-1], neighbour, end)
-			
+
 			new_path = current_path + [neighbour]
 
 			if neighbour == end:
@@ -98,32 +98,33 @@ def astar(gates, grid, start, end, index=None):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip, req_sort):
+def execute_astar(netlist, chip):
 	""" Execute astar function for all nets. """
-	
+
 	grid = chip.grid
 	gates = chip.gates
 	output_dict = {}
 	count = 0
 
-	if req_sort == 'loose_layering':
-		for index, layer in enumerate(netlist):
-			for net in layer:
-				start = net[0]
-				end = net[1]
-				between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
-				path_1 = astar(gates, grid, start, between, index)
-				path_2 = astar(gates, grid, start, end, index)
-				output_dict[net] = path_1 + path_2
+	# if req_sort == 'loose_layering':
+	# 	for index, layer in enumerate(netlist):
+	# 		for net in layer:
+	# 			start = net[0]
+	# 			end = net[1]
+	# 			between = ((start[0] + end[0]) / 2 , (start[1] + end[1]) / 2, 7 - index)
+	# 			path_1 = astar(gates, grid, start, between, index)
+	# 			path_2 = astar(gates, grid, start, end, index)
+	# 			output_dict[net] = path_1 + path_2
+	#
+	# else:
 
-	else:
-		for net in netlist:
-			start = net[0]
-			end = net[1]
-			path = astar(gates, grid, start, end)
-			count += 1
-			print(path)
-			print(count)
-			output_dict[net] = path
+	for net in netlist:
+		start = net[0]
+		end = net[1]
+		path = astar(gates, grid, start, end)
+		count += 1
+		print(path)
+		print(count)
+		output_dict[net] = path
 
 	return output_dict
