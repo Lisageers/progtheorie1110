@@ -102,7 +102,7 @@ def astar(gates, grid, start, end):
 
 def execute_astar(netlist, chip, loose_layering):
 	""" Execute astar function for all nets. """
-	
+
 	grid = chip.grid
 	gates = chip.gates
 	output_dict = {}
@@ -113,7 +113,7 @@ def execute_astar(netlist, chip, loose_layering):
 			for net in layer:
 				start = net[0]
 				end = net[1]
-				
+
 				if manhattan_distance(start, end) > 1:
 					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
 					path_1 = astar(gates, grid, start, between)
@@ -131,8 +131,8 @@ def execute_astar(netlist, chip, loose_layering):
 			end = net[1]
 			path = astar(gates, grid, start, end)
 			count += 1
-			# print(path)
-			# print(count)
+			print(path)
+			print(count)
 			output_dict[net] = path
 
 	return output_dict

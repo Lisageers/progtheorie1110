@@ -1,70 +1,54 @@
 from code.algorithms.xyz_move import xyz_wire
+from code.algorithms.astar import execute_astar
+import random
 
 def find_point_stuck(output_dict, unsolved_wire):
 	""" Find the point where the wire gets stuck in the grid. """
 
-	stuck_dict = {}
+	stuck_point = {}
+	stuck_wires = {}
+
 	for net, wire in output_dict.items():
 		# check if no wire
 		if len(wire) < 2:
+			# initialise wire
+			wire = []
 
-			# look in wire
+			# look in unsolved wire
 			for point in unsolved_wire[net]:
+
 				# find the point where wire gets stuck
-				if net[1][0] == point[0] and net[1][1] == point[1] and (unsolved_wire[net].count(point) == 1):
-					stuck_dict[net] = point
+				if net[1][0] == point[0] and net[1][1] == point[1] and (unsolved_wire[net].count(point) == 1) or point == unsolved_wire[net][-1]:
+					#put wire and point in dictionary
+					stuck_wires[net] = wire
+					stuck_point[net] = point
 					break
 
-	return stuck_dict
+				# add point to list if stuck-point is not found
+				wire.append(point)
+
+	return stuck_point, stuck_wires
+
+def change_wires(stuck_points, stuck_wires, chip, output_dict):
+	""" Lays the remaining points of the wires that got stuck with the use of A*. """
+
+	new_output_dict = {}
 
 
-def find_blocking_wire(output_dict, stuck_dict):
-	""" Find the wires that block other wires. """
 
-	block_dict = {}
-	for point in stuck_dict.values():
-		for net, wire in output_dict.items():
+	for net, point in stuck_points.items():
+		# make new netlist
+		new_netlist = [(point, net[1])]
 
-			# check if wire is below point
-			if (point[0], point[1], (point[2] - 1)) in wire:
-				block_dict[net] = wire
+		# execute astar
+		new_wires = execute_astar(new_netlist, chip, 'nosort')
 
-	return block_dict
+		# merge wires if new found
+		if len(next(iter(new_wires.values()))) > 1:
+			stuck_wires[net] += next(iter(new_wires.values()))
+			new_output_dict[net] = stuck_wires[net]
 
-def change_wires(stuck_dict, block_dict, chip, output_dict):
-	""" Changes the wires that block other wires. """
-
-	block_netlist = []
-	stuck_netlist = []
-
-	# remove blocked wires
-	for net, wire in block_dict.items():
-		block_netlist.append(net)
-		for point in wire:
-			chip.grid[point[0]][point[1]][point[2]] = False
-
-	# lay stuck wires
-	for net, point in stuck_dict.items():
-		stuck_netlist.append(net)
-
-		for z in range(int(point[2]) + 1):
-			chip.grid[point[0]][point[1]][point[2] - z] = True
-
-	block_wires, block_unsolved = xyz_wire(block_netlist, chip)
-
-	# make sure stuck wires can be laid
-	for net, point in stuck_dict.items():
-		stuck_netlist.append(net)
-		for z in range(int(point[2]) + 1):
-			chip.grid[point[0]][point[1]][point[2] - z] = False
-
-	stuck_wires, stuck_unsolved = xyz_wire(stuck_netlist, chip)
-
-	print("stuck unsolved", stuck_wires)
-	print("block_unsolved", block_wires)
-
-	output_dict.update(block_wires)
-	output_dict.update(stuck_wires)
-
+	# update the output with new wires
+	output_dict.update(new_output_dict)
 
 	return output_dict
