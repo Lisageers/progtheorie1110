@@ -164,5 +164,5 @@ class Netlist():
 				layer = netlist[:cables_per_layer]
 				layer_list.append(layer)
 				del netlist[:cables_per_layer]
-		print(layer_list)
+		
 		return layer_list
