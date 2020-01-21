@@ -53,10 +53,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 81df95a77d416de59e562d0a2cec971bad0380c8
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
@@ -91,7 +87,7 @@ if __name__ == '__main__':
 			if len(wire) != 1:
 				count +=1
 
-		print(wires.new_wire)
+		# print(wires.new_wire)
 
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
