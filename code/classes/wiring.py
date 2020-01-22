@@ -9,10 +9,9 @@ Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
-
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
-from code.algorithms.hillclimb import *
+
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -22,13 +21,8 @@ class Wiring():
 		self.netlist = netlist
 		
 		algorithm = self.choose_alg(alg_req)
-		
-		if alg_req == 'xyz_move':
-			self.wire, self.unsolved = algorithm(self.netlist, self.chip)
-			self.stuck, self.stuck_wires = find_point_stuck(self.wire, self.unsolved)
-			self.new_wires = change_wires(self.stuck, self.stuck_wires, self.chip, self.wire)
-		else:
-			self.wire = algorithm(self.netlist, self.chip)
+
+		self.wire = algorithm(self.netlist, self.chip)
 
 		self.output(self.wire)
 

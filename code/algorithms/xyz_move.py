@@ -1,4 +1,6 @@
 
+from code.algorithms.xyz_astar import *
+
 def xyz_wire(netlist, chip):
 	""" Determine wire needed to connect the nets. """
 
@@ -62,6 +64,12 @@ def xyz_wire(netlist, chip):
 					current[2] += 1
 					chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
-	print("unsolved: ", unsolved_count)
 
-	return output_dict, unsolved_wire
+	optimisation_input = input("Do you want to optimise the xyz_move result with A*? (y/n) \n").lower()
+
+	if optimisation_input == 'y' or optimisation_input == 'yes':
+		stuck, stuck_wires = find_point_stuck(output_dict, unsolved_wire)
+		new_wires = change_wires(stuck, stuck_wires, chip, output_dict)
+		return new_wires
+
+	return output_dict

@@ -4,7 +4,6 @@ from math import sqrt
 from random import shuffle
 
 
-
 def layer_netlist(netlist):
 	""" Equal distribution of wires per layer. """
 
@@ -27,14 +26,6 @@ def layer_netlist(netlist):
 			del netlist[:cables_per_layer]
 	
 	return layer_list
-
-
-def pythagoras(current, end):
-	""" Determine the distance as the bird flies between two coordinates. """
-
-	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
-
-	return distance
 
 
 def manhattan_distance(current, end):
@@ -118,7 +109,6 @@ def astar(gates, grid, start, end, occurance_gate):
 			
 			""" choose which function for the heuristic to use by commenting out the others """
 
-			# h = pythagoras(neighbour, end)
 			# h = manhattan_distance(neighbour, end) 
 			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
 			# h = loose_cables(current_path[-1], neighbour, end)
@@ -135,7 +125,7 @@ def astar(gates, grid, start, end, occurance_gate):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip):
+def execute_astar(netlist, chip, loopdieloop=True):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
@@ -147,13 +137,16 @@ def execute_astar(netlist, chip):
 	for gate in gates:
 		occurance_gate[gate] = 0
 
-	# does user want loose_layering
-	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
-	if layering_input == 'y' or layering_input == 'yes':
-		loose_layering = True
+	if loopdieloop:
+		# does user want loose_layering
+		layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+		if layering_input == 'y' or layering_input == 'yes':
+			loose_layering = True
+		else:
+			loose_layering = False
 	else:
-		loose_layering = False
-			
+		loose_layering = False		
+	
 	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
 		netlist = layer_netlist(netlist)
@@ -202,11 +195,11 @@ def execute_astar(netlist, chip):
 					print(path)
 
 	else:
+		""" turn this off when running xyz_move! """
 		# determine how many wires should sprout from each gate
-		# turn this off when running xyz_move!
-		for net in netlist:
-			occurance_gate[net[0]] += 1
-			occurance_gate[net[1]] += 1
+		# for net in netlist:
+		# 	occurance_gate[net[0]] += 1
+		# 	occurance_gate[net[1]] += 1
 		
 		# run astar for each net
 		for net in netlist:
