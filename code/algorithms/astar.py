@@ -1,6 +1,32 @@
+import copy
 from heapq import heappush, heappop
 from math import sqrt
 from random import shuffle
+
+
+
+def layer_netlist(netlist):
+	""" Equal distribution of wires per layer. """
+
+	# determine how many wires per layer for equal distribution
+	rest_nets = len(netlist) % 7
+	normal_divisible = len(netlist) - rest_nets
+	cables_per_layer = int(normal_divisible / 7)
+	cables_per_layer += 1
+
+	# create a list of lists, the latter corresponding to which nets should go via which layer
+	layer_list = []
+	for x in range(7):
+		if len(netlist) < cables_per_layer:
+			netlist_copy = copy.deepcopy(netlist)
+			layer_list.append(netlist_copy)
+			del netlist[:len(netlist)]
+		elif len(netlist) != 0:
+			layer = netlist[:cables_per_layer]
+			layer_list.append(layer)
+			del netlist[:cables_per_layer]
+	
+	return layer_list
 
 
 def pythagoras(current, end):
@@ -109,7 +135,7 @@ def astar(gates, grid, start, end, occurance_gate):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip, loose_layering):
+def execute_astar(netlist, chip):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
@@ -121,11 +147,18 @@ def execute_astar(netlist, chip, loose_layering):
 	for gate in gates:
 		occurance_gate[gate] = 0
 
+	# does user want loose_layering
+	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+	if layering_input == 'y' or layering_input == 'yes':
+		loose_layering = True
+	else:
+		loose_layering = False
+			
 	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
+		netlist = layer_netlist(netlist)
 		
 		# determine how many wires should sprout from each gate
-		# turn this off when running xyz_move!
 		for layer in netlist:
 			for net in layer:
 				occurance_gate[net[0]] += 1
@@ -142,10 +175,10 @@ def execute_astar(netlist, chip, loose_layering):
 					position_changes = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0)]
 
 					# if the between point is occupied, try again with a random neighbour in x or y direction
-					if grid[between[0]][between[1]][between[2]] != False:
+					if not chip.check_empty(between, grid):
 						for position in position_changes:
 							new_between = (between[0] + position[0], between[1] + position[1], between[2])
-							if grid[new_between[0]][new_between[1]][new_between[2]] == False:
+							if chip.check_empty(new_between, grid):
 								between = new_between
 								break
 

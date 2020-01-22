@@ -52,13 +52,6 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-	# does user want loose_layering
-	layering_input = input("Do you want equal distribution of wires over the layers? This is only possible for the astar algoritm! (y/n)\n").lower()
-	if layering_input == 'y' or layering_input == 'yes':
-		loose_layering = True
-	else:
-		loose_layering = False
-
 	# let user choose an algorithm
 	while True:
 		alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
@@ -77,13 +70,13 @@ if __name__ == '__main__':
 		loopcount += 1
 
 		# create a Netlist object for the chosen chip and netlist combination
-		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort, loose_layering)
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
 		
 		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, loose_layering)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
