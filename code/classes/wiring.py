@@ -27,7 +27,7 @@ class Wiring():
 		if alg_req == 'xyz_move':
 			self.wire, self.unsolved = algorithm(self.netlist, self.chip)
 			self.stuck, self.stuck_wires = find_point_stuck(self.wire, self.unsolved)
-			self.new_wires = change_wires(self.stuck, self.stuck_wires, self.chip, self.wire)
+			self.new_wires = change_wires(self.stuck, self.stuck_wires, self.chip, self.wire, loose_layering)
 		else:
 			self.wire = algorithm(self.netlist, self.chip, loose_layering)
 
