@@ -1,5 +1,32 @@
+import copy
 from heapq import heappush, heappop
 from math import sqrt
+from random import shuffle
+
+
+
+def layer_netlist(netlist):
+	""" Equal distribution of wires per layer. """
+
+	# determine how many wires per layer for equal distribution
+	rest_nets = len(netlist) % 7
+	normal_divisible = len(netlist) - rest_nets
+	cables_per_layer = int(normal_divisible / 7)
+	cables_per_layer += 1
+
+	# create a list of lists, the latter corresponding to which nets should go via which layer
+	layer_list = []
+	for x in range(7):
+		if len(netlist) < cables_per_layer:
+			netlist_copy = copy.deepcopy(netlist)
+			layer_list.append(netlist_copy)
+			del netlist[:len(netlist)]
+		elif len(netlist) != 0:
+			layer = netlist[:cables_per_layer]
+			layer_list.append(layer)
+			del netlist[:cables_per_layer]
+	
+	return layer_list
 
 
 def pythagoras(current, end):
@@ -11,6 +38,7 @@ def pythagoras(current, end):
 
 
 def manhattan_distance(current, end):
+	""" Determine the manhattan distance between two points. """
 
 	heuristic = abs(current[0] - end[0]) + abs(current[1] - end[1]) + abs(current[2] - end[2])
 
@@ -18,6 +46,7 @@ def manhattan_distance(current, end):
 
 
 def distance_to_gate(gates, current, start, end, occurance_gate):
+	""" Protect points around gates that need to be accessible for multiple wires. """
 
 	heuristic = manhattan_distance(current, end)
 	for gate in gates:
@@ -69,7 +98,7 @@ def make_neighbours(grid, parent, current, end):
 
 
 def astar(gates, grid, start, end, occurance_gate):
-	""" A* """
+	""" A* for connecting gates on a grid. """
 
 	Q = []
 
@@ -80,10 +109,16 @@ def astar(gates, grid, start, end, occurance_gate):
 
 		neighbours = make_neighbours(grid, current_path[len(current_path) - 2], current_path[-1], end)
 
+		# stop if there are no neighbours for the current point, to decrease runtime and continue trying other nets
 		if not neighbours:
 			return [(0, 0, 0)]
 
+		# determine heuristic (h), cost, f for neighbours and place in heapq accordingly
 		for neighbour in neighbours:
+			
+			""" choose which function for the heuristic to use by commenting out the others """
+
+			# h = pythagoras(neighbour, end)
 			# h = manhattan_distance(neighbour, end) 
 			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
 			# h = loose_cables(current_path[-1], neighbour, end)
@@ -100,20 +135,30 @@ def astar(gates, grid, start, end, occurance_gate):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip, loose_layering):
+def execute_astar(netlist, chip):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
 	gates = chip.gates
 	output_dict = {}
-	count = 0
 
+	# determine which gates are to be connected
 	occurance_gate = {}
 	for gate in gates:
 		occurance_gate[gate] = 0
 
+	# does user want loose_layering
+	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+	if layering_input == 'y' or layering_input == 'yes':
+		loose_layering = True
+	else:
+		loose_layering = False
+			
+	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
+		netlist = layer_netlist(netlist)
 		
+		# determine how many wires should sprout from each gate
 		for layer in netlist:
 			for net in layer:
 				occurance_gate[net[0]] += 1
@@ -124,29 +169,50 @@ def execute_astar(netlist, chip, loose_layering):
 				start = net[0]
 				end = net[1]
 
+				# for nets that are not direct neighbours create a between in a predetermined layer for equal distribution of wires
 				if manhattan_distance(start, end) > 1:
 					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), 7 - index)
+					position_changes = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0)]
+
+					# if the between point is occupied, try again with a random neighbour in x or y direction
+					if not chip.check_empty(between, grid):
+						for position in position_changes:
+							new_between = (between[0] + position[0], between[1] + position[1], between[2])
+							if chip.check_empty(new_between, grid):
+								between = new_between
+								break
+
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
-					# print("if", path_1 + path_2)
-					output_dict[net] = path_1 + path_2
+					
+					# if half of the wire was not laid, remove the other half as well
+					if path_1 == [(0, 0, 0)] or path_2 == [(0, 0, 0)]:
+						remove_path = path_1 + path_2
+						for point in remove_path:
+							grid[point[0]][point[1]][point[2]] = False
+						output_dict[net] = [(0, 0, 0)]
+						# print("NEE")
+					else:
+						output_dict[net] = path_1 + path_2
+						print(path_1 + path_2)
+				
 				else:
 					path = astar(gates, grid, start, end, occurance_gate)
-					# print("else", path)
 					output_dict[net] = path
+					# print(path)
 
 	else:
+		# determine how many wires should sprout from each gate
+		# turn this off when running xyz_move!
 		for net in netlist:
 			occurance_gate[net[0]] += 1
 			occurance_gate[net[1]] += 1
-			
+		
+		# run astar for each net
 		for net in netlist:
 			start = net[0]
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate)
-			count += 1
-			# print(path)
-			# print(count)
 			output_dict[net] = path
 
 	return output_dict
