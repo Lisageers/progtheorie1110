@@ -84,8 +84,8 @@ def astar(gates, grid, start, end, occurance_gate):
 			return [(0, 0, 0)]
 
 		for neighbour in neighbours:
-			# h = manhattan_distance(neighbour, end) 
-			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
+			h = manhattan_distance(neighbour, end)
+			# h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
 			# h = loose_cables(current_path[-1], neighbour, end)
 
 			new_path = current_path + [neighbour]
@@ -113,7 +113,7 @@ def execute_astar(netlist, chip, loose_layering):
 		occurance_gate[gate] = 0
 
 	if loose_layering == True:
-		
+
 		for layer in netlist:
 			for net in layer:
 				occurance_gate[net[0]] += 1
@@ -136,10 +136,10 @@ def execute_astar(netlist, chip, loose_layering):
 					output_dict[net] = path
 
 	else:
-		for net in netlist:
-			occurance_gate[net[0]] += 1
-			occurance_gate[net[1]] += 1
-			
+		# for net in netlist:
+		# 	occurance_gate[net[0]] += 1
+		# 	occurance_gate[net[1]] += 1
+
 		for net in netlist:
 			start = net[0]
 			end = net[1]
