@@ -29,7 +29,7 @@ def find_point_stuck(output_dict, unsolved_wire):
 
 	return stuck_point, stuck_wires
 
-def change_wires(stuck_points, stuck_wires, chip, output_dict):
+def change_wires(stuck_points, stuck_wires, chip, output_dict, loose_layering):
 	""" Lays the remaining points of the wires that got stuck with the use of A*. """
 
 	new_output_dict = {}
@@ -39,7 +39,7 @@ def change_wires(stuck_points, stuck_wires, chip, output_dict):
 		new_netlist = [(point, net[1])]
 
 		# execute astar
-		new_wires = execute_astar(new_netlist, chip, 'nosort')
+		new_wires = execute_astar(new_netlist, chip, loose_layering)
 
 		# merge wires if new found
 		if len(next(iter(new_wires.values()))) > 1:
