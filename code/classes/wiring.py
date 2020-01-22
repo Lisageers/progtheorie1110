@@ -12,7 +12,6 @@ import csv
 
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
-from code.algorithms.iddfs import execute_dfs
 from code.algorithms.hillclimb import *
 
 class Wiring():
@@ -41,8 +40,6 @@ class Wiring():
 			algorithm = xyz_wire
 		elif alg_req == 'astar':
 			algorithm = execute_astar
-		elif alg_req == 'dfs':
-			algorithm = execute_dfs
 
 		return algorithm
 
