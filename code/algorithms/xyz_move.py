@@ -1,4 +1,3 @@
-
 from code.algorithms.xyz_astar import *
 
 def xyz_wire(netlist, chip):

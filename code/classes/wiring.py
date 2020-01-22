@@ -12,7 +12,6 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 
-
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
 

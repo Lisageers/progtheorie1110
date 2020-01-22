@@ -2,6 +2,8 @@ import copy
 from heapq import heappush, heappop
 from math import sqrt
 from random import shuffle
+from collections import Counter
+from code.algorithms.hillclimber_astar import HillClimber
 
 
 def layer_netlist(netlist):
@@ -132,10 +134,14 @@ def execute_astar(netlist, chip, loopdieloop=True):
 	gates = chip.gates
 	output_dict = {}
 
-	# determine which gates are to be connected
-	occurance_gate = {}
-	for gate in gates:
-		occurance_gate[gate] = 0
+	# determine how many connections each gate should have
+	gates_in_netlist = []
+	for net in netlist:
+		gates_in_netlist.append(net[0])
+		gates_in_netlist.append(net[1])
+
+	occurance_gate = Counter(gates_in_netlist)
+
 
 	if loopdieloop:
 		# does user want loose_layering
@@ -151,12 +157,6 @@ def execute_astar(netlist, chip, loopdieloop=True):
 	if loose_layering == True:
 		netlist = layer_netlist(netlist)
 		
-		# determine how many wires should sprout from each gate
-		for layer in netlist:
-			for net in layer:
-				occurance_gate[net[0]] += 1
-				occurance_gate[net[1]] += 1
-
 		for index, layer in enumerate(netlist):
 			for net in layer:
 				start = net[0]
@@ -184,28 +184,25 @@ def execute_astar(netlist, chip, loopdieloop=True):
 						for point in remove_path:
 							grid[point[0]][point[1]][point[2]] = False
 						output_dict[net] = [(0, 0, 0)]
-						print("NEE")
 					else:
 						output_dict[net] = path_1 + path_2
-						print(path_1 + path_2)
 				
 				else:
 					path = astar(gates, grid, start, end, occurance_gate)
 					output_dict[net] = path
-					print(path)
 
 	else:
-		""" turn this off when running xyz_move! """
-		# determine how many wires should sprout from each gate
-		# for net in netlist:
-		# 	occurance_gate[net[0]] += 1
-		# 	occurance_gate[net[1]] += 1
-		
 		# run astar for each net
 		for net in netlist:
 			start = net[0]
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate)
 			output_dict[net] = path
+
+	optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
+
+	if optimisation_input == 'y' or optimisation_input == 'yes':
+		hill_dict = HillClimber(chip, output_dict)
+		return hill_dict
 
 	return output_dict
