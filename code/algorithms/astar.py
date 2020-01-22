@@ -1,12 +1,20 @@
 from heapq import heappush, heappop
 from math import sqrt
 
+
+def pythagoras(current, end):
+	""" Determine the distance as the bird flies between two coordinates. """
+
+	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
+
+	return distance
+
+
 def manhattan_distance(current, end):
 
 	heuristic = abs(current[0] - end[0]) + abs(current[1] - end[1]) + abs(current[2] - end[2])
 
 	return heuristic
-
 
 def distance_to_gate(gates, current, start, end):
 
@@ -17,14 +25,6 @@ def distance_to_gate(gates, current, start, end):
 			heuristic = manhattan_distance(current, end) + 50
 
 	return heuristic
-
-
-def pythagoras(current, end):
-	""" Determine the distance as the bird flies between two coordinates. """
-
-	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
-
-	return distance
 
 
 def loose_cables(parent, current, end):

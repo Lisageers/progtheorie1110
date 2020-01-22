@@ -8,7 +8,6 @@ Marte van der Wijk, Lisa Geers, Emma Caarls
 Connect gates on a grid.
 """
 
-import sys
 from code.classes import chip, netlist, wiring
 from code.visualisation import matplot
 
