@@ -36,8 +36,8 @@ def loose_cables(parent, current, end):
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	elif current[2] > 0:
-		looseness = 2
+	# elif current[2] > 0:
+	# 	looseness = 2
 	else:
 		looseness = 1
 
