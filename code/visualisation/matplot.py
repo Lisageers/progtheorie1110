@@ -19,17 +19,6 @@ def visualise(gates, output_dict, x, y):
 	plot.set_zlabel("Z")
 	plot.set_zlim(0.0, 7.0, 1.0)
 
-	# create lines
-	for wires in output_dict.values():
-		line_x = []
-		line_y = []
-		line_z = []
-		for cor in wires:
-			line_x.append(cor[0])
-			line_y.append(cor[1])
-			line_z.append(cor[2])
-			plt.plot(line_x, line_y, line_z)
-
 	# create scatterplot
 	cor_x = []
 	cor_y = []
@@ -39,6 +28,19 @@ def visualise(gates, output_dict, x, y):
 		cor_y.append(gate[1])
 	plt.scatter(cor_x, cor_y, marker='H', c='r', s=200, edgecolors='k')
 
+	# create lines
+	name = 0
+	for wires in output_dict.values():
+		name += 1
+		line_x = []
+		line_y = []
+		line_z = []
+		for cor in wires:
+			line_x.append(cor[0])
+			line_y.append(cor[1])
+			line_z.append(cor[2])
+			plt.plot(line_x, line_y, line_z)
+		plt.savefig(f"output_images/test{name}.png")
+
 	# show plot
-	plt.savefig("test1.png")
-	plt.show()
+	# plt.show()

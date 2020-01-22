@@ -125,7 +125,7 @@ def execute_astar(netlist, chip, loose_layering):
 				end = net[1]
 
 				if manhattan_distance(start, end) > 1:
-					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
+					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), 7 - index)
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
 					print("if", path_1 + path_2)
@@ -143,7 +143,7 @@ def execute_astar(netlist, chip, loose_layering):
 		for net in netlist:
 			start = net[0]
 			end = net[1]
-			path = astar(gates, grid, start, end)
+			path = astar(gates, grid, start, end, occurance_gate)
 			count += 1
 			print(path)
 			print(count)

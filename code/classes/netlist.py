@@ -183,13 +183,14 @@ class Netlist():
 		rest_nets = len(netlist) % 7
 		normal_divisible = len(netlist) - rest_nets
 		cables_per_layer = int(normal_divisible / 7)
+		cables_per_layer += 1
 
 		layer_list = []
 		for x in range(7):
-			if len(netlist) == cables_per_layer + rest_nets:
+			if len(netlist) < cables_per_layer:
 				netlist_copy = copy.deepcopy(netlist)
 				layer_list.append(netlist_copy)
-				del netlist[:(cables_per_layer + rest_nets)]
+				del netlist[:len(netlist)]
 			elif len(netlist) != 0:
 				layer = netlist[:cables_per_layer]
 				layer_list.append(layer)
