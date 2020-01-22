@@ -34,8 +34,6 @@ def change_wires(stuck_points, stuck_wires, chip, output_dict):
 
 	new_output_dict = {}
 
-
-
 	for net, point in stuck_points.items():
 		# make new netlist
 		new_netlist = [(point, net[1])]
