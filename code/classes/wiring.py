@@ -12,7 +12,6 @@ import csv
 
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
-from code.algorithms.iddfs import execute_dfs
 from code.algorithms.hillclimb import *
 
 class Wiring():
@@ -41,8 +40,6 @@ class Wiring():
 			algorithm = xyz_wire
 		elif alg_req == 'astar':
 			algorithm = execute_astar
-		elif alg_req == 'dfs':
-			algorithm = execute_dfs
 
 		return algorithm
 
@@ -53,7 +50,12 @@ class Wiring():
 		cost = 0
 
 		for net in output_dict:
-			cost += (len(output_dict[net]) - 1)
+			# penalty for missing wire: assume an 8th layer was needed, so add 16 for going up and down plus manhattan distance
+			if output_dict[net] == [(0, 0, 0)]:
+				manhattan_distance = abs(net[0][0] - net[1][0]) + abs(net[0][1] - net[1][1]) + abs(net[0][2] - net[1][2])
+				cost += (manhattan_distance + 16)
+			else:
+				cost += (len(output_dict[net]) - 1)
 
 		return cost
 
@@ -66,6 +68,5 @@ class Wiring():
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()
 
-			# write wires and nets from dictionary
 			for net, wire in output_dict.items():
 				writer.writerow({'net' : net, 'wires' : wire})

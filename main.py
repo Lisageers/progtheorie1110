@@ -53,7 +53,7 @@ if __name__ == '__main__':
 			print("That is not an option.\n")
 
 	# does user want loose_layering
-	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+	layering_input = input("Do you want equal distribution of wires over the layers? This is only possible for the astar algoritm! (y/n)\n").lower()
 	if layering_input == 'y' or layering_input == 'yes':
 		loose_layering = True
 	else:
@@ -61,8 +61,8 @@ if __name__ == '__main__':
 
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'astar' or alg_req == 'dfs':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'astar':
 			break
 		else:
 			print("This algorithm does not exist.\n")
