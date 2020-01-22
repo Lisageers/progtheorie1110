@@ -128,11 +128,11 @@ def execute_astar(netlist, chip, loose_layering):
 					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), 7 - index)
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
-					print("if", path_1 + path_2)
+					# print("if", path_1 + path_2)
 					output_dict[net] = path_1 + path_2
 				else:
 					path = astar(gates, grid, start, end, occurance_gate)
-					print("else", path)
+					# print("else", path)
 					output_dict[net] = path
 
 	else:
@@ -145,8 +145,8 @@ def execute_astar(netlist, chip, loose_layering):
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate)
 			count += 1
-			print(path)
-			print(count)
+			# print(path)
+			# print(count)
 			output_dict[net] = path
 
 	return output_dict

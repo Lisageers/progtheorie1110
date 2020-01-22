@@ -13,6 +13,7 @@ import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 from code.algorithms.hillclimb import *
+from code.algorithms.hill import *
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -29,6 +30,7 @@ class Wiring():
 			self.new_wires = change_wires(self.stuck, self.stuck_wires, self.chip, self.wire, loose_layering)
 		else:
 			self.wire = algorithm(self.netlist, self.chip, loose_layering)
+			self.hill = HillClimber(chip, self.wire)
 
 		self.output(self.wire)
 
