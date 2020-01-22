@@ -32,8 +32,8 @@ def loose_cables(parent, current, end):
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	elif current[2] > 0:
-		looseness = 2
+	# elif current[2] > 0:
+	# 	looseness = 2
 	else:
 		looseness = 1
 
@@ -124,7 +124,7 @@ def execute_astar(netlist, chip, loose_layering):
 				end = net[1]
 
 				if manhattan_distance(start, end) > 1:
-					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), index + 1)
+					between = (int((start[0] + end[0]) / 2), int((start[1] + end[1]) / 2), 7 - index)
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
 					print("if", path_1 + path_2)

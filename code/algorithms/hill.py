@@ -1,4 +1,5 @@
 import copy
+import random
 
 class HillClimber():
 	def __init__(self, grid, netlist):
