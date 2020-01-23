@@ -29,14 +29,6 @@ def layer_netlist(netlist):
 	return layer_list
 
 
-def pythagoras(current, end):
-	""" Determine the distance as the bird flies between two coordinates. """
-
-	distance  = sqrt((end[0] - current[0]) ** 2 + (end[1] - current[1]) ** 2 + (end[2] - current[2]) ** 2)
-
-	return distance
-
-
 def manhattan_distance(current, end):
 	""" Determine the manhattan distance between two points. """
 
@@ -56,18 +48,18 @@ def distance_to_gate(gates, current, start, end, occurance_gate):
 	return heuristic
 
 
-def loose_cables(parent, current, end):
+def loose_cables(parent, current, end, gates, start, occurance_gate):
 	""" Make looser cables cheaper, to generate suboptimal solutions that can be optimised itteratively. """
 
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	# elif current[2] > 0:
-	# 	looseness = 2
+	elif current[2] > 0:
+		looseness = 2
 	else:
 		looseness = 1
 
-	heuristic = manhattan_distance(current, end) / looseness - (2 * current[2] + looseness)
+	heuristic = 2 * (distance_to_gate(gates, current, start, end, occurance_gate) / looseness)
 
 	return heuristic
 
@@ -118,10 +110,9 @@ def astar(gates, grid, start, end, occurance_gate):
 			
 			""" choose which function for the heuristic to use by commenting out the others """
 
-			# h = pythagoras(neighbour, end)
 			# h = manhattan_distance(neighbour, end) 
 			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
-			# h = loose_cables(current_path[-1], neighbour, end)
+			# h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate)
 
 			new_path = current_path + [neighbour]
 
@@ -135,7 +126,7 @@ def astar(gates, grid, start, end, occurance_gate):
 			heappush(Q, (f, new_path))
 
 
-def execute_astar(netlist, chip):
+def execute_astar(netlist, chip, loopdieloop=True):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
@@ -147,13 +138,16 @@ def execute_astar(netlist, chip):
 	for gate in gates:
 		occurance_gate[gate] = 0
 
-	# does user want loose_layering
-	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
-	if layering_input == 'y' or layering_input == 'yes':
-		loose_layering = True
-	else:
+	if loopdieloop:
+		# does user want loose_layering
+		layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
+		if layering_input == 'y' or layering_input == 'yes':
+			loose_layering = True
+		else:
+			loose_layering = False
+	else:	
 		loose_layering = False
-			
+
 	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
 		netlist = layer_netlist(netlist)
