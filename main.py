@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 		# create a Netlist object for the chosen chip and netlist combination
 		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
-		
+
 		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
@@ -79,13 +79,10 @@ if __name__ == '__main__':
 		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
 
 		# calculate cost of the solution
-		cost_old = wires.cost(wires.wire)
-		cost_new = wires.cost(wires.hill.run_hill)
-		print(f"The old_cost of this solution is {cost_old}\n")
-		total_cost += cost_old
+		cost = wires.cost(wires.wire)
 
-		print(f"The new_cost of this solution is {cost_new}\n")
-		total_cost += cost_new
+		print(f"The cost of this solution is {cost}\n")
+		total_cost += cost
 
 		count = 0
 		for wire in wires.wire.values():

@@ -2,7 +2,7 @@ import copy
 from heapq import heappush, heappop
 from math import sqrt
 from random import shuffle
-
+from collections import Counter
 
 
 def layer_netlist(netlist):
@@ -25,7 +25,6 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
-	
 	return layer_list
 
 
@@ -107,10 +106,10 @@ def astar(gates, grid, start, end, occurance_gate):
 
 		# determine heuristic (h), cost, f for neighbours and place in heapq accordingly
 		for neighbour in neighbours:
-			
+
 			""" choose which function for the heuristic to use by commenting out the others """
 
-			# h = manhattan_distance(neighbour, end) 
+			# h = manhattan_distance(neighbour, end)
 			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
 			# h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate)
 
@@ -133,10 +132,14 @@ def execute_astar(netlist, chip, loopdieloop=True):
 	gates = chip.gates
 	output_dict = {}
 
-	# determine which gates are to be connected
-	occurance_gate = {}
-	for gate in gates:
-		occurance_gate[gate] = 0
+	# determine how many connections each gate should have
+	gates_in_netlist = []
+	for net in netlist:
+		gates_in_netlist.append(net[0])
+		gates_in_netlist.append(net[1])
+
+	occurance_gate = Counter(gates_in_netlist)
+
 
 	if loopdieloop:
 		# does user want loose_layering
@@ -151,12 +154,6 @@ def execute_astar(netlist, chip, loopdieloop=True):
 	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
 		netlist = layer_netlist(netlist)
-		
-		# determine how many wires should sprout from each gate
-		for layer in netlist:
-			for net in layer:
-				occurance_gate[net[0]] += 1
-				occurance_gate[net[1]] += 1
 
 		for index, layer in enumerate(netlist):
 			for net in layer:
@@ -178,30 +175,22 @@ def execute_astar(netlist, chip, loopdieloop=True):
 
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
-					
+
 					# if half of the wire was not laid, remove the other half as well
 					if path_1 == [(0, 0, 0)] or path_2 == [(0, 0, 0)]:
 						remove_path = path_1 + path_2
 						for point in remove_path:
 							grid[point[0]][point[1]][point[2]] = False
 						output_dict[net] = [(0, 0, 0)]
-						# print("NEE")
 					else:
 						output_dict[net] = path_1 + path_2
-						print(path_1 + path_2)
-				
+
 				else:
 					path = astar(gates, grid, start, end, occurance_gate)
 					output_dict[net] = path
-					# print(path)
+
 
 	else:
-		# determine how many wires should sprout from each gate
-		# turn this off when running xyz_move!
-		for net in netlist:
-			occurance_gate[net[0]] += 1
-			occurance_gate[net[1]] += 1
-		
 		# run astar for each net
 		for net in netlist:
 			start = net[0]

@@ -1,4 +1,3 @@
-from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 import random
 
@@ -39,7 +38,7 @@ def change_wires(stuck_points, stuck_wires, chip, output_dict):
 		new_netlist = [(point, net[1])]
 
 		# execute astar
-		new_wires = execute_astar(new_netlist, chip, False)
+		new_wires = execute_astar(new_netlist, chip, loopdieloop=False)
 
 		# merge wires if new found
 		if len(next(iter(new_wires.values()))) > 1:

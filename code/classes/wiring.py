@@ -9,11 +9,9 @@ Uses an algorithm to generate an output file with the solution for wiring.
 """
 
 import csv
-
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
-from code.algorithms.hillclimb import *
-from code.algorithms.hill import *
+from code.algorithms.hillclimber_astar import HillClimber
 
 class Wiring():
 	""" This class outputs wires to connect gates as listed in netlist. """
@@ -21,16 +19,14 @@ class Wiring():
 	def __init__(self, netlist, chip, alg_req):
 		self.chip = chip
 		self.netlist = netlist
-		
-		algorithm = self.choose_alg(alg_req)
-		
-		if alg_req == 'xyz_move':
-			self.wire, self.unsolved = algorithm(self.netlist, self.chip)
-			self.stuck, self.stuck_wires = find_point_stuck(self.wire, self.unsolved)
-			self.new_wires = change_wires(self.stuck, self.stuck_wires, self.chip, self.wire)
-		else:
-			self.wire = algorithm(self.netlist, self.chip)
-			self.hill = HillClimber(chip, self.wire)
+
+		algorithm, optimisation = self.choose_alg(alg_req)
+
+		self.wire = algorithm(self.netlist, self.chip)
+
+		if optimisation == 'y' or optimisation == 'yes':
+			output_dict = HillClimber(chip, self.wire)
+			self.wire = output_dict.run_hill
 
 		self.output(self.wire)
 
@@ -41,9 +37,10 @@ class Wiring():
 		if alg_req == 'xyz_move':
 			algorithm = xyz_wire
 		elif alg_req == 'astar':
+			optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
 			algorithm = execute_astar
 
-		return algorithm
+		return algorithm, optimisation_input
 
 
 	def cost(self, output_dict):
