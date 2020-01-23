@@ -1,4 +1,3 @@
-from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 import random
 
@@ -29,7 +28,7 @@ def find_point_stuck(output_dict, unsolved_wire):
 
 	return stuck_point, stuck_wires
 
-def change_wires(stuck_points, stuck_wires, chip, output_dict, loose_layering):
+def change_wires(stuck_points, stuck_wires, chip, output_dict):
 	""" Lays the remaining points of the wires that got stuck with the use of A*. """
 
 	new_output_dict = {}
@@ -39,7 +38,7 @@ def change_wires(stuck_points, stuck_wires, chip, output_dict, loose_layering):
 		new_netlist = [(point, net[1])]
 
 		# execute astar
-		new_wires = execute_astar(new_netlist, chip, loose_layering)
+		new_wires = execute_astar(new_netlist, chip, loopdieloop=False)
 
 		# merge wires if new found
 		if len(next(iter(new_wires.values()))) > 1:

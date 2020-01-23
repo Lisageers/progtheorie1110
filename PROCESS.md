@@ -172,6 +172,15 @@ Vandaag
   - longest_first: Hierbij sorteren we de netlist op manhattan_distance. Deze blijkt niet beter te werken dan de most_common sortering.
 
 
+### Woensdag
+
+Vandaag
+  - Between aangepast 
+  - Cost functie aangepast
+  - Hill Climber voor Astar
+  - Random wire eerst verwijderen, dan nieuwe route in grid
+
+
 Stap 4 - optimaliseer
 
 

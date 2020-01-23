@@ -9,7 +9,6 @@ Reads a netlist from csv input and write a coordinate list from it.
 """
 
 import csv
-import copy
 from random import shuffle
 from collections import Counter
 
@@ -17,12 +16,9 @@ from collections import Counter
 class Netlist():
 	""" This class creates a usable netlist. """
 
-	def __init__(self, list_file, gates, req_sort, loose_layering):
+	def __init__(self, list_file, gates, req_sort):
 		self.netlist = self.netlist(list_file, req_sort)
 		self.net_cor = self.net_cor(self.netlist, gates, req_sort)
-		
-		if loose_layering == True:
-			self.net_cor = self.loose_layering(self.net_cor)
 
 
 	def netlist(self, list_file, req_sort):
@@ -161,39 +157,20 @@ class Netlist():
 
 		distance_list = []
 
+		# determine manhattan distance between start and end
 		for net in netlist:
 			start = net[0]
 			end = net[1]
 			distance = abs(start[0] - end[0]) + abs(start[1] - end[1]) + abs(start[2] - end[2])
 			distance_list.append((distance, net))
 
+		# sort nets by manhattan distance (largest first)
 		sorted_distance = sorted(distance_list, reverse=True)
 
+		# create a list of nets without distance
 		sorted_netlist = []
 
 		for distance_net in sorted_distance:
 			sorted_netlist.append(distance_net[1])
 
 		return sorted_netlist
-
-
-	def loose_layering(self, netlist):
-		""" Equal distribution of wires per layer. """
-
-		rest_nets = len(netlist) % 7
-		normal_divisible = len(netlist) - rest_nets
-		cables_per_layer = int(normal_divisible / 7)
-		cables_per_layer += 1
-
-		layer_list = []
-		for x in range(7):
-			if len(netlist) < cables_per_layer:
-				netlist_copy = copy.deepcopy(netlist)
-				layer_list.append(netlist_copy)
-				del netlist[:len(netlist)]
-			elif len(netlist) != 0:
-				layer = netlist[:cables_per_layer]
-				layer_list.append(layer)
-				del netlist[:cables_per_layer]
-		
-		return layer_list

@@ -52,17 +52,10 @@ if __name__ == '__main__':
 		else:
 			print("That is not an option.\n")
 
-	# does user want loose_layering
-	layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
-	if layering_input == 'y' or layering_input == 'yes':
-		loose_layering = True
-	else:
-		loose_layering = False
-
 	# let user choose an algorithm
 	while True:
-		alg_req = input("Which algorithm would you like to use? (xyz_move, astar, dfs)\n").lower()
-		if alg_req == 'xyz_move' or alg_req == 'astar' or alg_req == 'dfs':
+		alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'astar':
 			break
 		else:
 			print("This algorithm does not exist.\n")
@@ -77,16 +70,17 @@ if __name__ == '__main__':
 		loopcount += 1
 
 		# create a Netlist object for the chosen chip and netlist combination
-		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort, loose_layering)
-		
+		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
+
 		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
 		# generate a solution
-		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req, loose_layering)
+		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
+
 		print(f"The cost of this solution is {cost}\n")
 		total_cost += cost
 
@@ -103,8 +97,8 @@ if __name__ == '__main__':
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
 		# # create visual representation of the solved chip
-		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		break
+		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		# break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")
