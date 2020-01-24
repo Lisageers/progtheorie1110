@@ -3,7 +3,6 @@ from heapq import heappush, heappop
 from math import sqrt
 from random import shuffle
 from collections import Counter
-from code.algorithms.hillclimber_astar import HillClimber
 
 
 def layer_netlist(netlist):
@@ -26,7 +25,6 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
-	
 	return layer_list
 
 
@@ -49,18 +47,18 @@ def distance_to_gate(gates, current, start, end, occurance_gate):
 	return heuristic
 
 
-def loose_cables(parent, current, end):
+def loose_cables(parent, current, end, gates, start, occurance_gate):
 	""" Make looser cables cheaper, to generate suboptimal solutions that can be optimised itteratively. """
 
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	# elif current[2] > 0:
-	# 	looseness = 2
+	elif current[2] > 0:
+		looseness = 2
 	else:
 		looseness = 1
 
-	heuristic = manhattan_distance(current, end) / looseness - (2 * current[2] + looseness)
+	heuristic = 2 * (distance_to_gate(gates, current, start, end, occurance_gate) / looseness)
 
 	return heuristic
 
@@ -94,6 +92,7 @@ def astar(gates, grid, start, end, occurance_gate):
 	""" A* for connecting gates on a grid. """
 
 	Q = []
+	
 
 	heappush(Q, (None, [start]))
 
@@ -108,12 +107,12 @@ def astar(gates, grid, start, end, occurance_gate):
 
 		# determine heuristic (h), cost, f for neighbours and place in heapq accordingly
 		for neighbour in neighbours:
-			
+
 			""" choose which function for the heuristic to use by commenting out the others """
 
-			# h = manhattan_distance(neighbour, end) 
+			# h = manhattan_distance(neighbour, end)
 			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
-			# h = loose_cables(current_path[-1], neighbour, end)
+			# h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate)
 
 			new_path = current_path + [neighbour]
 
@@ -150,13 +149,13 @@ def execute_astar(netlist, chip, loopdieloop=True):
 			loose_layering = True
 		else:
 			loose_layering = False
-	else:
-		loose_layering = False		
-	
+	else:	
+		loose_layering = False
+
 	# loose_layering forces the wires through a predetermined layer
 	if loose_layering == True:
 		netlist = layer_netlist(netlist)
-		
+
 		for index, layer in enumerate(netlist):
 			for net in layer:
 				start = net[0]
@@ -177,7 +176,7 @@ def execute_astar(netlist, chip, loopdieloop=True):
 
 					path_1 = astar(gates, grid, start, between, occurance_gate)
 					path_2 = astar(gates, grid, between, end, occurance_gate)
-					
+
 					# if half of the wire was not laid, remove the other half as well
 					if path_1 == [(0, 0, 0)] or path_2 == [(0, 0, 0)]:
 						remove_path = path_1 + path_2
@@ -186,10 +185,11 @@ def execute_astar(netlist, chip, loopdieloop=True):
 						output_dict[net] = [(0, 0, 0)]
 					else:
 						output_dict[net] = path_1 + path_2
-				
+
 				else:
 					path = astar(gates, grid, start, end, occurance_gate)
 					output_dict[net] = path
+
 
 	else:
 		# run astar for each net
@@ -198,11 +198,5 @@ def execute_astar(netlist, chip, loopdieloop=True):
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate)
 			output_dict[net] = path
-
-	optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
-
-	if optimisation_input == 'y' or optimisation_input == 'yes':
-		hill_dict = HillClimber(chip, output_dict)
-		return hill_dict
 
 	return output_dict

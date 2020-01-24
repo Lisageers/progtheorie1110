@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 		# create a Netlist object for the chosen chip and netlist combination
 		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
-		
+
 		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
@@ -97,7 +97,8 @@ if __name__ == '__main__':
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
 		# # create visual representation of the solved chip
-		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		visualise = matplot.visualise(chiploop.gates, wires.hill.run_hill, x_dim, y_dim)
 		break
 
 	print(f"The total_cost is {total_cost}.\n")
