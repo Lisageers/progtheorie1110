@@ -208,6 +208,6 @@ def execute_astar(netlist, chip, loopdieloop=True):
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate, netlist)
 			output_dict[net] = path
-			print(path)
+			# print(path)
 
 	return output_dict

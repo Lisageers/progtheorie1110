@@ -51,7 +51,7 @@ class HillClimber():
 	def run(self, chip):
 		""" Executes hillclimb algorithm. """
 
-		for wires in range(10000):
+		for wires in range(750):
 			new_unlaid_wires = self.lay_unlaid_wires(chip)
 			self.check_solution(chip, new_unlaid_wires)
 			new_wire = self.mutate_random_wire(chip)
