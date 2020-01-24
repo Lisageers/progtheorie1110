@@ -36,6 +36,7 @@ class Wiring():
 
 		if alg_req == 'xyz_move':
 			algorithm = xyz_wire
+			optimisation_input = 'no'
 		elif alg_req == 'astar':
 			optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
 			algorithm = execute_astar
