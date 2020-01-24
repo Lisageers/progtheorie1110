@@ -42,7 +42,7 @@ class HillClimber():
 
 			if new_cost < old_cost and not new_cost == 0:
 				self.output_dict.update(new_wire)
-				print("Hij is verbetert")
+				print("Hij is verbeterd")
 			else:
 				for point in self.output_dict[net]:
 					chip.grid[point[0]][point[1]][point[2]] = True
@@ -51,7 +51,7 @@ class HillClimber():
 	def run(self, chip):
 		""" Executes hillclimb algorithm. """
 
-		for wires in range(10000):
+		for wires in range(750):
 			new_unlaid_wires = self.lay_unlaid_wires(chip)
 			self.check_solution(chip, new_unlaid_wires)
 			new_wire = self.mutate_random_wire(chip)
