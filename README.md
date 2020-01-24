@@ -26,27 +26,27 @@ Het is na lezen van de README duidelijk hoe de resultaten te reproduceren zijn, 
 *Voorbeeld grid. Deze gates moeten met elkaar verbonden worden.*
 
 
-<img src="doc/test.PNG" alt="test plaatje" width="400px">
+<img src="doc/test.png" alt="test plaatje" width="400px">
 
 *Foto van test netlist, waarbij de gates met elkaar verbonden zijn met de kleinste kosten (20)* 
 
 * Deze gates kunnen door middel van x en y bewegingen met elkaar verbonden worden. De wire beweegt dan steeds dichter naar zijn target gate toe. Maar LET OP! Probleem
 
-<img src="doc/probleem_plaatje.PNG" alt="probleem plaatje" width="400px">
+<img src="doc/probleem_plaatje.png" alt="probleem plaatje" width="400px">
 
 *Visualisatie van het probleem wanneer je alleen in de x- en y-richting mag bewegen.*
 
 * In de bovenstaande afbeelding is te zien dat de 2 lege gates niet met elkaar verbonden kunnen worden door alleen in de x- en y-richting te bewegen (manhattan distacnce).
 * Om dit op te lossen maken we gebruik van extra lagen, zodat wires ook in de z-richting kunnen bewegen.
 
-<img src="doc/oplossing_probleem.PNG" alt="oplossing voor het probleem" width="400px">
+<img src="doc/oplossing_probleem.png" alt="oplossing voor het probleem" width="400px">
 
 *Wires kunnen ook in de z-richting bewegen, waardoor ze andere wires niet hoeven te kruisen.*
 
 
 * Dit ziet er allemaal nog eenvoudig uit, maar er zijn grotere grids, met meer gates die allemaal met elkaar verbonden moeten worden. 
 
-<img src="doc/60procent.PNG" alt="60procent" width="400px">
+<img src="doc/60procent.png" alt="60procent" width="400px">
 
 *In deze afbeelding zijn maar 60 procent van de gates met elkaar verbonden. De overige 40 procent van de te verbinden gates lopen ergens vast waardoor verbinden niet meer lukt.*
 
