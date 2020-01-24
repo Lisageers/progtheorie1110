@@ -111,8 +111,8 @@ def astar(gates, grid, start, end, occurance_gate):
 			""" choose which function for the heuristic to use by commenting out the others """
 
 			# h = manhattan_distance(neighbour, end)
-			h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
-			# h = loose_cables(current_path[-1], neighbour, end)
+			# h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
+			h = loose_cables(current_path[-1], neighbour, end)
 
 			new_path = current_path + [neighbour]
 

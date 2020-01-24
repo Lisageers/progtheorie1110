@@ -22,7 +22,7 @@ class HillClimber():
 	def lay_unlaid_wires(self, chip):
 		unlaid_netlist = []
 		for net, wire in self.output_dict.items():
-			if len(wire) <= 1:
+			if len(wire) == 1:
 				unlaid_netlist.append(net)
 		new_unlaid_wires = execute_astar(unlaid_netlist, chip, False)
 
@@ -48,10 +48,11 @@ class HillClimber():
 
 
 	def run(self, chip):
-		new_unlaid_wires = self.lay_unlaid_wires(chip)
-		self.check_solution(chip, new_unlaid_wires)
+		""" Executes hillclimb algorithm. """
 
-		for wires in range(750):
+		for wires in range(10000):
+			new_unlaid_wires = self.lay_unlaid_wires(chip)
+			self.check_solution(chip, new_unlaid_wires)
 			new_wire = self.mutate_random_wire(chip)
 			self.check_solution(chip, new_wire)
 
