@@ -23,7 +23,6 @@ class Wiring():
 		algorithm, optimisation = self.choose_alg(alg_req)
 
 		self.wire = algorithm(self.netlist, self.chip)
-		print(optimisation)
 
 		if optimisation == 'y' or optimisation == 'yes':
 			output_dict = HillClimber(chip, self.wire)
