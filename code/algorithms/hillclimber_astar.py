@@ -33,18 +33,19 @@ class HillClimber():
 		old_cost = 0
 		new_cost = 0
 
-		net = next(iter(new_wire.keys()))
+		if new_wire:
+			net = next(iter(new_wire.keys()))
 
-		old_cost = (len(self.output_dict[net]) - 1)
+			old_cost = (len(self.output_dict[net]) - 1)
 
-		new_cost = (len(new_wire[net]) - 1)
+			new_cost = (len(new_wire[net]) - 1)
 
-		if new_cost < old_cost and not new_cost == 0:
-			self.output_dict.update(new_wire)
-			print("Hij is verbetert")
-		else:
-			for point in self.output_dict[net]:
-				chip.grid[point[0]][point[1]][point[2]] = True
+			if new_cost < old_cost and not new_cost == 0:
+				self.output_dict.update(new_wire)
+				print("Hij is verbetert")
+			else:
+				for point in self.output_dict[net]:
+					chip.grid[point[0]][point[1]][point[2]] = True
 
 
 	def run(self, chip):

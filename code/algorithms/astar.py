@@ -25,7 +25,6 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
-
 	return layer_list
 
 
@@ -37,29 +36,29 @@ def manhattan_distance(current, end):
 	return heuristic
 
 
-def distance_to_gate(gates, current, start, end, occurance_gate):
+def distance_to_gate(gates, current, start, end, occurance_gate, sorted_netlist):
 	""" Protect points around gates that need to be accessible for multiple wires. """
 
 	heuristic = manhattan_distance(current, end)
 	for gate in gates:
-		if manhattan_distance(current, gate) == 1 and gate != start and gate != end and occurance_gate[gate] > 1:
+		if manhattan_distance(current, gate) == 1 and gate != start and gate != end and (occurance_gate[gate] > 1 or gate in sorted_netlist[-5:]):
 			heuristic = manhattan_distance(current, end) + 50
 
 	return heuristic
 
 
-def loose_cables(parent, current, end):
+def loose_cables(parent, current, end, gates, start, occurance_gate, netlist):
 	""" Make looser cables cheaper, to generate suboptimal solutions that can be optimised itteratively. """
 
 	# how happy does going in positive z-direction make the heuristic
 	if current[2] > parent[2]:
 		looseness = 10 - current[2]
-	# elif current[2] > 0:
-	# 	looseness = 2
+	elif current[2] > 0:
+		looseness = 2
 	else:
 		looseness = 1
 
-	heuristic = manhattan_distance(current, end) / looseness - (2 * current[2] + looseness)
+	heuristic = 2 * (distance_to_gate(gates, current, start, end, occurance_gate, netlist) / looseness)
 
 	return heuristic
 
@@ -89,21 +88,23 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end, occurance_gate):
+def astar(gates, grid, start, end, occurance_gate, netlist):
 	""" A* for connecting gates on a grid. """
 
 	Q = []
+	visited_points = {}
 
 	heappush(Q, (None, [start]))
 
 	while len(Q) > 0:
-		current_path = heappop(Q)[1]
+		top_tuple = heappop(Q)
+		current_path = top_tuple[1]
+		if not current_path[-1] in visited_points:
+			visited_points[current_path[-1]] = top_tuple[0]
+		elif top_tuple[0] < visited_points[current_path[-1]]:
+			visited_points[current_path[-1]] = top_tuple[0]
 
 		neighbours = make_neighbours(grid, current_path[len(current_path) - 2], current_path[-1], end)
-
-		# stop if there are no neighbours for the current point, to decrease runtime and continue trying other nets
-		if not neighbours:
-			return [(0, 0, 0)]
 
 		# determine heuristic (h), cost, f for neighbours and place in heapq accordingly
 		for neighbour in neighbours:
@@ -111,8 +112,8 @@ def astar(gates, grid, start, end, occurance_gate):
 			""" choose which function for the heuristic to use by commenting out the others """
 
 			# h = manhattan_distance(neighbour, end)
-			# h = distance_to_gate(gates, neighbour, start, end, occurance_gate)
-			h = loose_cables(current_path[-1], neighbour, end)
+			h = distance_to_gate(gates, neighbour, start, end, occurance_gate, netlist)
+			# h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate, netlist)
 
 			new_path = current_path + [neighbour]
 
@@ -123,7 +124,16 @@ def astar(gates, grid, start, end, occurance_gate):
 				return new_path
 
 			f = h + len(new_path) - 1
-			heappush(Q, (f, new_path))
+
+			if not neighbour in visited_points.keys():
+				heappush(Q, (f, new_path))
+				visited_points[neighbour] = f
+			else:
+				if visited_points[neighbour] > f:
+					heappush(Q, (f, new_path))
+					visited_points[neighbour] = f
+
+	return [(0, 0, 0)]
 
 
 def execute_astar(netlist, chip, loopdieloop=True):
@@ -174,8 +184,8 @@ def execute_astar(netlist, chip, loopdieloop=True):
 								between = new_between
 								break
 
-					path_1 = astar(gates, grid, start, between, occurance_gate)
-					path_2 = astar(gates, grid, between, end, occurance_gate)
+					path_1 = astar(gates, grid, start, between, occurance_gate, netlist)
+					path_2 = astar(gates, grid, between, end, occurance_gate, netlist)
 
 					# if half of the wire was not laid, remove the other half as well
 					if path_1 == [(0, 0, 0)] or path_2 == [(0, 0, 0)]:
@@ -187,7 +197,7 @@ def execute_astar(netlist, chip, loopdieloop=True):
 						output_dict[net] = path_1 + path_2
 
 				else:
-					path = astar(gates, grid, start, end, occurance_gate)
+					path = astar(gates, grid, start, end, occurance_gate, netlist)
 					output_dict[net] = path
 
 
@@ -196,7 +206,8 @@ def execute_astar(netlist, chip, loopdieloop=True):
 		for net in netlist:
 			start = net[0]
 			end = net[1]
-			path = astar(gates, grid, start, end, occurance_gate)
+			path = astar(gates, grid, start, end, occurance_gate, netlist)
 			output_dict[net] = path
+			print(path)
 
 	return output_dict

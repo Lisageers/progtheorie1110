@@ -96,9 +96,9 @@ if __name__ == '__main__':
 		x_dim = chiploop.get_x_dimension(chiploop.gates)
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
-		# # create visual representation of the solved chip
-		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		# break
+		# create visual representation of the solved chip
+		visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
+		break
 
 	print(f"The total_cost is {total_cost}.\n")
 	print(f"The total_count is {total_count}.\n")
