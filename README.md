@@ -72,7 +72,6 @@ Het is na lezen van de README duidelijk hoe de resultaten te reproduceren zijn, 
 * Loose_cables: Deze heuristiek zorgt ervoor dat het "aantrekkelijker" is om naar een hogere laag te gaan (waarbij de heuristiek voor laag 1 het laagst is). Het ik ook "aantrekkelijker" om, eenmaal boven, op een hogere laag te blijven.
 
 
-### Menu
 ### Vereisten
 
 Deze codebase is volledig geschreven in Python 3.7. In requirements.txt staan alle benodigde packages om de code succesvol uit te voeren. Deze zijn te installeren via pip met het volgende commando:
@@ -88,7 +87,7 @@ Het programma kan gerund worden door het aanroepen van:
 python main.py
 ```
 
-Bij het runnen van het programma krijgt de gebruiker verschillende opties:
+Bij het runnen van het programma krijgt de gebruiker verschillende opties. Bij elke keuze die een gebruiker kan maken staat duidelijk waaruit de gebruiker kan kiezen::
 - Maak een keuze welke chip je wil gebruiken.
 - Maak een keuze welke netlist je wil gebruiken.
 - Maak een keuze hoe je de netlist gesorteerd wil hebben.
@@ -97,6 +96,15 @@ Bij het runnen van het programma krijgt de gebruiker verschillende opties:
 - Maak een keuze of je bij het leggen van de wires gebruik wil maken van loose_layering.
 
 Wanneer je al deze keuzes gemaakt hebt krijg je een output:
-- Een matplotlib met hoe de wires gelegd zijn.
+- Een matplotlib met hoe de wires gelegd zijn met verschillende kleuren voor verschillende wires.
 - Hoeveel wires er gelegd zijn.
 - De totale kosten.
+
+
+### Process
+Tijdens het vak Programmeertheorie hebben wij een process bijgehouden. Deze vind je terug in de 'sjips' map. Hierin staat wat we gedaan hebben, hoe we door het project heen gelopen zijn, problemen waar we tegenaan gelopen zijn en keuzes die we gemaakt hebben.
+
+
+### Problemen met github
+* De laptop van Marte is de eerste dag van het vak (maandag 6 januari 2020) kapot gegaan. Hierdoor heeft Marte de eerste week weinig kunnen pushen en pullen via github. Deze dagen heeft ze wel veel meegewerkt.
+* Lisa pushte eerst met een andere naam (de naam van haar laptop: Vince). Hier kwamen we pas eind van de eerste week achter, waardoor het lijkt alsog ook Lisa niet gupusht en gepulled had. Dit was wel zo.

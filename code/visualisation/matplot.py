@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 import numpy as np
 
+
 def visualise(gates, output_dict, x, y):
 	""" Create a visual representation of the solved chip. """
 
@@ -28,7 +29,7 @@ def visualise(gates, output_dict, x, y):
 		cor_y.append(gate[1])
 	plt.scatter(cor_x, cor_y, marker='H', c='r', s=200, edgecolors='k')
 
-	# create lines
+	# create lines between gates
 	name = 0
 	for wires in output_dict.values():
 		name += 1
