@@ -75,14 +75,14 @@ Het is na lezen van de README duidelijk hoe de resultaten te reproduceren zijn, 
 ### Menu
 ### Vereisten
 
-Deze codebase is volledig geschreven in Python 3.7. In requirements.txt staan alle benodigde packages om de code succesvol te draaien. Deze zijn gemakkelijk te installeren via pip dmv. de volgende instructie:
+Deze codebase is volledig geschreven in Python 3.7. In requirements.txt staan alle benodigde packages om de code succesvol uit te voeren. Deze zijn te installeren via pip met het volgende commando:
 
 ```
 pip install -r requirements.txt
 ```
 
 ### Gebruik
-Het programma kan rerund worden door het aanroepen van:
+Het programma kan gerund worden door het aanroepen van:
 
 ```
 python main.py
