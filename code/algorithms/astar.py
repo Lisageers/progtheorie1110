@@ -94,7 +94,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	Q = []
 	visited_points = {}
 
-	heappush(Q, (None, [start]))
+	heappush(Q, (0, [start]))
 
 	while len(Q) > 0:
 		top_tuple = heappop(Q)
@@ -112,8 +112,8 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 			""" choose which function for the heuristic to use by commenting out the others """
 
 			# h = manhattan_distance(neighbour, end)
-			h = distance_to_gate(gates, neighbour, start, end, occurance_gate, netlist)
-			# h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate, netlist)
+			# h = distance_to_gate(gates, neighbour, start, end, occurance_gate, netlist)
+			h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate, netlist)
 
 			new_path = current_path + [neighbour]
 
