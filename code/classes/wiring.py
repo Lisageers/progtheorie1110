@@ -1,20 +1,11 @@
-"""
-wiring.py
-
-Minor programmeren, programmeertheorie
-January 2020
-Marte van der Wijk, Lisa Geers, Emma Caarls
-
-Uses an algorithm to generate an output file with the solution for wiring.
-"""
-
 import csv
 from code.algorithms.xyz_move import xyz_wire
 from code.algorithms.astar import execute_astar
 from code.algorithms.hillclimber_astar import HillClimber
 
+
 class Wiring():
-	""" This class outputs wires to connect gates as listed in netlist. """
+	""" This class retutrns output in three parts: dictionary of laid wires, cost of the wires, csv-file of laid wires. """
 
 	def __init__(self, netlist, chip, alg_req):
 		self.chip = chip
@@ -25,8 +16,9 @@ class Wiring():
 		self.wire = algorithm(self.netlist, self.chip)
 
 		if optimisation == 'y' or optimisation == 'yes':
+						
 			output_dict = HillClimber(chip, self.wire)
-			self.wire = output_dict.run_hill
+			self.wire = output_dict.run_hillclimber
 
 		self.output(self.wire)
 
@@ -44,7 +36,7 @@ class Wiring():
 
 
 	def cost(self, output_dict):
-		""" Calculate the cost of wire used in the solution. """
+		""" Calculate the cost of wires used in the solution plus a penalty for unlaid wire. """
 
 		cost = 0
 
@@ -60,7 +52,7 @@ class Wiring():
 
 
 	def output(self, output_dict):
-		""" Writes the nets and wires to a csv-file. """
+		""" Write the nets and wires to a csv-file. """
 
 		with open('data/test/output.csv', mode='w') as csv_output:
 			fieldnames = ['net', 'wires']

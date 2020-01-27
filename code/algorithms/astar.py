@@ -6,7 +6,7 @@ from collections import Counter
 
 
 def layer_netlist(netlist):
-	""" Equal distribution of wires per layer. """
+	""" Create a divided netlist for equal distribution of wires per layer. """
 
 	# determine how many wires per layer for equal distribution
 	rest_nets = len(netlist) % 7
@@ -14,8 +14,9 @@ def layer_netlist(netlist):
 	cables_per_layer = int(normal_divisible / 7)
 	cables_per_layer += 1
 
-	# create a list of lists, the latter corresponding to which nets should go via which layer
+	# create a list of lists corresponding to which nets should go via which layer
 	layer_list = []
+
 	for x in range(7):
 		if len(netlist) < cables_per_layer:
 			netlist_copy = copy.deepcopy(netlist)
@@ -25,24 +26,28 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
+	
 	return layer_list
 
 
 def manhattan_distance(current, end):
 	""" Determine the manhattan distance between two points. """
 
-	heuristic = abs(current[0] - end[0]) + abs(current[1] - end[1]) + abs(current[2] - end[2])
+	distance = abs(current[0] - end[0]) + abs(current[1] - end[1]) + abs(current[2] - end[2])
 
-	return heuristic
+	return distance
 
 
 def distance_to_gate(gates, current, start, end, occurance_gate, sorted_netlist):
-	""" Protect points around gates that need to be accessible for multiple wires. """
+	""" Protect points around gates that need to be accessible for multiple wires, by increasing their heuristic. """
 
 	heuristic = manhattan_distance(current, end)
+
+	PROTECTION_INCREASE = 50
+
 	for gate in gates:
 		if manhattan_distance(current, gate) == 1 and gate != start and gate != end and (occurance_gate[gate] > 1 or gate in sorted_netlist[-5:]):
-			heuristic = manhattan_distance(current, end) + 50
+			heuristic = manhattan_distance(current, end) + PROTECTION_INCREASE
 
 	return heuristic
 
@@ -80,6 +85,7 @@ def make_neighbours(grid, parent, current, end):
 		if grid[next_position[0]][next_position[1]][next_position[2]] != False and next_position != end:
 			continue
 
+		# parent cannot also be neighbour
 		if next_position == parent:
 			continue
 
@@ -99,6 +105,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	while len(Q) > 0:
 		top_tuple = heappop(Q)
 		current_path = top_tuple[1]
+
 		if not current_path[-1] in visited_points:
 			visited_points[current_path[-1]] = top_tuple[0]
 		elif top_tuple[0] < visited_points[current_path[-1]]:
@@ -109,14 +116,16 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 		# determine heuristic (h), cost, f for neighbours and place in heapq accordingly
 		for neighbour in neighbours:
 
-			""" choose which function for the heuristic to use by commenting out the others """
-
-			# h = manhattan_distance(neighbour, end)
-			# h = distance_to_gate(gates, neighbour, start, end, occurance_gate, netlist)
-			h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate, netlist)
+			if heuristic == 'manhattan_distance':
+				h = manhattan_distance(neighbour, end)
+			elif heuristic == 'distance_to_gate':
+				h = distance_to_gate(gates, neighbour, start, end, occurance_gate, netlist)
+			elif heuristic == 'loose_cables':
+				h = loose_cables(current_path[-1], neighbour, end, gates, start, occurance_gate, netlist)
 
 			new_path = current_path + [neighbour]
 
+			# lay the wire if the end has been found
 			if neighbour == end:
 				for point in new_path:
 					grid[point[0]][point[1]][point[2]] = True
@@ -125,6 +134,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 
 			f = h + len(new_path) - 1
 
+			# only add neighbours to the queue when they are new or have a lower f
 			if not neighbour in visited_points.keys():
 				heappush(Q, (f, new_path))
 				visited_points[neighbour] = f
@@ -151,9 +161,8 @@ def execute_astar(netlist, chip, loopdieloop=True):
 
 	occurance_gate = Counter(gates_in_netlist)
 
-
 	if loopdieloop:
-		# does user want loose_layering
+		# does user want loose_layering?
 		layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
 		if layering_input == 'y' or layering_input == 'yes':
 			loose_layering = True
@@ -200,7 +209,6 @@ def execute_astar(netlist, chip, loopdieloop=True):
 					path = astar(gates, grid, start, end, occurance_gate, netlist)
 					output_dict[net] = path
 
-
 	else:
 		# run astar for each net
 		for net in netlist:
@@ -208,6 +216,5 @@ def execute_astar(netlist, chip, loopdieloop=True):
 			end = net[1]
 			path = astar(gates, grid, start, end, occurance_gate, netlist)
 			output_dict[net] = path
-			# print(path)
 
 	return output_dict

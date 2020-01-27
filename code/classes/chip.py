@@ -1,18 +1,8 @@
-"""
-chip.py
-
-Minor programmeren, programmeertheorie
-January 2020
-Marte van der Wijk, Lisa Geers, Emma Caarls
-
-Creates an empty grid and adds gates.
-"""
-
 import csv
 
 
 class Chip(object):
-	""" This class creates a grid with gates. """
+	""" This class creates a 3D grid with gates on z=0, from a chosen csv-file. """
 
 	def __init__(self, chip_file):
 		self.gates = self.create_gates(chip_file)
@@ -39,7 +29,7 @@ class Chip(object):
 
 
 	def create_grid(self, gates):
-		""" Create grid with gates. """
+		""" Create 3D grid with gates. """
 
 		# get x and y dimensions and set z dimension to 8, as specified in assignment.
 		n = self.get_x_dimension(gates)
@@ -66,7 +56,7 @@ class Chip(object):
 
 
 	def get_x_dimension(self, gates):
-		""" Determine the max value for x for the grid. """
+		""" Determine the max value for x for the grid, based on gate with highest x-value. """
 
 		x_cor = []
 
@@ -80,7 +70,7 @@ class Chip(object):
 
 
 	def get_y_dimension(self, gates):
-		""" Determine the max value for y for the grid. """
+		""" Determine the max value for y for the grid, based on hate with highest y-value. """
 
 		y_cor = []
 

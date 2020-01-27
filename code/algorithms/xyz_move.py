@@ -1,5 +1,6 @@
 from code.algorithms.xyz_astar import *
 
+
 def xyz_wire(netlist, chip):
 	""" Determine wire needed to connect the nets. """
 

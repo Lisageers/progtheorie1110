@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
 	# let user choose a chip
 	while True:
-		req_chip = input("Which chip do you want to use? (1, 2, test)\n")
+		req_chip = input("Which chip do you want to use? (1, 2)\n")
 		if req_chip == '1':
 			chip_path = 'data/chip_1/print_1.csv'
 			req_chip = 'chip_1'
@@ -24,10 +24,6 @@ if __name__ == '__main__':
 		elif req_chip == '2':
 			chip_path = 'data/chip_2/print_2.csv'
 			req_chip = 'chip_2'
-			break
-		elif req_chip.lower() == 'test':
-			chip_path = 'data/test/print.csv'
-			req_chip = 'test'
 			break
 		else:
 			print("That chip does not exist.\n")
@@ -45,22 +41,20 @@ if __name__ == '__main__':
 			print("That is not an option.\n")
 
 	# let user choose a method for sorting the netlist
-	# while True:
-	# 	req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, longest_first)\n")
-	# 	if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'longest_first':
-	# 		break
-	# 	else:
-	# 		print("That is not an option.\n")
-	req_sort = "most_common"
+	while True:
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, longest_first)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'longest_first':
+			break
+		else:
+			print("That is not an option.\n")
 
 	# let user choose an algorithm
-	# while True:
-	# 	alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
-	# 	if alg_req == 'xyz_move' or alg_req == 'astar':
-	# 		break
-	# 	else:
-	# 		print("This algorithm does not exist.\n")
-	alg_req = 'xyz_move'
+	while True:
+		alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'astar':
+			break
+		else:
+			print("This algorithm does not exist.\n")
 
 	total_cost = 0
 	total_count = 0
@@ -77,8 +71,8 @@ if __name__ == '__main__':
 		# generate a new chip for each loop
 		chiploop = chip.Chip(chip_path)
 
-		# generate a solution
-		wires = wiring.Wiring(netlistloop.net_cor, chiploop, alg_req)
+		# generate a dictionary containing the solution (wire) for each net
+		wires = wiring.Wiring(netlistloop.net_coords, chiploop, alg_req)
 
 		# calculate cost of the solution
 		cost = wires.cost(wires.wire)
@@ -94,7 +88,7 @@ if __name__ == '__main__':
 		print(f"The algorithm laid {count} wires.\n")
 		total_count += count
 
-		# get the dimensions for the visual representation
+		# get the dimensions of the grid for the visual representation
 		x_dim = chiploop.get_x_dimension(chiploop.gates)
 		y_dim = chiploop.get_y_dimension(chiploop.gates)
 
