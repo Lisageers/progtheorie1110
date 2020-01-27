@@ -45,29 +45,27 @@ if __name__ == '__main__':
 			print("That is not an option.\n")
 
 	# let user choose a method for sorting the netlist
-	# while True:
-	# 	req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, longest_first)\n")
-	# 	if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'longest_first':
-	# 		break
-	# 	else:
-	# 		print("That is not an option.\n")
-	req_sort = "most_common"
+	while True:
+		req_sort = input("How do you want to sort the netlist? (random, straight_first, straight_random, most_common, longest_first)\n")
+		if req_sort == 'random' or req_sort == 'straight_first' or req_sort == 'straight_random' or req_sort == 'most_common' or req_sort == 'longest_first':
+			break
+		else:
+			print("That is not an option.\n")
 
 	# let user choose an algorithm
-	# while True:
-	# 	alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
-	# 	if alg_req == 'xyz_move' or alg_req == 'astar':
-	# 		break
-	# 	else:
-	# 		print("This algorithm does not exist.\n")
-	alg_req = 'xyz_move'
+	while True:
+		alg_req = input("Which algorithm would you like to use? (xyz_move, astar)\n").lower()
+		if alg_req == 'xyz_move' or alg_req == 'astar':
+			break
+		else:
+			print("This algorithm does not exist.\n")
 
-	total_cost = 0
-	total_count = 0
+	best_cost = 10000
+	best_count = 0
 
 	loopcount = 0
 	while True:
-		if loopcount > 0:
+		if loopcount > 749:
 			break
 		loopcount += 1
 
@@ -84,15 +82,16 @@ if __name__ == '__main__':
 		cost = wires.cost(wires.wire)
 
 		print(f"The cost of this solution is {cost}\n")
-		total_cost += cost
-
 		count = 0
 		for wire in wires.wire.values():
 			if len(wire) != 1:
 				count +=1
-		
-		print(f"The algorithm laid {count} wires.\n")
-		total_count += count
+
+		if count > best_count or (cost < best_cost and count == best_count):
+			best_cost = cost
+
+			print(f"The algorithm laid {count} wires.\n")
+			best_count = count
 
 		# get the dimensions for the visual representation
 		x_dim = chiploop.get_x_dimension(chiploop.gates)
@@ -102,5 +101,5 @@ if __name__ == '__main__':
 		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
 		# break
 
-	print(f"The total_cost is {total_cost}.\n")
-	print(f"The total_count is {total_count}.\n")
+	print(f"The total_cost is {best_cost}.\n")
+	print(f"The total_count is {best_count}.\n")

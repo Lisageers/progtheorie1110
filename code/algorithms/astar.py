@@ -136,7 +136,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	return [(0, 0, 0)]
 
 
-def execute_astar(netlist, chip, loopdieloop=True):
+def execute_astar(netlist, chip, loopdieloop=False):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
