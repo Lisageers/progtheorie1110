@@ -31,6 +31,7 @@ class Wiring():
 		elif alg_req == 'astar':
 			algorithm = execute_astar
 		optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
+		optimisation_input = False
 
 		return algorithm, optimisation_input
 
