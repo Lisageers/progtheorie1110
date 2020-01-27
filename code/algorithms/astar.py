@@ -94,7 +94,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	Q = []
 	visited_points = {}
 
-	heappush(Q, (None, [start]))
+	heappush(Q, (0, [start]))
 
 	while len(Q) > 0:
 		top_tuple = heappop(Q)
