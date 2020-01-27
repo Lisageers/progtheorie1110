@@ -181,6 +181,26 @@ Vandaag
   - Random wire eerst verwijderen, dan nieuwe route in grid
 
 
+### Donderdag
+
+Vandaag
+- Astar aangepast, waardoor betere uitkomsten. (30/30 bij most_common, loose_layering wel, geen hill climber)
+- Astar aangepast door visited toe te voegen. 
+
+
+### Vrijdag
+
+Presentatie: 
+- Case uitleggen: Plaatje chips&circuits
+- Test: Makkelijke, kunnen we allemaal oplossen, maar grote helemaal chaos.
+- XYZ
+- Meer lagen
+- andere ordening netlist
+- Korste pad: Astar
+- Heuristieken
+- Resultaten/vergelijken
+
+
 Stap 4 - optimaliseer
 
 
