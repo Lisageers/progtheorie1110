@@ -86,12 +86,18 @@ if __name__ == '__main__':
 		for wire in wires.wire.values():
 			if len(wire) != 1:
 				count +=1
+<<<<<<< HEAD
 
 		if count > best_count or (cost < best_cost and count == best_count):
 			best_cost = cost
 
 			print(f"The algorithm laid {count} wires.\n")
 			best_count = count
+=======
+		
+		print(f"The algorithm laid {count} wires.\n")
+		total_count += count
+>>>>>>> 067b6cf56b3b91fddba1e8d16afabc201d01f1cf
 
 		# get the dimensions for the visual representation
 		x_dim = chiploop.get_x_dimension(chiploop.gates)
