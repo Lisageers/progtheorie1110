@@ -28,9 +28,6 @@ if __name__ == '__main__':
 		else:
 			print("That chip does not exist.\n")
 
-	# create a Chip object for the chosen chip
-	chip = chip.Chip(chip_path)
-
 	# let user choose a netlist
 	while True:
 		req_netlist = input("Which netlist do you want to use? (1, 2, 3)\n")
@@ -55,6 +52,9 @@ if __name__ == '__main__':
 			break
 		else:
 			print("This algorithm does not exist.\n")
+
+	# create a Chip object for the chosen chip
+	chip = chip.Chip(chip_path)
 
 	# create a Netlist object for the chosen chip and netlist combination
 	netlist = netlist.Netlist(netlist_path, chip.gates, req_sort)

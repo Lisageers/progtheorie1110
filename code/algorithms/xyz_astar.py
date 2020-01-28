@@ -11,13 +11,11 @@ def find_point_stuck(output_dict, unsolved_wire):
 	LAID_WIRE_LENGTH = 2
 
 	for net, wire in output_dict.items():
-
 		if len(wire) < LAID_WIRE_LENGTH:
-			
+
 			wire = []
 
 			for point in unsolved_wire[net]:
-
 				# break if stuck-point is found
 				if net[1][0] == point[0] and net[1][1] == point[1] and (unsolved_wire[net].count(point) == 1) or point == unsolved_wire[net][-1]:
 					stuck_wires[net] = wire

@@ -26,7 +26,7 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
-	
+
 	return layer_list
 
 
