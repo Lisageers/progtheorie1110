@@ -16,41 +16,43 @@ De aanpak van de verschillende algoritmen is duidelijk beschreven in de README.
 Het is na lezen van de README duidelijk hoe de resultaten te reproduceren zijn, via een interface (command line), argumenten die meegegeven kunnen worden voor de verschillende functionaliteiten/algoritmen, of bijvoorbeeld een duidelijke uitleg welke file te runnen om welk resultaat te krijgen.
 #
 
-### Case uitleg:
+### Uitleg van de case:
 
-* Gates in een grid verbinden. Welke gates verbonden moeten worden staat vast in een netlist. Je wil het liefst de snelste weg vinden van gate A naar gate B, zodat je de kosten zo laag mogelijk houdt. Elke stap heeft een kosten van 1. Wanneer een wire niet gelegd kan worden, worden daar extra kosten voor in rekening gebracht.
-* Wires mogen elkaar niet kruisen/ over dezelfde lijntje heen gaan/ door gates heen gaan.
+Bij chips & circuits is het de bedoeling gates op een chip te verbinden met zo kort mogelijke kabels, die elkaar en de gates niet kruisen.  Welke gates verbonden moeten worden staat vast in een netlist. De chip wordt weergegeven als grid met de x- en y-dimensies zo dat er één extra rand om de buitenste gates om ligt. Er kan in de z-richting zeven lagen worden uitgebreid, om meer kabels te kunnen leggen. Kabels mogen alleen via de gridlijnen bewegen. Elke stap tussen coördinaten kost 1. Wanneer een kabel niet gelegd kan worden, worden daar extra kosten voor in rekening gebracht.
+
 
 <img src="doc/grid_uitleg.PNG" alt="grid_uitleg" width="400px">
 
-*Voorbeeld grid. Deze gates moeten met elkaar verbonden worden.*
-
+*Figuur 1) Voorbeeldchip. Deze gates moeten met elkaar verbonden worden.*
 
 <img src="doc/test.png" alt="test plaatje" width="400px">
 
-*Foto van test netlist, waarbij de gates met elkaar verbonden zijn met de kleinste kosten (20)*
+*Figuur 2) Voorbeeldnetlist, waarbij de gates met elkaar verbonden zijn met de laagste kosten (20)*
 
-* Deze gates kunnen door middel van x en y bewegingen met elkaar verbonden worden. De wire beweegt dan steeds dichter naar zijn target gate toe. Maar LET OP! Probleem
+
+Het voorbeeld in Figuur 2 is makkelijk op te lossen met 2D-bewegingen. Het korste pad op een othogonaal grid heet de manhattan distance. In Figuur 1 is te zien dat dit snel verkeerd kan gaan; kabels zouden moeten kruisen bij enkel 2D-bewegingen naar hun doel. Dit probleem is in Figuur 3 weergegeven.
+
 
 <img src="doc/probleem_plaatje.png" alt="probleem plaatje" width="400px">
 
-*Visualisatie van het probleem wanneer je alleen in de x- en y-richting mag bewegen.*
+*Figuur 3) Visualisatie van het probleem wanneer alleen in de x- en y-richting bew0gen mag worden.*
 
-* In de bovenstaande afbeelding is te zien dat de 2 lege gates niet met elkaar verbonden kunnen worden door alleen in de x- en y-richting te bewegen (manhattan distacnce).
-* Om dit op te lossen maken we gebruik van extra lagen, zodat wires ook in de z-richting kunnen bewegen.
+
+Om meer gates met elkaar te kunnen verbinden kunnen extra lagen in de z-richting worden toegevoegd, maximaal zeven. Figuur 4 laat zien hoe in de z-richting bewogen kan worden, waardoor kruising voorkomen wordt.
+
 
 <img src="doc/oplossing_probleem.png" alt="oplossing voor het probleem" width="400px">
 
-*Wires kunnen ook in de z-richting bewegen, waardoor ze andere wires niet hoeven te kruisen.*
+*Figuur 4) Kabels kunnen ook in de z-richting bewegen, waardoor ze andere kabels niet hoeven te kruisen.*
 
+Figuur 4 is relatief eenvoudig opgelost met deze maatregel, maar de aanpak van een chip zoals Figuur 1 vereist meer maatregelen. In Figuur 5 is diezelfde chip te zien waarbij gebruik wordt gemaakt van meerdere lagen. Toch is hier pas zestig procent van de te leggen kabels gelegd. 
 
-* Dit ziet er allemaal nog eenvoudig uit, maar er zijn grotere grids, met meer gates die allemaal met elkaar verbonden moeten worden.
 
 <img src="doc/60procent.png" alt="60procent" width="400px">
 
-*In deze afbeelding zijn maar 60 procent van de gates met elkaar verbonden. De overige 40 procent van de te verbinden gates lopen ergens vast waardoor verbinden niet meer lukt.*
+*Figuur 5) In deze afbeelding is slechts zestig procent van de te leggen kabels gelegd. De overige veertig procent van de kabels loopt ergens vast, waardoor verbinden niet meer lukt.*
 
-### Hoe kunnen we onze code verbeteren?
+### Ordening netlist
 
 * Een andere ordening: most_common vooraan, zodat die niet ingebouwd kan worden. Gates kunnen met maximaal 5 andere gates verbonden worden. Om ervoor te zorgen dat de gates die zoveel verbindingen moeten leggen afgesneden worden plaatsten we deze vooraan de netlist, waardoor deze verbindingen alseerst gelegd worden.
 * Er kan ook gesorteerd worden op "longest_first". Hierbij worden de gates die het verst van elkaar afliggen en met elkaar verbonden moeten worden als eerst in de netlist geplaatst. Deze hebben de meeste ruimte nodig en hebben de meeste kans om vast te lopen/ ingesloten te worden wanneer ze later nog gelegd moeten worden.

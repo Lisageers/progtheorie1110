@@ -29,7 +29,7 @@ if __name__ == '__main__':
 			print("That chip does not exist.\n")
 
 	# create a Chip object for the chosen chip
-	chipinit = chip.Chip(chip_path)
+	chip = chip.Chip(chip_path)
 
 	# let user choose a netlist
 	while True:
@@ -56,46 +56,26 @@ if __name__ == '__main__':
 		else:
 			print("This algorithm does not exist.\n")
 
-	best_cost = 10000
-	best_count = 0
+	# create a Netlist object for the chosen chip and netlist combination
+	netlist = netlist.Netlist(netlist_path, chip.gates, req_sort)
 
-	loopcount = 0
-	while True:
-		if loopcount > 749:
-			break
-		loopcount += 1
+	# generate a dictionary containing the solution (wire) for each net
+	wires = wiring.Wiring(netlist.net_coords, chip, alg_req)
 
-		# create a Netlist object for the chosen chip and netlist combination
-		netlistloop = netlist.Netlist(netlist_path, chipinit.gates, req_sort)
+	# calculate cost of the solution
+	cost = wires.cost(wires.wire)
+	print(f"The cost of this solution is {cost}\n")
 
-		# generate a new chip for each loop
-		chiploop = chip.Chip(chip_path)
+	count = 0
+	for wire in wires.wire.values():
+		if len(wire) != 1:
+			count +=1
 
-		# generate a dictionary containing the solution (wire) for each net
-		wires = wiring.Wiring(netlistloop.net_coords, chiploop, alg_req)
+	print(f"The algorithm laid {count} wires out of {len(netlist.netlist)}.\n")
 
-		# calculate cost of the solution
-		cost = wires.cost(wires.wire)
+	# get the dimensions of the grid for the visual representation
+	x_dim = chip.get_x_dimension(chip.gates)
+	y_dim = chip.get_y_dimension(chip.gates)
 
-		print(f"The cost of this solution is {cost}\n")
-		count = 0
-		for wire in wires.wire.values():
-			if len(wire) != 1:
-				count +=1
-
-		if count > best_count or (cost < best_cost and count == best_count):
-			best_cost = cost
-
-			print(f"The algorithm laid {count} wires.\n")
-			best_count = count
-
-		# get the dimensions of the grid for the visual representation
-		x_dim = chiploop.get_x_dimension(chiploop.gates)
-		y_dim = chiploop.get_y_dimension(chiploop.gates)
-
-		# create visual representation of the solved chip
-		# visualise = matplot.visualise(chiploop.gates, wires.wire, x_dim, y_dim)
-		# break
-
-	print(f"The total_cost is {best_cost}.\n")
-	print(f"The total_count is {best_count}.\n")
+	# # create visual representation of the solved chip
+	# visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)

@@ -1,4 +1,5 @@
 from code.algorithms.xyz_astar import *
+from code.algorithms.hillclimber_astar import HillClimber
 
 
 def xyz_wire(netlist, chip):
@@ -68,8 +69,24 @@ def xyz_wire(netlist, chip):
 	optimisation_input = input("Do you want to optimise the xyz_move result with A*? (y/n) \n").lower()
 
 	if optimisation_input == 'y' or optimisation_input == 'yes':
+
+		while True:
+			heuristic = input("Which heuristic do you want to use? (manhattan_distance, distance_to_gate, loose_cables)\n").lower()
+			if heuristic == 'manhattan_distance' or heuristic == 'distance_to_gate' or heuristic == 'loose_cables':
+				break
+			else:
+				print("This is not an option.\n")
+
 		stuck, stuck_wires = find_point_stuck(output_dict, unsolved_wire)
-		new_wires = change_wires(stuck, stuck_wires, chip, output_dict)
+		new_wires = change_wires(stuck, stuck_wires, chip, output_dict, heuristic)
+
+		optimisation = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
+
+		if optimisation == 'y' or optimisation == 'yes':
+						
+			output_dict = HillClimber(chip, new_wires, heuristic)
+			new_wires = output_dict.run_hillclimber
+
 		return new_wires
 
 	return output_dict

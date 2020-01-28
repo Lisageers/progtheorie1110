@@ -13,11 +13,15 @@ class Wiring():
 
 		algorithm, optimisation = self.choose_alg(alg_req)
 
-		self.wire = algorithm(self.netlist, self.chip)
+		if algorithm == execute_astar:
+			heuristic = self.choose_heuristic()
+			self.wire = algorithm(self.netlist, self.chip, heuristic)
+		else:
+			self.wire = algorithm(self.netlist, self.chip)
 
 		if optimisation == 'y' or optimisation == 'yes':
 						
-			output_dict = HillClimber(chip, self.wire)
+			output_dict = HillClimber(chip, self.wire, heuristic)
 			self.wire = output_dict.run_hillclimber
 
 		self.output(self.wire)
@@ -28,12 +32,25 @@ class Wiring():
 
 		if alg_req == 'xyz_move':
 			algorithm = xyz_wire
+			optimisation_input = None
 		elif alg_req == 'astar':
 			algorithm = execute_astar
-		optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
-		optimisation_input = False
+			optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
 
 		return algorithm, optimisation_input
+
+
+	def choose_heuristic(self):
+		""" Make user choose an heuristic. """
+
+		while True:
+			heuristic = input("Which heuristic do you want to use? (manhattan_distance, distance_to_gate, loose_cables)\n").lower()
+			if heuristic == 'manhattan_distance' or heuristic == 'distance_to_gate' or heuristic == 'loose_cables':
+				break
+			else:
+				print("This is not an option.\n")
+
+		return heuristic
 
 
 	def cost(self, output_dict):

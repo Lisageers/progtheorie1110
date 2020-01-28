@@ -94,7 +94,7 @@ def make_neighbours(grid, parent, current, end):
 	return neighbours
 
 
-def astar(gates, grid, start, end, occurance_gate, netlist):
+def astar(gates, grid, start, end, occurance_gate, netlist, heuristic):
 	""" A* for connecting gates on a grid. """
 
 	Q = []
@@ -146,7 +146,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	return [(0, 0, 0)]
 
 
-def execute_astar(netlist, chip, loopdieloop=False):
+def execute_astar(netlist, chip, heuristic, first_execution=True):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
@@ -161,7 +161,7 @@ def execute_astar(netlist, chip, loopdieloop=False):
 
 	occurance_gate = Counter(gates_in_netlist)
 
-	if loopdieloop:
+	if first_execution:
 		# does user want loose_layering?
 		layering_input = input("Do you want equal distribution of wires over the layers? (y/n)\n").lower()
 		if layering_input == 'y' or layering_input == 'yes':
@@ -193,8 +193,8 @@ def execute_astar(netlist, chip, loopdieloop=False):
 								between = new_between
 								break
 
-					path_1 = astar(gates, grid, start, between, occurance_gate, netlist)
-					path_2 = astar(gates, grid, between, end, occurance_gate, netlist)
+					path_1 = astar(gates, grid, start, between, occurance_gate, netlist, heuristic)
+					path_2 = astar(gates, grid, between, end, occurance_gate, netlist, heuristic)
 
 					# if half of the wire was not laid, remove the other half as well
 					if path_1 == [(0, 0, 0)] or path_2 == [(0, 0, 0)]:
@@ -206,7 +206,7 @@ def execute_astar(netlist, chip, loopdieloop=False):
 						output_dict[net] = path_1 + path_2
 
 				else:
-					path = astar(gates, grid, start, end, occurance_gate, netlist)
+					path = astar(gates, grid, start, end, occurance_gate, netlist, heuristic)
 					output_dict[net] = path
 
 	else:
@@ -214,7 +214,7 @@ def execute_astar(netlist, chip, loopdieloop=False):
 		for net in netlist:
 			start = net[0]
 			end = net[1]
-			path = astar(gates, grid, start, end, occurance_gate, netlist)
+			path = astar(gates, grid, start, end, occurance_gate, netlist, heuristic)
 			output_dict[net] = path
 
 	return output_dict
