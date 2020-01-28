@@ -1,4 +1,4 @@
-from code.algorithms.astar import execute_astar
+from code.algorithms.astar import Astar
 import copy
 import random
 
@@ -11,7 +11,7 @@ class HillClimber():
 		self.chip = chip
 		self.heuristic = heuristic
 		self.output_dict = copy.deepcopy(output_dict)
-		self.run_hillclimber = self.run()
+
 
 	def mutate_random_wire(self):
 		""" Remove random wire and lay again by executing A*. """
@@ -22,9 +22,11 @@ class HillClimber():
 			self.chip.grid[point[0]][point[1]][point[2]] = False
 
 		random_wire = [random_wire]
-		new_wire = execute_astar(random_wire, self.chip, self.heuristic, False)
+		astar_instance = Astar(random_wire, self.chip, self.heuristic)
+		new_wire = astar_instance.execute_astar(False)
 
 		return new_wire
+
 
 	def lay_unlaid_wires(self):
 		""" Try to lay unlaid wires in the new situation. """
@@ -34,7 +36,8 @@ class HillClimber():
 		for net, wire in self.output_dict.items():
 			if len(wire) == 1:
 				unlaid_netlist.append(net)
-		new_unlaid_wires = execute_astar(unlaid_netlist, self.chip, self.heuristic, False)
+		astar_instance = Astar(unlaid_netlist, self.chip, self.heuristic)
+		new_unlaid_wires = astar_instance.execute_astar(False)
 
 		return new_unlaid_wires
 

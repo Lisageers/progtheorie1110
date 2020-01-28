@@ -7,6 +7,7 @@ class Netlist():
 	""" This class creates a netlist with a usable datastructure from csv. """
 
 	def __init__(self, list_file, gates, req_sort):
+		
 		self.netlist = self.netlist(list_file, req_sort)
 		self.net_coords = self.net_coords(self.netlist, gates, req_sort)
 

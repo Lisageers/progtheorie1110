@@ -2,73 +2,97 @@ from code.algorithms.xyz_astar import *
 from code.algorithms.hillclimber_astar import HillClimber
 
 
-def xyz_wire(netlist, chip):
-	""" Determine wire needed to connect the nets. """
+class XYZ_algorithm():
+	""" Lay wires by moving in the direction of the endgate in the order x-direction, y-direction, z-direction."""
 
-	output_dict = {}
-	unsolved_wire = {}
-	unsolved_count = 0
+	def __init__(self, netlist, chip):
 
-	for net in netlist:
+		self.netlist = netlist
+		self.chip = chip
+
+		self.output_dict, self.unsolved_wire, optimisation = self.run_xyz()
+		
+		if optimisation == 'y' or optimisation == 'yes':
+			self.output_dict = self.optimise_xyz(self.output_dict, self.unsolved_wire)
+
+
+	def move_xyz(self, net):
+		""" Determine wire needed to connect the nets. """
+		
 		wire = []
 		wire.append(net[0])
-
 		current = list(net[0])
 		end = net[1]
 
 		while True:
-			# check whether current point and end point are adjacent
+			# check whether current point and end point are adjacent, else move towards the end gate
 			if abs(current[0] - end[0]) + abs(current[1] - end[1]) + abs(current[2] - end[2]) == 1:
 				wire.append(net[1])
-				output_dict[net] = wire
-				break
+				return True, wire
 
-			# move towards the end-gate
 			else:
 				# move +x if x of end is larger and +x is open
-				if (end[0] - current[0]) > 0 and chip.check_empty(((current[0] + 1), current[1], current[2]), chip.grid):
+				if (end[0] - current[0]) > 0 and self.chip.check_empty(((current[0] + 1), current[1], current[2]), self.chip.grid):
 					current[0] += 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
 				# move -x if x of end is smaller and -x is open
-				elif ((end[0] - current[0]) < 0) and chip.check_empty(((current[0] - 1), current[1], current[2]), chip.grid):
+				elif ((end[0] - current[0]) < 0) and self.chip.check_empty(((current[0] - 1), current[1], current[2]), self.chip.grid):
 					current[0] -= 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
 				# move +y if y of end is larger and +y is open
-				elif ((end[1] - current[1]) > 0) and chip.check_empty((current[0], (current[1] + 1), current[2]), chip.grid):
+				elif ((end[1] - current[1]) > 0) and self.chip.check_empty((current[0], (current[1] + 1), current[2]), self.chip.grid):
 					current[1] += 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
 				# move -y if y of end is smaller and -y is open
-				elif ((end[1] - current[1]) < 0) and chip.check_empty((current[0], (current[1] - 1), current[2]), chip.grid):
+				elif ((end[1] - current[1]) < 0) and self.chip.check_empty((current[0], (current[1] - 1), current[2]), self.chip.grid):
 					current[1] -= 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
 				# move -z if z of end is larger and -z is open
-				elif ((end[2] - current[2]) < 0) and chip.check_empty((current[0], current[1], (current[2] - 1)), chip.grid):
+				elif ((end[2] - current[2]) < 0) and self.chip.check_empty((current[0], current[1], (current[2] - 1)), self.chip.grid):
 					current[2] -= 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
-				# move +z if z of end is larger and +z is open
+				# move +z if z of end is larger and +z is open, or quit if the top has been reached
 				else:
 					if current[2] + 1 == 8:
-						unsolved_count += 1
-						output_dict[net] = [(0, 0, 0)]
-						unsolved_wire[net] = wire
-						break
+						return False, wire
+
 					current[2] += 1
-					chip.grid[current[0]][current[1]][current[2]] = True
+					self.chip.grid[current[0]][current[1]][current[2]] = True
 					wire.append(tuple(current))
 
-	optimisation_input = input("Do you want to optimise the xyz_move result with A*? (y/n) \n").lower()
 
-	if optimisation_input == 'y' or optimisation_input == 'yes':
+	def run_xyz(self):
+		""" Execute move_xyz for an entire netlist. """
+
+		output_dict = {}
+		unsolved_wire = {}
+
+		for net in self.netlist:
+			solved, solution = self.move_xyz(net)
+			
+			if solved == True:
+				output_dict[net] = solution
+			else:
+				output_dict[net] = [(0, 0, 0)]
+				unsolved_wire[net] = solution
+
+		optimisation = input("Do you want to optimise the xyz_move result with A*? (y/n) \n").lower()
+
+		return output_dict, unsolved_wire, optimisation
+
+
+	def optimise_xyz(self, output_dict, unsolved_wire):
+		""" Run optimisation on move_xyz result. """
 
 		while True:
 			heuristic = input("Which heuristic do you want to use? (manhattan_distance, distance_to_gate, loose_cables)\n").lower()
@@ -77,16 +101,15 @@ def xyz_wire(netlist, chip):
 			else:
 				print("This is not an option.\n")
 
-		stuck, stuck_wires = find_point_stuck(output_dict, unsolved_wire)
-		new_wires = change_wires(stuck, stuck_wires, chip, output_dict, heuristic)
+		# optimise result by redoing unlaid wires with A*
+		xyz_optimisation = XYZ_astar(output_dict, unsolved_wire)
+		new_wires = xyz_optimisation.change_wires(self.chip, output_dict, heuristic)
 
 		optimisation = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
 
 		if optimisation == 'y' or optimisation == 'yes':
 						
-			output_dict = HillClimber(chip, new_wires, heuristic)
-			new_wires = output_dict.run_hillclimber
+			output_dict = HillClimber(self.chip, new_wires, heuristic)
+			new_wires = output_dict.run()
 
 		return new_wires
-
-	return output_dict

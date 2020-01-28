@@ -1,6 +1,6 @@
 import csv
-from code.algorithms.xyz_move import xyz_wire
-from code.algorithms.astar import execute_astar
+from code.algorithms.xyz_move import XYZ_algorithm
+from code.algorithms.astar import Astar
 from code.algorithms.hillclimber_astar import HillClimber
 
 
@@ -8,21 +8,24 @@ class Wiring():
 	""" This class retutrns output in three parts: dictionary of laid wires, cost of the wires, csv-file of laid wires. """
 
 	def __init__(self, netlist, chip, alg_req):
+		
 		self.chip = chip
 		self.netlist = netlist
 
 		algorithm, optimisation = self.choose_alg(alg_req)
 
-		if algorithm == execute_astar:
+		if algorithm == Astar:
 			heuristic = self.choose_heuristic()
-			self.wire = algorithm(self.netlist, self.chip, heuristic)
+			astar_instance = algorithm(self.netlist, self.chip, heuristic)
+			self.wire = astar_instance.execute_astar()
 		else:
-			self.wire = algorithm(self.netlist, self.chip)
+			xyz_instance = algorithm(self.netlist, self.chip)
+			self.wire = xyz_instance.output_dict
 
 		if optimisation == 'y' or optimisation == 'yes':
 						
-			output_dict = HillClimber(chip, self.wire, heuristic)
-			self.wire = output_dict.run_hillclimber
+			output_dict = HillClimber(self.chip, self.wire, heuristic)
+			self.wire = output_dict.run()
 
 		self.output(self.wire)
 
@@ -31,10 +34,10 @@ class Wiring():
 		""" Get the algorithm the user chose. """
 
 		if alg_req == 'xyz_move':
-			algorithm = xyz_wire
+			algorithm = XYZ_algorithm
 			optimisation_input = None
 		elif alg_req == 'astar':
-			algorithm = execute_astar
+			algorithm = Astar
 			optimisation_input = input("Do you want to optimise the result with hillclimber? (y/n)\n").lower()
 
 		return algorithm, optimisation_input
