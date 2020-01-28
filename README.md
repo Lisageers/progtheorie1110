@@ -82,9 +82,10 @@ Bij het runnen van het programma krijgt de gebruiker verschillende opties. Bij e
 
 
 Wanneer je al deze keuzes gemaakt hebt krijg je een **output**:
-- Een matplotlib met hoe de wires gelegd zijn met verschillende kleuren voor verschillende wires. 
-- Hoeveel wires er gelegd zijn van het aantal te leggen wires.
+- Een matplotlib met hoe de kabels gelegd zijn met verschillende kleuren voor verschillende kabels. 
+- Hoeveel kabels er gelegd zijn van het aantal te leggen kabels.
 - De totale kosten.
+- Een csv-bestand met per net een lijst van alle coördinaten van de kabel tussen de gates.
 
 In Figuur 6 is te zien hoe de kabels van een netlist één voor één gelegd worden. Figuur 7 laat de output zien zoals deze weergegeven wordt na het runnen van main.py. De kosten zijn er in dit geval handmatig bijgezet, normaliter worden de kosten weergegeven in de terminal.
 
