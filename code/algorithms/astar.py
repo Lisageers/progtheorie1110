@@ -26,7 +26,7 @@ def layer_netlist(netlist):
 			layer = netlist[:cables_per_layer]
 			layer_list.append(layer)
 			del netlist[:cables_per_layer]
-	
+
 	return layer_list
 
 
@@ -146,7 +146,7 @@ def astar(gates, grid, start, end, occurance_gate, netlist):
 	return [(0, 0, 0)]
 
 
-def execute_astar(netlist, chip, loopdieloop=False):
+def execute_astar(netlist, chip, loopdieloop=True):
 	""" Execute astar function for all nets. """
 
 	grid = chip.grid
