@@ -72,7 +72,7 @@ class Wiring():
 	def output(self, output_dict):
 		""" Write the nets and wires to a csv-file. """
 
-		with open('data/test/output.csv', mode='w') as csv_output:
+		with open('results/output.csv', mode='w') as csv_output:
 			fieldnames = ['net', 'wires']
 			writer = csv.DictWriter(csv_output, fieldnames=fieldnames)
 			writer.writeheader()

@@ -19,7 +19,7 @@ In netlist.py wordt een gekozen netlist uit de folder Data ingelezen. Deze netli
 In wiring.py wordt het gekozen algoritme, met gekozen heuristiek, aangeroepen. In wiring.py worden ook de kosten berekend. 
 
 
-## Algoritmen
+## Algorithms
 
 ### xyz_move
 Kabels verplaatsen zich eerst in de x-richting, dan in de y-richting en dan in de z-richting. Op weg naar zijn doel.
@@ -47,3 +47,10 @@ Met deze heuristiek wordt ervoor gezorgd dat gates die meerdere verbindingen heb
 
 ### loose_cables
 Deze heuristiek zorgt ervoor dat het "aantrekkelijker" (lagere heuristiek) is om naar een hogere laag te gaan (waarbij de heuristiek voor laag 1 het laagst is). Het ik ook "aantrekkelijker" om, eenmaal boven, op een hogere laag te blijven.
+
+
+## Visualisation
+
+## matplotlib.py
+In matplotlib.py wordt een 3D-grafiek gemaakt. Hierin worden alle gates en kabels van het gekozen netlist gelegd/getoond. Elke kabel heeft zijn eigen kleur. 
+

@@ -30,9 +30,7 @@ def visualise(gates, output_dict, x, y):
 	plt.scatter(cor_x, cor_y, marker='H', c='r', s=200, edgecolors='k')
 
 	# create lines between gates
-	name = 0
 	for wires in output_dict.values():
-		name += 1
 		line_x = []
 		line_y = []
 		line_z = []
@@ -41,7 +39,8 @@ def visualise(gates, output_dict, x, y):
 			line_y.append(cor[1])
 			line_z.append(cor[2])
 			plt.plot(line_x, line_y, line_z)
-		plt.savefig(f"output_images/test{name}.png")
-
+	
+	plt.savefig(f"results/output.png")
+	
 	# show plot
-	# plt.show()
+	plt.show()
