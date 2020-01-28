@@ -1,24 +1,14 @@
-"""
-netlist.py
-
-Minor programmeren, programmeertheorie
-January 2020
-Marte van der Wijk, Lisa Geers, Emma Caarls
-
-Reads a netlist from csv input and write a coordinate list from it.
-"""
-
 import csv
 from random import shuffle
 from collections import Counter
 
 
 class Netlist():
-	""" This class creates a usable netlist. """
+	""" This class creates a netlist with a usable datastructure from csv. """
 
 	def __init__(self, list_file, gates, req_sort):
 		self.netlist = self.netlist(list_file, req_sort)
-		self.net_cor = self.net_cor(self.netlist, gates, req_sort)
+		self.net_coords = self.net_coords(self.netlist, gates, req_sort)
 
 
 	def netlist(self, list_file, req_sort):
@@ -32,13 +22,13 @@ class Netlist():
 			netlist = []
 			netlist_gates = []
 
-			# remove spaces
+			# remove white-space
 			for start, end in netlist_reader:
 				netlist.append((start.strip(), end.strip()))
 				netlist_gates.append(start.strip())
 				netlist_gates.append(end.strip())
 
-		# sort netlist as per request user
+		# sort netlist as per user request
 		if req_sort == 'random':
 			sorted_netlist = self.sort_random(netlist)
 		elif req_sort == 'most_common':
@@ -49,35 +39,31 @@ class Netlist():
 		return sorted_netlist
 
 
-	def net_cor(self, netlist, gates, req_sort):
+	def net_coords(self, netlist, gates, req_sort):
 		""" Create altered netlist with coordinates instead of names. """
 
-		net_cor = []
+		net_coords = []
 		
 		for net in netlist:
 			for gate in gates:
-				# get start cor of net
 				if gates[gate] == net[0]:
-					cor_start = gate
-
-				# get end cor of net
+					start_coord = gate
 				elif gates[gate] == net[1]:
-					cor_end = gate
+					end_coord = gate
 
-			# put cors in list
-			net_cor.append((cor_start, cor_end))
+			net_coords.append((start_coord, end_coord))
 
-		# sort netlist as per request user
+		# sort netlist as per user request
 		if req_sort == 'straight_first':
-			sorted_net_cor = self.sort_straight_first(net_cor)
+			sorted_net_coords = self.sort_straight_first(net_coords)
 		elif req_sort == 'straight_random':
-			sorted_net_cor = self.sort_straight_random(net_cor)
+			sorted_net_coords = self.sort_straight_random(net_coords)
 		elif req_sort == 'longest_first':
-			sorted_net_cor = self.sort_longest_first(net_cor)
+			sorted_net_coords = self.sort_longest_first(net_coords)
 		else:
-			sorted_net_cor = net_cor
+			sorted_net_coords = net_coords
 
-		return sorted_net_cor
+		return sorted_net_coords
 
 
 	def sort_random(self, netlist):
@@ -88,12 +74,12 @@ class Netlist():
 		return netlist
 
 
-	def sort_straight_first(self, net_cor):
+	def sort_straight_first(self, netlist):
 		""" Sort the netlist by straight lines first, the rest as in csv. """
 
 		sorted_list = []
 
-		for net in net_cor:
+		for net in netlist:
 			start = net[0]
 			end = net[1]
 
@@ -107,13 +93,13 @@ class Netlist():
 		return sorted_list
 
 
-	def sort_straight_random(self, net_cor):
+	def sort_straight_random(self, netlist):
 		""" Sort the netlist by straight lines first, the rest random. """
 
 		straight_list = []
 		random_list = []
 
-		for net in net_cor:
+		for net in netlist:
 			start = net[0]
 			end = net[1]
 
@@ -135,10 +121,12 @@ class Netlist():
 	def sort_most_common(self, netlist, netlist_gates):
 		""" Sort the netlist by amount of connections a gate has. """
 
+		# count appearance of gates in the netlist
 		count_dict = Counter(netlist_gates)
 
 		sorted_netlist = []
 
+		# itterate over list ordered by most common appearance
 		for gate in count_dict.most_common():
 			for net in netlist:
 				if gate[0] in net and not net in sorted_netlist:
