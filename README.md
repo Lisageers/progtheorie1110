@@ -86,11 +86,11 @@ Wanneer je al deze keuzes gemaakt hebt krijg je een **output**:
 - Hoeveel wires er gelegd zijn van het aantal te leggen wires.
 - De totale kosten.
 
-In Figuur 6 is te zien hoe de kabels van een netlist een voor een gelegd worden. Figuur 7 laat de output zien zoals deze weergegeven wordt na het runnen van main.py. De kosten zijn er in dit geval handmatig bijgezet, normaliter worden de kosten weergegeven in de terminal.
+In Figuur 6 is te zien hoe de kabels van een netlist één voor één gelegd worden. Figuur 7 laat de output zien zoals deze weergegeven wordt na het runnen van main.py. De kosten zijn er in dit geval handmatig bijgezet, normaliter worden de kosten weergegeven in de terminal.
 
 <img src="doc/gif.gif" alt="gif" width="400px">
 
-***Figuur 6)** In deze gif is te zien hoe de kabels een voor een gelegd worden. Deze gif is uitgevoerd op chip 1, netlist 1 (te vinden in de folder Data) met devolgende instellingen: most_common, astar, distance_to_gate, hill climber, loose_layering (allemaal te vinden in de folder Code).*
+***Figuur 6)** In deze gif is te zien hoe de kabels één voor één gelegd worden. Deze gif is uitgevoerd op chip 1, netlist 1 (te vinden in de folder Data) met devolgende instellingen: most_common, astar, distance_to_gate, hill climber, loose_layering (allemaal te vinden in de folder Code).*
 
 
 <img src="doc/compleet.PNG" alt="compleet" width="400px">
