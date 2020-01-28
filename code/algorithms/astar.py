@@ -6,7 +6,7 @@ from collections import Counter
 
 
 class Astar():
-	""" Determine shortest path between two gates on a grid. """
+	""" Determine best path between two gates on a grid for a specific heuristic function. """
 
 	def __init__(self, netlist, chip, heuristic):
 
@@ -19,7 +19,7 @@ class Astar():
 
 
 	def astar(self, start, end, netlist):
-		""" A* for connecting gates on a grid. """
+		""" Determine the shortest path according to the chosen heuristic. """
 
 		Q = []
 		visited_points = {}
