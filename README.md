@@ -98,6 +98,6 @@ In Figuur 6 is te zien hoe de kabels van een netlist een voor een gelegd worden.
 ***Figuur 7)** Output afbeelding die weergegeven wordt na het runnen van main.py.*
 
 
-### Problemen met github
+## Problemen met github
 * De laptop van Marte is de eerste dag van het vak (maandag 6 januari 2020) kapot gegaan. Hierdoor heeft Marte de eerste week weinig kunnen pushen en pullen via github. Deze dagen heeft ze wel veel meegewerkt.
 * Lisa pushte eerst met een andere naam (de naam van haar laptop: Vince). Hier kwamen we pas eind van de eerste week achter, waardoor het lijkt alsog ook Lisa niet gupusht en gepulled had. Dit was wel zo.
