@@ -77,5 +77,5 @@ if __name__ == '__main__':
 	x_dim = chip.get_x_dimension(chip.gates)
 	y_dim = chip.get_y_dimension(chip.gates)
 
-	# # create visual representation of the solved chip
-	# visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)
+	# create visual representation of the solved chip
+	visualise = matplot.visualise(chip.gates, wires.wire, x_dim, y_dim)
